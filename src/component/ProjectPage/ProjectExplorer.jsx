@@ -1,0 +1,1070 @@
+import React, { useState, useEffect } from 'react';
+import {
+    Moon, Sun, Search, Filter, ChevronDown, Grid, List,
+    X, Code, Smartphone, Globe, Database, Zap, Star,
+    SortAsc, Calendar, Eye, Heart, TrendingUp, ExternalLink,
+    Github, Play, Clock, Users, Bookmark, Share2, MoreHorizontal,
+    Loader, Sparkles, Award, Cpu, Shield
+} from 'lucide-react';
+
+// Mock project data
+const mockProjects = [
+    {
+        id: 1,
+        title: "E-Commerce Dashboard",
+        description: "Modern admin dashboard with real-time analytics, inventory management, and order tracking. Built with React and Node.js.",
+        image: "/api/placeholder/400/250",
+        category: "Web App",
+        technologies: ["React", "Node.js", "MongoDB", "Tailwind"],
+        status: "Completed",
+        likes: 245,
+        views: 1200,
+        date: "2024-01-15",
+        featured: true,
+        liveUrl: "https://demo.example.com",
+        githubUrl: "https://github.com/user/project"
+    },
+    {
+        id: 2,
+        title: "Mobile Banking App",
+        description: "Secure mobile banking application with biometric authentication, transaction history, and budget tracking features.",
+        image: "/api/placeholder/400/250",
+        category: "Mobile",
+        technologies: ["React Native", "TypeScript", "Firebase"],
+        status: "In Progress",
+        likes: 189,
+        views: 850,
+        date: "2023-12-20",
+        featured: false,
+        githubUrl: "https://github.com/user/project2"
+    },
+    {
+        id: 3,
+        title: "AI Content Generator",
+        description: "Intelligent content generation tool powered by machine learning algorithms for creating blog posts, social media content, and marketing copy.",
+        image: "/api/placeholder/400/250",
+        category: "Web App",
+        technologies: ["Next.js", "Python", "TensorFlow", "PostgreSQL"],
+        status: "Completed",
+        likes: 320,
+        views: 1800,
+        date: "2024-02-10",
+        featured: true,
+        liveUrl: "https://ai-content.example.com",
+        githubUrl: "https://github.com/user/ai-project"
+    },
+    {
+        id: 4,
+        title: "Microservices Architecture",
+        description: "Scalable backend system with Docker containers, API gateway, and distributed database architecture for high-traffic applications.",
+        image: "/api/placeholder/400/250",
+        category: "Backend",
+        technologies: ["Docker", "Kubernetes", "Go", "Redis"],
+        status: "Completed",
+        likes: 156,
+        views: 950,
+        date: "2023-11-05",
+        featured: false,
+        githubUrl: "https://github.com/user/microservices"
+    },
+    {
+        id: 5,
+        title: "Real-time Chat Platform",
+        description: "WebSocket-based messaging platform with end-to-end encryption, file sharing, and video calling capabilities.",
+        image: "/api/placeholder/400/250",
+        category: "Web App",
+        technologies: ["Vue.js", "Socket.io", "Node.js", "MongoDB"],
+        status: "In Progress",
+        likes: 203,
+        views: 1100,
+        date: "2024-01-08",
+        featured: true,
+        liveUrl: "https://chat.example.com"
+    },
+    {
+        id: 6,
+        title: "IoT Dashboard",
+        description: "Internet of Things monitoring dashboard for smart home devices with real-time sensor data visualization and automation controls.",
+        image: "/api/placeholder/400/250",
+        category: "Web App",
+        technologies: ["Angular", "MQTT", "InfluxDB", "Grafana"],
+        status: "Coming Soon",
+        likes: 89,
+        views: 420,
+        date: "2024-03-01",
+        featured: false
+    }
+];
+
+const ProjectExplorer = () => {
+    const [isDark, setIsDark] = useState(true);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [activeFilter, setActiveFilter] = useState('All');
+    const [sortBy, setSortBy] = useState('newest');
+    const [viewMode, setViewMode] = useState('grid');
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [isSortOpen, setIsSortOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [selectedTechs, setSelectedTechs] = useState([]);
+    const [selectedStatus, setSelectedStatus] = useState([]);
+    const [dateRange, setDateRange] = useState('all');
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [filteredProjects, setFilteredProjects] = useState(mockProjects);
+    const [likedProjects, setLikedProjects] = useState(new Set());
+    const [bookmarkedProjects, setBookmarkedProjects] = useState(new Set());
+
+    // Mouse tracking for parallax
+    useEffect(() => {
+        const handleMouseMove = (e) => {
+            setMousePosition({
+                x: (e.clientX / window.innerWidth) * 100,
+                y: (e.clientY / window.innerHeight) * 100,
+            });
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, []);
+
+    // Filter and sort projects
+    useEffect(() => {
+        let filtered = [...mockProjects];
+
+        // Apply search filter
+        if (searchQuery) {
+            filtered = filtered.filter(project =>
+                project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                project.technologies.some(tech => tech.toLowerCase().includes(searchQuery.toLowerCase()))
+            );
+        }
+
+        // Apply category filter
+        if (activeFilter !== 'All') {
+            if (activeFilter === 'Featured') {
+                filtered = filtered.filter(project => project.featured);
+            } else {
+                filtered = filtered.filter(project => project.category === activeFilter);
+            }
+        }
+
+        // Apply technology filter
+        if (selectedTechs.length > 0) {
+            filtered = filtered.filter(project =>
+                selectedTechs.some(tech => project.technologies.includes(tech))
+            );
+        }
+
+        // Apply status filter
+        if (selectedStatus.length > 0) {
+            filtered = filtered.filter(project => selectedStatus.includes(project.status));
+        }
+
+        // Apply date range filter
+        if (dateRange !== 'all') {
+            const now = new Date();
+            const cutoffDate = new Date();
+
+            switch (dateRange) {
+                case '6months':
+                    cutoffDate.setMonth(now.getMonth() - 6);
+                    break;
+                case '1year':
+                    cutoffDate.setFullYear(now.getFullYear() - 1);
+                    break;
+                case '2023':
+                    cutoffDate.setFullYear(2023, 0, 1);
+                    filtered = filtered.filter(project => {
+                        const projectDate = new Date(project.date);
+                        return projectDate.getFullYear() === 2023;
+                    });
+                    break;
+                case '2022':
+                    cutoffDate.setFullYear(2022, 0, 1);
+                    filtered = filtered.filter(project => {
+                        const projectDate = new Date(project.date);
+                        return projectDate.getFullYear() === 2022;
+                    });
+                    break;
+            }
+
+            if (dateRange === '6months' || dateRange === '1year') {
+                filtered = filtered.filter(project => new Date(project.date) >= cutoffDate);
+            }
+        }
+
+        // Apply sorting
+        filtered.sort((a, b) => {
+            switch (sortBy) {
+                case 'oldest':
+                    return new Date(a.date) - new Date(b.date);
+                case 'popular':
+                    return b.likes - a.likes;
+                case 'views':
+                    return b.views - a.views;
+                case 'likes':
+                    return b.likes - a.likes;
+                case 'alphabetical':
+                    return a.title.localeCompare(b.title);
+                default: // newest
+                    return new Date(b.date) - new Date(a.date);
+            }
+        });
+
+        setFilteredProjects(filtered);
+    }, [searchQuery, activeFilter, sortBy, selectedTechs, selectedStatus, dateRange]);
+
+    // Filter categories with dynamic counts
+    const filterTabs = [
+        {
+            name: 'All',
+            icon: <Globe size={16} />,
+            count: mockProjects.length,
+            color: 'text-purple-400'
+        },
+        {
+            name: 'Web App',
+            icon: <Code size={16} />,
+            count: mockProjects.filter(p => p.category === 'Web App').length,
+            color: 'text-blue-400'
+        },
+        {
+            name: 'Mobile',
+            icon: <Smartphone size={16} />,
+            count: mockProjects.filter(p => p.category === 'Mobile').length,
+            color: 'text-green-400'
+        },
+        {
+            name: 'Backend',
+            icon: <Database size={16} />,
+            count: mockProjects.filter(p => p.category === 'Backend').length,
+            color: 'text-orange-400'
+        },
+        {
+            name: 'Featured',
+            icon: <Star size={16} />,
+            count: mockProjects.filter(p => p.featured).length,
+            color: 'text-yellow-400'
+        },
+    ];
+
+    // Sort options
+    const sortOptions = [
+        { value: 'newest', label: 'Newest First', icon: <Calendar size={16} /> },
+        { value: 'oldest', label: 'Oldest First', icon: <Calendar size={16} /> },
+        { value: 'popular', label: 'Most Popular', icon: <TrendingUp size={16} /> },
+        { value: 'views', label: 'Most Viewed', icon: <Eye size={16} /> },
+        { value: 'likes', label: 'Most Liked', icon: <Heart size={16} /> },
+        { value: 'alphabetical', label: 'A-Z', icon: <SortAsc size={16} /> },
+    ];
+
+    // All available technologies
+    const allTechnologies = [...new Set(mockProjects.flatMap(p => p.technologies))];
+    const allStatuses = [...new Set(mockProjects.map(p => p.status))];
+
+    const clearSearch = () => setSearchQuery('');
+    const clearAllFilters = () => {
+        setSearchQuery('');
+        setActiveFilter('All');
+        setSortBy('newest');
+        setSelectedTechs([]);
+        setSelectedStatus([]);
+        setDateRange('all');
+    };
+
+    const getSortLabel = () => sortOptions.find(option => option.value === sortBy)?.label || 'Sort By';
+    const getSortIcon = () => sortOptions.find(option => option.value === sortBy)?.icon || <ChevronDown size={16} />;
+
+    const toggleLike = (projectId) => {
+        const newLikedProjects = new Set(likedProjects);
+        if (newLikedProjects.has(projectId)) {
+            newLikedProjects.delete(projectId);
+        } else {
+            newLikedProjects.add(projectId);
+        }
+        setLikedProjects(newLikedProjects);
+    };
+
+    const toggleBookmark = (projectId) => {
+        const newBookmarkedProjects = new Set(bookmarkedProjects);
+        if (newBookmarkedProjects.has(projectId)) {
+            newBookmarkedProjects.delete(projectId);
+        } else {
+            newBookmarkedProjects.add(projectId);
+        }
+        setBookmarkedProjects(newBookmarkedProjects);
+    };
+
+    const getStatusColor = (status) => {
+        switch (status) {
+            case 'Completed':
+                return isDark ? 'text-green-400 bg-green-500/20' : 'text-green-600 bg-green-100';
+            case 'In Progress':
+                return isDark ? 'text-yellow-400 bg-yellow-500/20' : 'text-yellow-600 bg-yellow-100';
+            case 'Coming Soon':
+                return isDark ? 'text-blue-400 bg-blue-500/20' : 'text-blue-600 bg-blue-100';
+            default:
+                return isDark ? 'text-gray-400 bg-gray-500/20' : 'text-gray-600 bg-gray-100';
+        }
+    };
+
+    const LoadingState = () => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+                <div key={i} className={`rounded-2xl p-6 animate-pulse ${isDark ? 'bg-gray-800/40' : 'bg-gray-100'
+                    }`}>
+                    <div className={`h-40 rounded-xl mb-4 ${isDark ? 'bg-gray-700/50' : 'bg-gray-200'
+                        }`} />
+                    <div className={`h-4 rounded mb-3 ${isDark ? 'bg-gray-700/50' : 'bg-gray-200'
+                        }`} />
+                    <div className={`h-3 rounded mb-2 w-3/4 ${isDark ? 'bg-gray-700/50' : 'bg-gray-200'
+                        }`} />
+                    <div className="flex space-x-2 mt-4">
+                        {[...Array(3)].map((_, j) => (
+                            <div key={j} className={`h-6 w-16 rounded ${isDark ? 'bg-gray-700/50' : 'bg-gray-200'
+                                }`} />
+                        ))}
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+
+    const EmptyState = () => (
+        <div className="text-center py-16">
+            <div className={`inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 ${isDark ? 'bg-gray-800/50' : 'bg-gray-100'
+                }`}>
+                <Search className={`w-8 h-8 ${isDark ? 'text-gray-400' : 'text-gray-500'}`} />
+            </div>
+            <h3 className={`text-xl font-semibold mb-2 ${isDark ? 'text-gray-200' : 'text-gray-800'
+                }`}>
+                No projects found
+            </h3>
+            <p className={`text-sm mb-6 ${isDark ? 'text-gray-400' : 'text-gray-600'
+                }`}>
+                Try adjusting your filters or search query to find what you're looking for.
+            </p>
+            <button
+                onClick={clearAllFilters}
+                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${isDark
+                        ? 'bg-purple-600 hover:bg-purple-700 text-white'
+                        : 'bg-purple-600 hover:bg-purple-700 text-white'
+                    }`}
+            >
+                Clear All Filters
+            </button>
+        </div>
+    );
+
+    const ProjectCard = ({ project }) => (
+        <div className={`group rounded-2xl overflow-hidden backdrop-blur-sm border transition-all duration-500 hover:scale-105 hover:shadow-2xl ${isDark
+                ? 'bg-gray-800/40 border-gray-700/50 hover:border-purple-500/50'
+                : 'bg-white/70 border-gray-200/50 hover:border-purple-300/50'
+            }`}>
+            {/* Project Image */}
+            <div className="relative overflow-hidden">
+                <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                {/* Overlay Buttons */}
+                <div className="absolute top-4 right-4 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    {project.featured && (
+                        <div className={`p-2 rounded-full ${isDark ? 'bg-yellow-500/20 text-yellow-400' : 'bg-yellow-100 text-yellow-600'}`}>
+                            <Sparkles size={16} />
+                        </div>
+                    )}
+                    <button
+                        onClick={() => toggleBookmark(project.id)}
+                        className={`p-2 rounded-full transition-colors duration-200 ${bookmarkedProjects.has(project.id)
+                                ? 'bg-purple-500 text-white'
+                                : isDark ? 'bg-gray-800/80 text-gray-300 hover:text-purple-400' : 'bg-white/80 text-gray-600 hover:text-purple-600'
+                            }`}
+                    >
+                        <Bookmark size={16} />
+                    </button>
+                </div>
+
+                {/* Quick Action Buttons */}
+                <div className="absolute bottom-4 left-4 right-4 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    {project.liveUrl && (
+                        <button className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-200">
+                            <ExternalLink size={16} />
+                            <span>Live Demo</span>
+                        </button>
+                    )}
+                    {project.githubUrl && (
+                        <button className={`px-4 py-2 rounded-lg transition-colors duration-200 ${isDark
+                                ? 'bg-gray-800/80 text-gray-300 hover:bg-gray-700'
+                                : 'bg-white/80 text-gray-600 hover:bg-gray-100'
+                            }`}>
+                            <Github size={16} />
+                        </button>
+                    )}
+                </div>
+            </div>
+
+            {/* Project Content */}
+            <div className="p-6">
+                <div className="flex items-start justify-between mb-3">
+                    <h3 className={`font-bold text-lg leading-tight ${isDark ? 'text-white' : 'text-gray-900'
+                        }`}>
+                        {project.title}
+                    </h3>
+                    <div className={`px-2 py-1 rounded-lg text-xs font-semibold ${getStatusColor(project.status)}`}>
+                        {project.status}
+                    </div>
+                </div>
+
+                <p className={`text-sm mb-4 leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
+                    {project.description}
+                </p>
+
+                {/* Technologies */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                    {project.technologies.slice(0, 3).map((tech) => (
+                        <span
+                            key={tech}
+                            className={`px-2 py-1 rounded-lg text-xs font-medium ${isDark
+                                    ? 'bg-gray-700/50 text-gray-300'
+                                    : 'bg-gray-100 text-gray-700'
+                                }`}
+                        >
+                            {tech}
+                        </span>
+                    ))}
+                    {project.technologies.length > 3 && (
+                        <span className={`px-2 py-1 rounded-lg text-xs font-medium ${isDark ? 'text-gray-400' : 'text-gray-600'
+                            }`}>
+                            +{project.technologies.length - 3} more
+                        </span>
+                    )}
+                </div>
+
+                {/* Stats & Actions */}
+                <div className="flex items-center justify-between pt-4 border-t border-gray-700/50">
+                    <div className="flex items-center space-x-4 text-sm">
+                        <div className={`flex items-center space-x-1 ${isDark ? 'text-gray-400' : 'text-gray-600'
+                            }`}>
+                            <Eye size={14} />
+                            <span>{project.views}</span>
+                        </div>
+                        <button
+                            onClick={() => toggleLike(project.id)}
+                            className={`flex items-center space-x-1 transition-colors duration-200 ${likedProjects.has(project.id)
+                                    ? 'text-red-500'
+                                    : isDark ? 'text-gray-400 hover:text-red-400' : 'text-gray-600 hover:text-red-600'
+                                }`}
+                        >
+                            <Heart size={14} fill={likedProjects.has(project.id) ? 'currentColor' : 'none'} />
+                            <span>{project.likes + (likedProjects.has(project.id) ? 1 : 0)}</span>
+                        </button>
+                    </div>
+
+                    <button className={`p-2 rounded-lg transition-colors duration-200 ${isDark
+                            ? 'text-gray-400 hover:text-gray-300 hover:bg-gray-700/50'
+                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                        }`}>
+                        <MoreHorizontal size={16} />
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+
+    const ProjectListItem = ({ project }) => (
+        <div className={`flex items-center p-6 rounded-2xl backdrop-blur-sm border transition-all duration-300 hover:shadow-lg ${isDark
+                ? 'bg-gray-800/40 border-gray-700/50 hover:border-purple-500/50'
+                : 'bg-white/70 border-gray-200/50 hover:border-purple-300/50'
+            }`}>
+            {/* Project Image */}
+            <div className="relative w-24 h-24 rounded-xl overflow-hidden mr-6 flex-shrink-0">
+                <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover"
+                />
+                {project.featured && (
+                    <div className="absolute top-2 right-2">
+                        <Sparkles className="text-yellow-400" size={16} />
+                    </div>
+                )}
+            </div>
+
+            {/* Project Info */}
+            <div className="flex-1 min-w-0">
+                <div className="flex items-start justify-between mb-2">
+                    <h3 className={`font-bold text-lg ${isDark ? 'text-white' : 'text-gray-900'
+                        }`}>
+                        {project.title}
+                    </h3>
+                    <div className={`px-3 py-1 rounded-lg text-sm font-semibold ml-4 ${getStatusColor(project.status)}`}>
+                        {project.status}
+                    </div>
+                </div>
+
+                <p className={`text-sm mb-3 leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
+                    {project.description}
+                </p>
+
+                <div className="flex items-center justify-between">
+                    <div className="flex flex-wrap gap-2">
+                        {project.technologies.slice(0, 4).map((tech) => (
+                            <span
+                                key={tech}
+                                className={`px-2 py-1 rounded text-xs font-medium ${isDark
+                                        ? 'bg-gray-700/50 text-gray-300'
+                                        : 'bg-gray-100 text-gray-700'
+                                    }`}
+                            >
+                                {tech}
+                            </span>
+                        ))}
+                    </div>
+
+                    <div className="flex items-center space-x-4 ml-4">
+                        <div className={`flex items-center space-x-1 text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'
+                            }`}>
+                            <Eye size={14} />
+                            <span>{project.views}</span>
+                        </div>
+                        <button
+                            onClick={() => toggleLike(project.id)}
+                            className={`flex items-center space-x-1 text-sm transition-colors duration-200 ${likedProjects.has(project.id)
+                                    ? 'text-red-500'
+                                    : isDark ? 'text-gray-400 hover:text-red-400' : 'text-gray-600 hover:text-red-600'
+                                }`}
+                        >
+                            <Heart size={14} fill={likedProjects.has(project.id) ? 'currentColor' : 'none'} />
+                            <span>{project.likes + (likedProjects.has(project.id) ? 1 : 0)}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex items-center space-x-2 ml-6">
+                {project.liveUrl && (
+                    <button className="p-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white transition-colors duration-200">
+                        <ExternalLink size={16} />
+                    </button>
+                )}
+                {project.githubUrl && (
+                    <button className={`p-2 rounded-lg transition-colors duration-200 ${isDark
+                            ? 'bg-gray-700/50 text-gray-300 hover:bg-gray-600'
+                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        }`}>
+                        <Github size={16} />
+                    </button>
+                )}
+                <button
+                    onClick={() => toggleBookmark(project.id)}
+                    className={`p-2 rounded-lg transition-colors duration-200 ${bookmarkedProjects.has(project.id)
+                            ? 'bg-purple-500 text-white'
+                            : isDark
+                                ? 'bg-gray-700/50 text-gray-300 hover:bg-gray-600'
+                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        }`}
+                >
+                    <Bookmark size={16} />
+                </button>
+            </div>
+        </div>
+    );
+
+    return (
+        <div className={`min-h-screen transition-all duration-500 ${isDark
+                ? 'bg-gradient-to-br from-slate-900 via-gray-900 to-gray-800'
+                : 'bg-gradient-to-br from-gray-50 via-slate-50 to-blue-50'
+            }`}>
+            {/* Animated Background */}
+            <div className="fixed inset-0 overflow-hidden pointer-events-none">
+                <div
+                    className={`absolute w-[300px] h-[300px] rounded-full blur-3xl animate-pulse ${isDark
+                            ? 'bg-gradient-to-r from-indigo-600/5 via-purple-600/5 to-pink-500/5'
+                            : 'bg-gradient-to-r from-indigo-300/10 via-purple-300/10 to-pink-300/10'
+                        }`}
+                    style={{
+                        transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`,
+                        top: '10%',
+                        left: '80%',
+                    }}
+                />
+                <div
+                    className={`absolute w-[200px] h-[200px] rounded-full blur-3xl animate-pulse ${isDark
+                            ? 'bg-gradient-to-r from-cyan-600/5 via-blue-600/5 to-indigo-500/5'
+                            : 'bg-gradient-to-r from-cyan-300/10 via-blue-300/10 to-indigo-300/10'
+                        }`}
+                    style={{
+                        transform: `translate(${-mousePosition.x * 0.01}px, ${mousePosition.y * 0.015}px)`,
+                        top: '60%',
+                        left: '10%',
+                    }}
+                />
+            </div>
+
+            {/* Controls Section */}
+            <section className="relative z-10 py-8">
+                <div className="max-w-7xl mx-auto px-6">
+                    {/* Header */}
+                    <div className="flex items-center justify-between mb-8">
+                        <div className="flex items-center space-x-4">
+                            <button
+                                onClick={() => setIsDark(!isDark)}
+                                className={`p-3 rounded-full transition-all duration-300 group ${isDark
+                                        ? 'bg-gray-800 hover:bg-gray-700 text-yellow-400'
+                                        : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                                    }`}
+                            >
+                                {isDark ? (
+                                    <Sun className="group-hover:rotate-180 transition-transform duration-500" size={20} />
+                                ) : (
+                                    <Moon className="group-hover:-rotate-12 transition-transform duration-300" size={20} />
+                                )}
+                            </button>
+
+                            <div>
+                                <h2 className={`text-2xl font-bold ${isDark ? 'text-gray-100' : 'text-gray-900'
+                                    }`}>
+                                    Project Explorer
+                                </h2>
+                                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'
+                                    }`}>
+                                    Discover and explore my work
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* View Toggle */}
+                        <div className={`flex rounded-xl p-1 backdrop-blur-sm border ${isDark
+                                ? 'bg-gray-800/40 border-gray-700/50'
+                                : 'bg-white/70 border-gray-200/50'
+                            }`}>
+                            <button
+                                onClick={() => setViewMode('grid')}
+                                className={`p-3 rounded-lg transition-all duration-200 ${viewMode === 'grid'
+                                        ? 'bg-purple-600 text-white shadow-lg'
+                                        : isDark
+                                            ? 'text-gray-400 hover:text-gray-300 hover:bg-gray-700/50'
+                                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/50'
+                                    }`}
+                            >
+                                <Grid size={20} />
+                            </button>
+                            <button
+                                onClick={() => setViewMode('list')}
+                                className={`p-3 rounded-lg transition-all duration-200 ${viewMode === 'list'
+                                        ? 'bg-purple-600 text-white shadow-lg'
+                                        : isDark
+                                            ? 'text-gray-400 hover:text-gray-300 hover:bg-gray-700/50'
+                                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/50'
+                                    }`}
+                            >
+                                <List size={20} />
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Search Bar */}
+                    <div className="relative mb-6">
+                        <div className={`relative flex items-center backdrop-blur-sm border rounded-2xl overflow-hidden ${isDark
+                                ? 'bg-gray-800/40 border-gray-700/50 focus-within:border-purple-500/50'
+                                : 'bg-white/70 border-gray-200/50 focus-within:border-purple-300/50'
+                            } transition-all duration-300`}>
+                            <div className="absolute left-4">
+                                <Search className={`${isDark ? 'text-gray-400' : 'text-gray-500'
+                                    }`} size={20} />
+                            </div>
+
+                            <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="Search projects by name, technology, or description..."
+                                className={`w-full pl-12 pr-12 py-4 bg-transparent outline-none text-lg placeholder:text-gray-500 ${isDark ? 'text-white' : 'text-gray-900'
+                                    }`}
+                            />
+
+                            {searchQuery && (
+                                <button
+                                    onClick={clearSearch}
+                                    className={`absolute right-4 p-1 rounded-full transition-all duration-200 ${isDark
+                                            ? 'text-gray-400 hover:text-red-400 hover:bg-red-500/20'
+                                            : 'text-gray-500 hover:text-red-600 hover:bg-red-100'
+                                        }`}
+                                >
+                                    <X size={16} />
+                                </button>
+                            )}
+                        </div>
+
+                        {/* Search Results Counter */}
+                        {searchQuery && (
+                            <div className="absolute top-full left-0 mt-2">
+                                <div className={`px-3 py-1 rounded-full text-xs font-semibold ${isDark
+                                        ? 'bg-gray-800/60 text-gray-300 border border-gray-700/50'
+                                        : 'bg-white/80 text-gray-600 border border-gray-200/50'
+                                    } backdrop-blur-sm`}>
+                                    Found {filteredProjects.length} results for "{searchQuery}"
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Filter Tabs & Controls Row */}
+                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+                        {/* Filter Tabs */}
+                        <div className="flex flex-wrap gap-2">
+                            {filterTabs.map((filter) => (
+                                <button
+                                    key={filter.name}
+                                    onClick={() => setActiveFilter(filter.name)}
+                                    className={`flex items-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 backdrop-blur-sm border ${activeFilter === filter.name
+                                            ? isDark
+                                                ? 'bg-purple-600/80 text-white border-purple-500/50 shadow-lg'
+                                                : 'bg-purple-600/90 text-white border-purple-400/50 shadow-lg'
+                                            : isDark
+                                                ? 'bg-gray-800/40 text-gray-300 border-gray-700/50 hover:border-gray-600/50 hover:bg-gray-800/60'
+                                                : 'bg-white/70 text-gray-700 border-gray-200/50 hover:border-gray-300/50 hover:bg-white/80'
+                                        }`}
+                                >
+                                    <span className={activeFilter === filter.name ? 'text-white' : filter.color}>
+                                        {filter.icon}
+                                    </span>
+                                    <span className="font-semibold">{filter.name}</span>
+                                    <span className={`text-xs px-2 py-1 rounded-full ${activeFilter === filter.name
+                                            ? 'bg-white/20 text-white'
+                                            : isDark
+                                                ? 'bg-gray-700/50 text-gray-400'
+                                                : 'bg-gray-100 text-gray-600'
+                                        }`}>
+                                        {filter.count}
+                                    </span>
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Sort & Advanced Controls */}
+                        <div className="flex items-center space-x-3">
+                            {/* Sort Dropdown */}
+                            <div className="relative">
+                                <button
+                                    onClick={() => setIsSortOpen(!isSortOpen)}
+                                    className={`flex items-center space-x-2 px-6 py-3 rounded-xl transition-all duration-300 backdrop-blur-sm border ${isDark
+                                            ? 'bg-gray-800/40 text-gray-300 border-gray-700/50 hover:border-gray-600/50'
+                                            : 'bg-white/70 text-gray-700 border-gray-200/50 hover:border-gray-300/50'
+                                        }`}
+                                >
+                                    {getSortIcon()}
+                                    <span className="font-semibold">{getSortLabel()}</span>
+                                    <ChevronDown className={`transition-transform duration-200 ${isSortOpen ? 'rotate-180' : ''
+                                        }`} size={16} />
+                                </button>
+
+                                {/* Sort Dropdown Menu */}
+                                {isSortOpen && (
+                                    <div className={`absolute top-full right-0 mt-2 w-48 rounded-xl backdrop-blur-sm border shadow-xl z-20 ${isDark
+                                            ? 'bg-gray-800/90 border-gray-700/50'
+                                            : 'bg-white/90 border-gray-200/50'
+                                        }`}>
+                                        <div className="p-2">
+                                            {sortOptions.map((option) => (
+                                                <button
+                                                    key={option.value}
+                                                    onClick={() => {
+                                                        setSortBy(option.value);
+                                                        setIsSortOpen(false);
+                                                    }}
+                                                    className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-all duration-200 text-left ${sortBy === option.value
+                                                            ? isDark
+                                                                ? 'bg-purple-600/80 text-white'
+                                                                : 'bg-purple-600/90 text-white'
+                                                            : isDark
+                                                                ? 'text-gray-300 hover:bg-gray-700/50'
+                                                                : 'text-gray-700 hover:bg-gray-100/50'
+                                                        }`}
+                                                >
+                                                    <span className={sortBy === option.value ? 'text-white' : 'text-gray-400'}>
+                                                        {option.icon}
+                                                    </span>
+                                                    <span className="font-medium">{option.label}</span>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Advanced Filter Toggle */}
+                            <button
+                                onClick={() => setIsFilterOpen(!isFilterOpen)}
+                                className={`flex items-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 backdrop-blur-sm border ${isFilterOpen
+                                        ? isDark
+                                            ? 'bg-purple-600/80 text-white border-purple-500/50'
+                                            : 'bg-purple-600/90 text-white border-purple-400/50'
+                                        : isDark
+                                            ? 'bg-gray-800/40 text-gray-300 border-gray-700/50 hover:border-gray-600/50'
+                                            : 'bg-white/70 text-gray-700 border-gray-200/50 hover:border-gray-300/50'
+                                    }`}
+                            >
+                                <Filter size={16} />
+                                <span className="font-semibold lg:inline hidden">Filters</span>
+                            </button>
+
+                            {/* Clear All Button */}
+                            {(searchQuery || activeFilter !== 'All' || sortBy !== 'newest' || selectedTechs.length > 0 || selectedStatus.length > 0 || dateRange !== 'all') && (
+                                <button
+                                    onClick={clearAllFilters}
+                                    className={`px-4 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 ${isDark
+                                            ? 'bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/30'
+                                            : 'bg-red-100 text-red-600 border border-red-200 hover:bg-red-200'
+                                        } backdrop-blur-sm font-semibold`}
+                                >
+                                    Clear All
+                                </button>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Advanced Filters Panel */}
+                    {isFilterOpen && (
+                        <div className={`p-6 rounded-2xl backdrop-blur-sm border transition-all duration-300 mb-6 ${isDark
+                                ? 'bg-gray-800/40 border-gray-700/50'
+                                : 'bg-white/70 border-gray-200/50'
+                            }`}>
+                            <div className="grid md:grid-cols-3 gap-6">
+                                {/* Technology Filter */}
+                                <div>
+                                    <h4 className={`font-semibold mb-3 ${isDark ? 'text-gray-200' : 'text-gray-800'
+                                        }`}>
+                                        Technologies
+                                    </h4>
+                                    <div className="flex flex-wrap gap-2">
+                                        {allTechnologies.map((tech) => (
+                                            <button
+                                                key={tech}
+                                                onClick={() => {
+                                                    if (selectedTechs.includes(tech)) {
+                                                        setSelectedTechs(selectedTechs.filter(t => t !== tech));
+                                                    } else {
+                                                        setSelectedTechs([...selectedTechs, tech]);
+                                                    }
+                                                }}
+                                                className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 border ${selectedTechs.includes(tech)
+                                                        ? isDark
+                                                            ? 'bg-purple-600/20 text-purple-400 border-purple-500/30'
+                                                            : 'bg-purple-100 text-purple-700 border-purple-300'
+                                                        : isDark
+                                                            ? 'bg-gray-700/50 text-gray-300 border-gray-600/50 hover:bg-purple-600/20 hover:border-purple-500/30'
+                                                            : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-purple-100 hover:border-purple-300'
+                                                    }`}
+                                            >
+                                                {tech}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Status Filter */}
+                                <div>
+                                    <h4 className={`font-semibold mb-3 ${isDark ? 'text-gray-200' : 'text-gray-800'
+                                        }`}>
+                                        Status
+                                    </h4>
+                                    <div className="space-y-2">
+                                        {allStatuses.map((status) => (
+                                            <label key={status} className="flex items-center space-x-3 cursor-pointer">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedStatus.includes(status)}
+                                                    onChange={() => {
+                                                        if (selectedStatus.includes(status)) {
+                                                            setSelectedStatus(selectedStatus.filter(s => s !== status));
+                                                        } else {
+                                                            setSelectedStatus([...selectedStatus, status]);
+                                                        }
+                                                    }}
+                                                    className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 focus:ring-2"
+                                                />
+                                                <span className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'
+                                                    }`}>
+                                                    {status}
+                                                </span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Date Range */}
+                                <div>
+                                    <h4 className={`font-semibold mb-3 ${isDark ? 'text-gray-200' : 'text-gray-800'
+                                        }`}>
+                                        Date Range
+                                    </h4>
+                                    <select
+                                        value={dateRange}
+                                        onChange={(e) => setDateRange(e.target.value)}
+                                        className={`w-full p-2 rounded-lg border ${isDark
+                                                ? 'bg-gray-700 border-gray-600 text-gray-200'
+                                                : 'bg-white border-gray-300 text-gray-700'
+                                            }`}
+                                    >
+                                        <option value="all">All Time</option>
+                                        <option value="6months">Last 6 Months</option>
+                                        <option value="1year">Last Year</option>
+                                        <option value="2023">2023</option>
+                                        <option value="2022">2022</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Active Filters Summary */}
+                    {(searchQuery || activeFilter !== 'All' || sortBy !== 'newest' || selectedTechs.length > 0 || selectedStatus.length > 0 || dateRange !== 'all') && (
+                        <div className="flex flex-wrap items-center gap-3 mb-6">
+                            <span className={`text-sm font-semibold ${isDark ? 'text-gray-400' : 'text-gray-600'
+                                }`}>
+                                Active filters:
+                            </span>
+
+                            {searchQuery && (
+                                <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs ${isDark
+                                        ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                                        : 'bg-blue-100 text-blue-700 border border-blue-200'
+                                    }`}>
+                                    <Search size={12} />
+                                    <span>Search: "{searchQuery}"</span>
+                                    <button onClick={clearSearch}>
+                                        <X size={12} />
+                                    </button>
+                                </div>
+                            )}
+
+                            {activeFilter !== 'All' && (
+                                <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs ${isDark
+                                        ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
+                                        : 'bg-purple-100 text-purple-700 border border-purple-200'
+                                    }`}>
+                                    <Filter size={12} />
+                                    <span>Category: {activeFilter}</span>
+                                    <button onClick={() => setActiveFilter('All')}>
+                                        <X size={12} />
+                                    </button>
+                                </div>
+                            )}
+
+                            {selectedTechs.map((tech) => (
+                                <div key={tech} className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs ${isDark
+                                        ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                                        : 'bg-green-100 text-green-700 border border-green-200'
+                                    }`}>
+                                    <Code size={12} />
+                                    <span>{tech}</span>
+                                    <button onClick={() => setSelectedTechs(selectedTechs.filter(t => t !== tech))}>
+                                        <X size={12} />
+                                    </button>
+                                </div>
+                            ))}
+
+                            {selectedStatus.map((status) => (
+                                <div key={status} className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs ${isDark
+                                        ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
+                                        : 'bg-orange-100 text-orange-700 border border-orange-200'
+                                    }`}>
+                                    <Clock size={12} />
+                                    <span>{status}</span>
+                                    <button onClick={() => setSelectedStatus(selectedStatus.filter(s => s !== status))}>
+                                        <X size={12} />
+                                    </button>
+                                </div>
+                            ))}
+
+                            {sortBy !== 'newest' && (
+                                <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs ${isDark
+                                        ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
+                                        : 'bg-cyan-100 text-cyan-700 border border-cyan-200'
+                                    }`}>
+                                    {getSortIcon()}
+                                    <span>Sort: {getSortLabel()}</span>
+                                    <button onClick={() => setSortBy('newest')}>
+                                        <X size={12} />
+                                    </button>
+                                </div>
+                            )}
+
+                            {dateRange !== 'all' && (
+                                <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs ${isDark
+                                        ? 'bg-pink-500/20 text-pink-400 border border-pink-500/30'
+                                        : 'bg-pink-100 text-pink-700 border border-pink-200'
+                                    }`}>
+                                    <Calendar size={12} />
+                                    <span>Date: {dateRange === '6months' ? 'Last 6 Months' : dateRange === '1year' ? 'Last Year' : dateRange === 'all' ? 'All Time' : dateRange}</span>
+                                    <button onClick={() => setDateRange('all')}>
+                                        <X size={12} />
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Results Summary */}
+                    <div className="flex items-center justify-between mb-6">
+                        <div className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'
+                            }`}>
+                            Showing {filteredProjects.length} of {mockProjects.length} projects
+                        </div>
+
+                        {filteredProjects.length > 0 && (
+                            <div className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'
+                                }`}>
+                                Sorted by {getSortLabel()}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </section>
+
+            {/* Projects Section */}
+            <section className="relative z-10 pb-16">
+                <div className="max-w-7xl mx-auto px-6">
+                    {isLoading ? (
+                        <LoadingState />
+                    ) : filteredProjects.length === 0 ? (
+                        <EmptyState />
+                    ) : viewMode === 'grid' ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {filteredProjects.map((project) => (
+                                <ProjectCard key={project.id} project={project} />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="space-y-4">
+                            {filteredProjects.map((project) => (
+                                <ProjectListItem key={project.id} project={project} />
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </section>
+
+            {/* Click outside to close dropdowns */}
+            {(isSortOpen || isFilterOpen) && (
+                <div
+                    className="fixed inset-0 z-10"
+                    onClick={() => {
+                        setIsSortOpen(false);
+                        setIsFilterOpen(false);
+                    }}
+                />
+            )}
+        </div>
+    );
+};
+
+export default ProjectExplorer;
