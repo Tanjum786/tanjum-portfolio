@@ -64,7 +64,7 @@ const ContactPage = () => {
             {submitStatus && (
                 <div className={`fixed top-20 left-1/2 transform -translate-x-1/2 z-50 animate-slide-down ${
                     submitStatus === 'success' 
-                        ? 'bg-gradient-to-r from-green-500 to-emerald-500' 
+                        ? 'bg-gradient-to-r from-cyan-500 to-teal-500' 
                         : 'bg-gradient-to-r from-red-500 to-orange-500'
                     } text-white px-6 md:px-8 py-4 rounded-2xl shadow-2xl flex items-center space-x-3 w-[90%] md:min-w-[400px] md:max-w-[600px]`}>
                     <div className="flex-shrink-0">
@@ -82,7 +82,7 @@ const ContactPage = () => {
                         </p>
                         <p className="text-xs md:text-sm text-white/90">
                             {submitStatus === 'success' 
-                                ? "I'll respond within 24 hours." 
+                                ? "I'll get back to you soon." 
                                 : 'Please try again or email me directly.'}
                         </p>
                     </div>
