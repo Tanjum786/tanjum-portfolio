@@ -30,7 +30,7 @@ const AboutStats = () => {
     useEffect(() => {
         const targets = {
             experience: 3,
-            projects: 15,
+            projects: 8,
             satisfaction: 100,
             technologies: 12,
             commits: 1000
@@ -140,8 +140,8 @@ const AboutStats = () => {
         },
         {
             icon: <Zap size={24} />,
-            title: '15+ HubSpot Websites',
-            description: 'Successfully delivered 15+ HubSpot CMS websites for clients worldwide',
+            title: '8+ HubSpot Websites',
+            description: 'Successfully delivered 8+ HubSpot CMS websites for clients worldwide',
             color: 'text-purple-400'
         }
     ];
@@ -191,7 +191,7 @@ const AboutStats = () => {
 
                     <p className={`text-xl max-w-3xl mx-auto ${isDark ? 'text-gray-400' : 'text-gray-600'
                         }`}>
-                        3+ years at Niswey, 15+ HubSpot websites, delivering quality solutions and driving digital success!
+                        3+ years at Niswey, 8+ HubSpot websites, delivering quality solutions and driving digital success!
                     </p>
                 </div>
 

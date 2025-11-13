@@ -136,8 +136,8 @@ const BannerHeroSection = () => {
                         <div className="flex flex-wrap justify-center lg:justify-start gap-8">
                             {[
                                 { value: '3+', label: 'Years Coding', icon: <Zap size={20} /> },
-                                { value: '15+', label: 'HubSpot Sites', icon: <Coffee size={20} /> },
-                                { value: '10+', label: 'Projects Delivered', icon: <Star size={20} /> },
+                                { value: '8+', label: 'HubSpot Sites', icon: <Coffee size={20} /> },
+                                { value: '8+', label: 'Projects Delivered', icon: <Star size={20} /> },
                             ].map((stat, index) => (
                                 <div key={index} className="text-center group">
                                     <div className={`mx-auto w-12 h-12 rounded-xl flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300 ${isDark

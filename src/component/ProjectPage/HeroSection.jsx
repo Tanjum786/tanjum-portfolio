@@ -50,9 +50,9 @@ const HeroSection = () => {
     };
 
     const stats = [
-        { number: '10+', label: 'Projects Built', icon: <Code size={20} /> },
-        { number: '15+', label: 'HubSpot Websites', icon: <Zap size={20} /> },
-        { number: '15+', label: 'React Applications', icon: <Star size={20} /> },
+        { number: '8+', label: 'Projects Built', icon: <Code size={20} /> },
+        { number: '8+', label: 'HubSpot Websites', icon: <Zap size={20} /> },
+        { number: '6+', label: 'React Applications', icon: <Star size={20} /> },
         { number: '100%', label: 'On-Time Delivery', icon: <Heart size={20} /> },
     ];
 

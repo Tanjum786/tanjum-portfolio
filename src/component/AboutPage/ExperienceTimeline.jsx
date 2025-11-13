@@ -53,7 +53,7 @@ const ExperienceTimeline = () => {
             achievements: [
                 '🏆 Received Top Performer Award for outstanding contributions',
                 'Developed web applications using React.js and Vue.js',
-                'Built 15+ websites using HubL templating language',
+                'Built 8+ websites using HubL templating language',
                 'Created custom HubSpot workflows and UI extensions',
                 '🌟 Recognized by CEO for exceptional customer service',
                 'Optimized website performance and SEO'

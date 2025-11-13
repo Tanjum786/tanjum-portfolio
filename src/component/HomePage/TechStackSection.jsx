@@ -85,7 +85,7 @@ const TechStackSection = () => {
     ];
 
     const achievements = [
-        { icon: <Star size={20} />, label: '15+ HubSpot Sites', color: 'text-orange-400' },
+        { icon: <Star size={20} />, label: '8+ HubSpot Sites', color: 'text-orange-400' },
         { icon: <TrendingUp size={20} />, label: '3+ Years at Niswey', color: 'text-green-400' },
         { icon: <Award size={20} />, label: '100% Client Satisfaction', color: 'text-cyan-400' },
         { icon: <Zap size={20} />, label: 'Always Learning', color: 'text-blue-400' },

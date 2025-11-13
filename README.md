@@ -213,8 +213,8 @@ This project is open source and available under the [MIT License](LICENSE).
 ## 📈 Stats
 
 - **3+** Years of Experience
-- **15+** HubSpot Websites Delivered
-- **10+** Projects Built
+- **8+** HubSpot Websites Delivered
+- **8+** Projects Built
 - **100%** Client Satisfaction
 
 ---
