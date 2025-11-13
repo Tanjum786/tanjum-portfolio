@@ -210,7 +210,7 @@ const ContactPage = () => {
                                     <Linkedin className={`transition-colors duration-300 mb-2 ${isDark ? 'text-gray-400 group-hover:text-cyan-400' : 'text-gray-600 group-hover:text-cyan-600'}`} size={24} />
                                     <span className={`block transition-colors duration-300 text-sm ${isDark ? 'text-gray-400 group-hover:text-white' : 'text-gray-600 group-hover:text-gray-900'}`}>LinkedIn</span>
                                 </a>
-                                <a href="mailto:tanjunkadakol147@gmail.com" className={`group p-4 rounded-xl border transition-all duration-300 hover:scale-105 ${isDark 
+                                <a href="https://mail.google.com/mail/?view=cm&to=tanjunkadakol147@gmail.com" target="_blank" rel="noopener noreferrer" className={`group p-4 rounded-xl border transition-all duration-300 hover:scale-105 ${isDark 
                                     ? 'bg-gray-800/30 border-gray-700/50 hover:border-cyan-500/30'
                                     : 'bg-white border-gray-200 hover:border-cyan-300'
                                     }`}>

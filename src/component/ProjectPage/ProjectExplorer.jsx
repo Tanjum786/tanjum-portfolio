@@ -3,7 +3,7 @@ import {
     Search, Grid, List,
     X, ExternalLink,
     Github,
-    Sparkles, Info
+    Sparkles, Info, Star
 } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 
@@ -106,11 +106,11 @@ const mockProjects = [
 const ProjectExplorer = () => {
     const { isDark } = useTheme();
     const [searchQuery, setSearchQuery] = useState('');
-    const [activeFilter, setActiveFilter] = useState('All');
     const [viewMode, setViewMode] = useState('grid');
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [filteredProjects, setFilteredProjects] = useState(mockProjects);
     const [selectedProject, setSelectedProject] = useState(null);
+    const [hoveredProject, setHoveredProject] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const openModal = (project) => {
@@ -149,34 +149,13 @@ const ProjectExplorer = () => {
             );
         }
 
-        // Apply category filter
-        if (activeFilter !== 'All') {
-            if (activeFilter === 'Featured') {
-                filtered = filtered.filter(project => project.featured);
-            } else {
-                filtered = filtered.filter(project => project.category === activeFilter);
-            }
-        }
-
         // Sort by newest (default)
         filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         setFilteredProjects(filtered);
-    }, [searchQuery, activeFilter]);
-
-    // Filter tabs
-    const filterTabs = [
-        { name: 'All', icon: '🌐', count: mockProjects.length },
-        { name: 'Web App', icon: '💻', count: mockProjects.filter(p => p.category === 'Web App').length },
-        { name: 'Featured', icon: '⭐', count: mockProjects.filter(p => p.featured).length },
-    ];
+    }, [searchQuery]);
 
     const clearSearch = () => setSearchQuery('');
-    
-    const clearAllFilters = () => {
-        setSearchQuery('');
-        setActiveFilter('All');
-    };
 
     const getStatusColor = (status) => {
         switch (status) {
@@ -203,18 +182,18 @@ const ProjectExplorer = () => {
             </h3>
             <p className={`text-sm mb-6 ${isDark ? 'text-gray-400' : 'text-gray-600'
                 }`}>
-                Try adjusting your filters or search query to find what you're looking for.
+                Try adjusting your search query to find what you're looking for.
             </p>
-            {(searchQuery || activeFilter !== 'All') && (
-                <button
-                    onClick={clearAllFilters}
-                    className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${isDark
-                            ? 'bg-cyan-600 hover:bg-cyan-700 text-white'
-                            : 'bg-cyan-600 hover:bg-cyan-700 text-white'
-                        }`}
-                >
-                    Clear All Filters
-                </button>
+            {searchQuery && (
+            <button
+                    onClick={clearSearch}
+                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${isDark
+                        ? 'bg-cyan-600 hover:bg-cyan-700 text-white'
+                        : 'bg-cyan-600 hover:bg-cyan-700 text-white'
+                    }`}
+            >
+                    Clear Search
+            </button>
             )}
         </div>
     );
@@ -226,27 +205,31 @@ const ProjectExplorer = () => {
             }`}>
             {/* Project Image/Icon */}
             <div className="relative overflow-hidden bg-gradient-to-br from-cyan-500/20 to-emerald-500/20">
+                {/* Icon - Always Visible */}
                 <div className="w-full h-48 flex items-center justify-center pointer-events-none">
-                    <span className="text-7xl transition-transform duration-500 group-hover:scale-110">
+                    <span className="text-7xl">
                         {project.image}
                     </span>
                 </div>
                 
-                {/* Hover Overlay - always visible for pointer events but transparent */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center gap-4">
+                {/* Hover Overlay - Smooth Transition */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300"></div>
+                
+                {/* Buttons Container */}
+                <div className="absolute inset-0 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {/* Info Button */}
                     <button
                         onClick={(e) => {
                             e.stopPropagation();
                             openModal(project);
                         }}
-                        className="p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 cursor-pointer opacity-0 group-hover:opacity-100"
+                        className="p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 cursor-pointer"
                         title="View Details"
                     >
                         <Info className="text-white" size={20} />
                     </button>
 
-                    {/* Github Button - always show for consistent spacing */}
+                    {/* Github Button */}
                     <button
                         onClick={(e) => {
                             e.stopPropagation();
@@ -254,7 +237,7 @@ const ProjectExplorer = () => {
                                 window.open(project.githubUrl, '_blank', 'noopener,noreferrer');
                             }
                         }}
-                        className={`p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 opacity-0 group-hover:opacity-100 ${
+                        className={`p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 ${
                             project.githubUrl ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
                         }`}
                         title={project.githubUrl ? "View on GitHub" : "No GitHub link"}
@@ -263,7 +246,7 @@ const ProjectExplorer = () => {
                         <Github className="text-white" size={20} />
                     </button>
 
-                    {/* Live Demo Button - always show for consistent spacing */}
+                    {/* Live Demo Button */}
                     <button
                         onClick={(e) => {
                             e.stopPropagation();
@@ -271,7 +254,7 @@ const ProjectExplorer = () => {
                                 window.open(project.liveUrl, '_blank', 'noopener,noreferrer');
                             }
                         }}
-                        className={`p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 opacity-0 group-hover:opacity-100 ${
+                        className={`p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 ${
                             project.liveUrl ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
                         }`}
                         title={project.liveUrl ? "View Live Demo" : "No live demo"}
@@ -339,20 +322,26 @@ const ProjectExplorer = () => {
                 : 'bg-white/70 border-gray-200/50 hover:border-cyan-300/50'
             }`}>
             {/* Project Image/Icon */}
-            <div className="relative w-24 h-24 rounded-xl overflow-hidden mr-6 flex-shrink-0 bg-gradient-to-br from-cyan-500/20 to-emerald-500/20 flex items-center justify-center">
-                <span className="text-4xl pointer-events-none">
-                    {project.image}
-                </span>
+            <div className="relative w-24 h-24 rounded-xl overflow-hidden mr-6 flex-shrink-0 bg-gradient-to-br from-cyan-500/20 to-emerald-500/20">
+                {/* Icon - Always Visible */}
+                <div className="w-full h-full flex items-center justify-center pointer-events-none">
+                    <span className="text-4xl">
+                        {project.image}
+                    </span>
+                </div>
                 
-                {/* Hover Overlay - always visible for pointer events */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center gap-2">
+                {/* Hover Overlay - Smooth Transition */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300"></div>
+                
+                {/* Buttons Container */}
+                <div className="absolute inset-0 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {/* Info Button */}
                     <button
                         onClick={(e) => {
                             e.stopPropagation();
                             openModal(project);
                         }}
-                        className="p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 cursor-pointer opacity-0 group-hover:opacity-100"
+                        className="p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 cursor-pointer"
                         title="View Details"
                     >
                         <Info className="text-white" size={16} />
@@ -366,7 +355,7 @@ const ProjectExplorer = () => {
                                 window.open(project.githubUrl, '_blank', 'noopener,noreferrer');
                             }
                         }}
-                        className={`p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 opacity-0 group-hover:opacity-100 ${
+                        className={`p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 ${
                             project.githubUrl ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
                         }`}
                         title={project.githubUrl ? "View on GitHub" : "No GitHub link"}
@@ -383,7 +372,7 @@ const ProjectExplorer = () => {
                                 window.open(project.liveUrl, '_blank', 'noopener,noreferrer');
                             }
                         }}
-                        className={`p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 opacity-0 group-hover:opacity-100 ${
+                        className={`p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 ${
                             project.liveUrl ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
                         }`}
                         title={project.liveUrl ? "View Live Demo" : "No live demo"}
@@ -545,94 +534,15 @@ const ProjectExplorer = () => {
                             )}
                         </div>
 
-                        {/* Search Results Counter */}
-                        {searchQuery && (
-                            <div className="absolute top-full left-0 mt-2">
-                                <div className={`px-3 py-1 rounded-full text-xs font-semibold ${isDark
-                                        ? 'bg-gray-800/60 text-gray-300 border border-gray-700/50'
-                                        : 'bg-white/80 text-gray-600 border border-gray-200/50'
-                                    } backdrop-blur-sm`}>
-                                    Found {filteredProjects.length} results for "{searchQuery}"
-                                </div>
-                            </div>
-                        )}
                     </div>
-
-                    {/* Filter Tabs */}
-                    <div className="flex flex-wrap gap-3 mb-6">
-                        {filterTabs.map((filter) => (
-                            <button
-                                key={filter.name}
-                                onClick={() => setActiveFilter(filter.name)}
-                                className={`flex items-center gap-2 px-5 py-3 rounded-xl font-semibold transition-all duration-300 backdrop-blur-sm border ${
-                                    activeFilter === filter.name
-                                        ? isDark
-                                            ? 'bg-cyan-600 text-white border-cyan-500 shadow-lg'
-                                            : 'bg-cyan-600 text-white border-cyan-500 shadow-lg'
-                                        : isDark
-                                            ? 'bg-gray-800/40 text-gray-300 border-gray-700/50 hover:border-cyan-500/50'
-                                            : 'bg-white/70 text-gray-700 border-gray-200/50 hover:border-cyan-400/50'
-                                }`}
-                            >
-                                <span className="text-lg">{filter.icon}</span>
-                                <span>{filter.name}</span>
-                                <span className={`px-2 py-0.5 rounded-full text-xs ${
-                                    activeFilter === filter.name
-                                        ? 'bg-white/20 text-white'
-                                        : isDark
-                                            ? 'bg-gray-700/50 text-gray-400'
-                                            : 'bg-gray-100 text-gray-600'
-                                }`}>
-                                    {filter.count}
-                                </span>
-                            </button>
-                        ))}
-
-                        {/* Clear All Button */}
-                        {(searchQuery || activeFilter !== 'All') && (
-                            <button
-                                onClick={clearAllFilters}
-                                className={`px-5 py-3 rounded-xl font-semibold transition-all duration-300 backdrop-blur-sm border ${
-                                    isDark
-                                        ? 'bg-red-500/20 text-red-400 border-red-500/30 hover:bg-red-500/30'
-                                        : 'bg-red-100 text-red-600 border-red-200 hover:bg-red-200'
-                                }`}
-                            >
-                                Clear All
-                            </button>
-                        )}
-                    </div>
-
-                    {/* Active Filters */}
-                    {(searchQuery || activeFilter !== 'All') && (
-                        <div className="flex flex-wrap items-center gap-2 mb-6">
-                            <span className={`text-sm font-semibold ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                                Active filters:
-                            </span>
-                            {activeFilter !== 'All' && (
-                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                                    isDark
-                                        ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
-                                        : 'bg-cyan-100 text-cyan-700 border border-cyan-200'
-                                }`}>
-                                    Category: {activeFilter}
-                                </span>
-                            )}
-                            {searchQuery && (
-                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                                    isDark
-                                        ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
-                                        : 'bg-blue-100 text-blue-700 border border-blue-200'
-                                }`}>
-                                    Search: "{searchQuery}"
-                                </span>
-                            )}
-                        </div>
-                    )}
 
                     {/* Results Counter */}
                     <div className={`text-sm font-semibold mb-6 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                        Showing {filteredProjects.length} of {mockProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'}
+                        {searchQuery ? (
+                            <>Found {filteredProjects.length} {filteredProjects.length === 1 ? 'result' : 'results'} for "{searchQuery}"</>
+                        ) : (
+                            <>Showing {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'}</>
+                        )}
                     </div>
                 </div>
             </section>
