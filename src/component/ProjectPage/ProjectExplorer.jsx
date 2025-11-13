@@ -1,109 +1,115 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Moon, Sun, Search, Filter, ChevronDown, Grid, List,
-    X, Code, Smartphone, Globe, Database, Zap, Star,
-    SortAsc, Calendar, Eye, Heart, TrendingUp, ExternalLink,
-    Github, Play, Clock, Users, Bookmark, Share2, MoreHorizontal,
-    Loader, Sparkles, Award, Cpu, Shield
+    Search, Filter, Grid, List,
+    X, Code, Globe, Star,
+    Calendar, Eye, Heart, ExternalLink,
+    Github, Clock, Bookmark, MoreHorizontal,
+    Sparkles, Info
 } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
 
-// Mock project data
+// Real project data
 const mockProjects = [
     {
         id: 1,
-        title: "E-Commerce Dashboard",
-        description: "Modern admin dashboard with real-time analytics, inventory management, and order tracking. Built with React and Node.js.",
-        image: "/api/placeholder/400/250",
+        title: "FriendlyGalaxy - Social Media App",
+        description: "Social media platform where users can create accounts, follow others, share posts, and engage with content. Built with React.js, Redux Toolkit, and Chakra UI.",
+        image: "🌟",
         category: "Web App",
-        technologies: ["React", "Node.js", "MongoDB", "Tailwind"],
+        technologies: ["React.js", "Redux Toolkit", "Chakra UI", "React Router", "Mockbee"],
         status: "Completed",
         likes: 245,
         views: 1200,
-        date: "2024-01-15",
+        date: "2023-03-15",
         featured: true,
-        liveUrl: "https://demo.example.com",
-        githubUrl: "https://github.com/user/project"
+        liveUrl: "https://friendly-galaxy.vercel.app/",
+        githubUrl: "https://github.com/Tanjum786/FriendlyGalaxy",
+        features: [
+            "User authentication and profiles",
+            "Follow/unfollow functionality",
+            "Create and share posts",
+            "Like and comment on posts",
+            "User feed with latest content",
+            "Responsive design"
+        ]
     },
     {
         id: 2,
-        title: "Mobile Banking App",
-        description: "Secure mobile banking application with biometric authentication, transaction history, and budget tracking features.",
-        image: "/api/placeholder/400/250",
-        category: "Mobile",
-        technologies: ["React Native", "TypeScript", "Firebase"],
-        status: "In Progress",
-        likes: 189,
-        views: 850,
-        date: "2023-12-20",
-        featured: false,
-        githubUrl: "https://github.com/user/project2"
-    },
-    {
-        id: 3,
-        title: "AI Content Generator",
-        description: "Intelligent content generation tool powered by machine learning algorithms for creating blog posts, social media content, and marketing copy.",
-        image: "/api/placeholder/400/250",
+        title: "E-Galaxy Store - E-commerce Platform",
+        description: "Modern e-commerce website for electronics shopping. Features product browsing, cart management, wishlist, and secure checkout with React.js.",
+        image: "🛒",
         category: "Web App",
-        technologies: ["Next.js", "Python", "TensorFlow", "PostgreSQL"],
+        technologies: ["React.js", "Context API", "React Router", "Mockbee", "CSS"],
         status: "Completed",
         likes: 320,
         views: 1800,
-        date: "2024-02-10",
+        date: "2023-01-10",
         featured: true,
-        liveUrl: "https://ai-content.example.com",
-        githubUrl: "https://github.com/user/ai-project"
+        liveUrl: "https://e-galaxy-store.vercel.app/",
+        githubUrl: "https://github.com/Tanjum786/E-Galaxy-store",
+        features: [
+            "Product catalog with categories",
+            "Shopping cart management",
+            "Wishlist functionality",
+            "Product search and filters",
+            "Secure checkout process",
+            "User authentication"
+        ]
+    },
+    {
+        id: 3,
+        title: "GalaxyPlay - Video Library",
+        description: "Video library and music app featuring Hindi songs. Users can like videos, manage watch later, create playlists, and track watch history.",
+        image: "🎵",
+        category: "Web App",
+        technologies: ["React.js", "React Router", "Context API", "Mockbee", "CSS"],
+        status: "Completed",
+        likes: 203,
+        views: 1100,
+        date: "2023-02-20",
+        featured: true,
+        liveUrl: "https://galaxy-play-it.vercel.app/",
+        githubUrl: "https://github.com/Tanjum786/GalaxyPlay",
+        features: [
+            "Video library with categories",
+            "Like and save videos",
+            "Watch later functionality",
+            "Create custom playlists",
+            "Watch history tracking",
+            "Responsive video player"
+        ]
     },
     {
         id: 4,
-        title: "Microservices Architecture",
-        description: "Scalable backend system with Docker containers, API gateway, and distributed database architecture for high-traffic applications.",
-        image: "/api/placeholder/400/250",
-        category: "Backend",
-        technologies: ["Docker", "Kubernetes", "Go", "Redis"],
+        title: "Galaxy-Notes - Note Taking App",
+        description: "A powerful note-taking application built with React.js. Features include creating, editing, deleting notes with labels, archive functionality, and search capabilities.",
+        image: "📝",
+        category: "Web App",
+        technologies: ["React.js", "React Router", "Context API", "Mockbee", "CSS"],
         status: "Completed",
-        likes: 156,
+        likes: 180,
         views: 950,
-        date: "2023-11-05",
-        featured: false,
-        githubUrl: "https://github.com/user/microservices"
-    },
-    {
-        id: 5,
-        title: "Real-time Chat Platform",
-        description: "WebSocket-based messaging platform with end-to-end encryption, file sharing, and video calling capabilities.",
-        image: "/api/placeholder/400/250",
-        category: "Web App",
-        technologies: ["Vue.js", "Socket.io", "Node.js", "MongoDB"],
-        status: "In Progress",
-        likes: 203,
-        views: 1100,
-        date: "2024-01-08",
+        date: "2023-04-15",
         featured: true,
-        liveUrl: "https://chat.example.com"
-    },
-    {
-        id: 6,
-        title: "IoT Dashboard",
-        description: "Internet of Things monitoring dashboard for smart home devices with real-time sensor data visualization and automation controls.",
-        image: "/api/placeholder/400/250",
-        category: "Web App",
-        technologies: ["Angular", "MQTT", "InfluxDB", "Grafana"],
-        status: "Coming Soon",
-        likes: 89,
-        views: 420,
-        date: "2024-03-01",
-        featured: false
+        liveUrl: "https://galaxy-notes-app.vercel.app/",
+        githubUrl: "https://github.com/Tanjum786/Galaxy-Notes",
+        features: [
+            "Create and edit notes",
+            "Label and categorize notes",
+            "Archive functionality",
+            "Search notes by title/content",
+            "Color-coded notes",
+            "Responsive interface"
+        ]
     }
 ];
 
 const ProjectExplorer = () => {
-    const [isDark, setIsDark] = useState(true);
+    const { isDark } = useTheme();
     const [searchQuery, setSearchQuery] = useState('');
     const [activeFilter, setActiveFilter] = useState('All');
-    const [sortBy, setSortBy] = useState('newest');
     const [viewMode, setViewMode] = useState('grid');
     const [isFilterOpen, setIsFilterOpen] = useState(false);
-    const [isSortOpen, setIsSortOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [selectedTechs, setSelectedTechs] = useState([]);
     const [selectedStatus, setSelectedStatus] = useState([]);
@@ -112,6 +118,18 @@ const ProjectExplorer = () => {
     const [filteredProjects, setFilteredProjects] = useState(mockProjects);
     const [likedProjects, setLikedProjects] = useState(new Set());
     const [bookmarkedProjects, setBookmarkedProjects] = useState(new Set());
+    const [selectedProject, setSelectedProject] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = (project) => {
+        setSelectedProject(project);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setSelectedProject(null);
+        setIsModalOpen(false);
+    };
 
     // Mouse tracking for parallax
     useEffect(() => {
@@ -193,26 +211,11 @@ const ProjectExplorer = () => {
             }
         }
 
-        // Apply sorting
-        filtered.sort((a, b) => {
-            switch (sortBy) {
-                case 'oldest':
-                    return new Date(a.date) - new Date(b.date);
-                case 'popular':
-                    return b.likes - a.likes;
-                case 'views':
-                    return b.views - a.views;
-                case 'likes':
-                    return b.likes - a.likes;
-                case 'alphabetical':
-                    return a.title.localeCompare(b.title);
-                default: // newest
-                    return new Date(b.date) - new Date(a.date);
-            }
-        });
+        // Sort by newest (default)
+        filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         setFilteredProjects(filtered);
-    }, [searchQuery, activeFilter, sortBy, selectedTechs, selectedStatus, dateRange]);
+    }, [searchQuery, activeFilter, selectedTechs, selectedStatus, dateRange]);
 
     // Filter categories with dynamic counts
     const filterTabs = [
@@ -220,7 +223,7 @@ const ProjectExplorer = () => {
             name: 'All',
             icon: <Globe size={16} />,
             count: mockProjects.length,
-            color: 'text-purple-400'
+            color: 'text-cyan-400'
         },
         {
             name: 'Web App',
@@ -229,33 +232,11 @@ const ProjectExplorer = () => {
             color: 'text-blue-400'
         },
         {
-            name: 'Mobile',
-            icon: <Smartphone size={16} />,
-            count: mockProjects.filter(p => p.category === 'Mobile').length,
-            color: 'text-green-400'
-        },
-        {
-            name: 'Backend',
-            icon: <Database size={16} />,
-            count: mockProjects.filter(p => p.category === 'Backend').length,
-            color: 'text-orange-400'
-        },
-        {
             name: 'Featured',
             icon: <Star size={16} />,
             count: mockProjects.filter(p => p.featured).length,
             color: 'text-yellow-400'
         },
-    ];
-
-    // Sort options
-    const sortOptions = [
-        { value: 'newest', label: 'Newest First', icon: <Calendar size={16} /> },
-        { value: 'oldest', label: 'Oldest First', icon: <Calendar size={16} /> },
-        { value: 'popular', label: 'Most Popular', icon: <TrendingUp size={16} /> },
-        { value: 'views', label: 'Most Viewed', icon: <Eye size={16} /> },
-        { value: 'likes', label: 'Most Liked', icon: <Heart size={16} /> },
-        { value: 'alphabetical', label: 'A-Z', icon: <SortAsc size={16} /> },
     ];
 
     // All available technologies
@@ -266,14 +247,10 @@ const ProjectExplorer = () => {
     const clearAllFilters = () => {
         setSearchQuery('');
         setActiveFilter('All');
-        setSortBy('newest');
         setSelectedTechs([]);
         setSelectedStatus([]);
         setDateRange('all');
     };
-
-    const getSortLabel = () => sortOptions.find(option => option.value === sortBy)?.label || 'Sort By';
-    const getSortIcon = () => sortOptions.find(option => option.value === sortBy)?.icon || <ChevronDown size={16} />;
 
     const toggleLike = (projectId) => {
         const newLikedProjects = new Set(likedProjects);
@@ -347,8 +324,8 @@ const ProjectExplorer = () => {
             <button
                 onClick={clearAllFilters}
                 className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${isDark
-                        ? 'bg-purple-600 hover:bg-purple-700 text-white'
-                        : 'bg-purple-600 hover:bg-purple-700 text-white'
+                        ? 'bg-cyan-600 hover:bg-cyan-700 text-white'
+                        : 'bg-cyan-600 hover:bg-cyan-700 text-white'
                     }`}
             >
                 Clear All Filters
@@ -358,52 +335,85 @@ const ProjectExplorer = () => {
 
     const ProjectCard = ({ project }) => (
         <div className={`group rounded-2xl overflow-hidden backdrop-blur-sm border transition-all duration-500 hover:scale-105 hover:shadow-2xl ${isDark
-                ? 'bg-gray-800/40 border-gray-700/50 hover:border-purple-500/50'
-                : 'bg-white/70 border-gray-200/50 hover:border-purple-300/50'
+                ? 'bg-gray-800/40 border-gray-700/50 hover:border-cyan-500/50'
+                : 'bg-white/70 border-gray-200/50 hover:border-cyan-300/50'
             }`}>
-            {/* Project Image */}
-            <div className="relative overflow-hidden">
-                <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            {/* Project Image/Icon */}
+            <div className="relative overflow-hidden bg-gradient-to-br from-cyan-500/20 to-emerald-500/20">
+                <div className="w-full h-48 flex items-center justify-center pointer-events-none">
+                    <span className="text-7xl transition-transform duration-500 group-hover:scale-110">
+                        {project.image}
+                    </span>
+                </div>
+                
+                {/* Hover Overlay - always visible for pointer events but transparent */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center gap-4">
+                    {/* Info Button */}
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            openModal(project);
+                        }}
+                        className="p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 cursor-pointer opacity-0 group-hover:opacity-100"
+                        title="View Details"
+                    >
+                        <Info className="text-white" size={20} />
+                    </button>
 
-                {/* Overlay Buttons */}
-                <div className="absolute top-4 right-4 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    {/* Github Button - always show for consistent spacing */}
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            if (project.githubUrl) {
+                                window.open(project.githubUrl, '_blank', 'noopener,noreferrer');
+                            }
+                        }}
+                        className={`p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 opacity-0 group-hover:opacity-100 ${
+                            project.githubUrl ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
+                        }`}
+                        title={project.githubUrl ? "View on GitHub" : "No GitHub link"}
+                        disabled={!project.githubUrl}
+                    >
+                        <Github className="text-white" size={20} />
+                    </button>
+
+                    {/* Live Demo Button - always show for consistent spacing */}
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            if (project.liveUrl) {
+                                window.open(project.liveUrl, '_blank', 'noopener,noreferrer');
+                            }
+                        }}
+                        className={`p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 opacity-0 group-hover:opacity-100 ${
+                            project.liveUrl ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
+                        }`}
+                        title={project.liveUrl ? "View Live Demo" : "No live demo"}
+                        disabled={!project.liveUrl}
+                    >
+                        <ExternalLink className="text-white" size={20} />
+                    </button>
+                </div>
+
+                {/* Top Right Buttons */}
+                <div className="absolute top-4 right-4 flex space-x-2 z-10">
                     {project.featured && (
-                        <div className={`p-2 rounded-full ${isDark ? 'bg-yellow-500/20 text-yellow-400' : 'bg-yellow-100 text-yellow-600'}`}>
+                        <div className={`p-2 rounded-full pointer-events-none ${isDark ? 'bg-yellow-500/20 text-yellow-400' : 'bg-yellow-100 text-yellow-600'}`}>
                             <Sparkles size={16} />
                         </div>
                     )}
                     <button
-                        onClick={() => toggleBookmark(project.id)}
-                        className={`p-2 rounded-full transition-colors duration-200 ${bookmarkedProjects.has(project.id)
-                                ? 'bg-purple-500 text-white'
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            toggleBookmark(project.id);
+                        }}
+                        className={`p-2 rounded-full transition-all duration-200 opacity-0 group-hover:opacity-100 ${bookmarkedProjects.has(project.id)
+                                ? 'bg-cyan-500 text-white'
                                 : isDark ? 'bg-gray-800/80 text-gray-300 hover:text-purple-400' : 'bg-white/80 text-gray-600 hover:text-purple-600'
                             }`}
                     >
                         <Bookmark size={16} />
                     </button>
-                </div>
-
-                {/* Quick Action Buttons */}
-                <div className="absolute bottom-4 left-4 right-4 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    {project.liveUrl && (
-                        <button className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-200">
-                            <ExternalLink size={16} />
-                            <span>Live Demo</span>
-                        </button>
-                    )}
-                    {project.githubUrl && (
-                        <button className={`px-4 py-2 rounded-lg transition-colors duration-200 ${isDark
-                                ? 'bg-gray-800/80 text-gray-300 hover:bg-gray-700'
-                                : 'bg-white/80 text-gray-600 hover:bg-gray-100'
-                            }`}>
-                            <Github size={16} />
-                        </button>
-                    )}
                 </div>
             </div>
 
@@ -445,51 +455,72 @@ const ProjectExplorer = () => {
                     )}
                 </div>
 
-                {/* Stats & Actions */}
-                <div className="flex items-center justify-between pt-4 border-t border-gray-700/50">
-                    <div className="flex items-center space-x-4 text-sm">
-                        <div className={`flex items-center space-x-1 ${isDark ? 'text-gray-400' : 'text-gray-600'
-                            }`}>
-                            <Eye size={14} />
-                            <span>{project.views}</span>
-                        </div>
-                        <button
-                            onClick={() => toggleLike(project.id)}
-                            className={`flex items-center space-x-1 transition-colors duration-200 ${likedProjects.has(project.id)
-                                    ? 'text-red-500'
-                                    : isDark ? 'text-gray-400 hover:text-red-400' : 'text-gray-600 hover:text-red-600'
-                                }`}
-                        >
-                            <Heart size={14} fill={likedProjects.has(project.id) ? 'currentColor' : 'none'} />
-                            <span>{project.likes + (likedProjects.has(project.id) ? 1 : 0)}</span>
-                        </button>
-                    </div>
-
-                    <button className={`p-2 rounded-lg transition-colors duration-200 ${isDark
-                            ? 'text-gray-400 hover:text-gray-300 hover:bg-gray-700/50'
-                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                        }`}>
-                        <MoreHorizontal size={16} />
-                    </button>
-                </div>
             </div>
         </div>
     );
 
     const ProjectListItem = ({ project }) => (
-        <div className={`flex items-center p-6 rounded-2xl backdrop-blur-sm border transition-all duration-300 hover:shadow-lg ${isDark
-                ? 'bg-gray-800/40 border-gray-700/50 hover:border-purple-500/50'
-                : 'bg-white/70 border-gray-200/50 hover:border-purple-300/50'
+        <div className={`group flex items-center p-6 rounded-2xl backdrop-blur-sm border transition-all duration-300 hover:shadow-lg ${isDark
+                ? 'bg-gray-800/40 border-gray-700/50 hover:border-cyan-500/50'
+                : 'bg-white/70 border-gray-200/50 hover:border-cyan-300/50'
             }`}>
-            {/* Project Image */}
-            <div className="relative w-24 h-24 rounded-xl overflow-hidden mr-6 flex-shrink-0">
-                <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover"
-                />
+            {/* Project Image/Icon */}
+            <div className="relative w-24 h-24 rounded-xl overflow-hidden mr-6 flex-shrink-0 bg-gradient-to-br from-cyan-500/20 to-emerald-500/20 flex items-center justify-center">
+                <span className="text-4xl pointer-events-none">
+                    {project.image}
+                </span>
+                
+                {/* Hover Overlay - always visible for pointer events */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center gap-2">
+                    {/* Info Button */}
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            openModal(project);
+                        }}
+                        className="p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 cursor-pointer opacity-0 group-hover:opacity-100"
+                        title="View Details"
+                    >
+                        <Info className="text-white" size={16} />
+                    </button>
+
+                    {/* Github Button */}
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            if (project.githubUrl) {
+                                window.open(project.githubUrl, '_blank', 'noopener,noreferrer');
+                            }
+                        }}
+                        className={`p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 opacity-0 group-hover:opacity-100 ${
+                            project.githubUrl ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
+                        }`}
+                        title={project.githubUrl ? "View on GitHub" : "No GitHub link"}
+                        disabled={!project.githubUrl}
+                    >
+                        <Github className="text-white" size={16} />
+                    </button>
+
+                    {/* Live Demo Button */}
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            if (project.liveUrl) {
+                                window.open(project.liveUrl, '_blank', 'noopener,noreferrer');
+                            }
+                        }}
+                        className={`p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 opacity-0 group-hover:opacity-100 ${
+                            project.liveUrl ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
+                        }`}
+                        title={project.liveUrl ? "View Live Demo" : "No live demo"}
+                        disabled={!project.liveUrl}
+                    >
+                        <ExternalLink className="text-white" size={16} />
+                    </button>
+                </div>
+
                 {project.featured && (
-                    <div className="absolute top-2 right-2">
+                    <div className="absolute top-2 right-2 z-10 pointer-events-none">
                         <Sparkles className="text-yellow-400" size={16} />
                     </div>
                 )}
@@ -512,68 +543,21 @@ const ProjectExplorer = () => {
                     {project.description}
                 </p>
 
-                <div className="flex items-center justify-between">
-                    <div className="flex flex-wrap gap-2">
-                        {project.technologies.slice(0, 4).map((tech) => (
-                            <span
-                                key={tech}
-                                className={`px-2 py-1 rounded text-xs font-medium ${isDark
-                                        ? 'bg-gray-700/50 text-gray-300'
-                                        : 'bg-gray-100 text-gray-700'
-                                    }`}
-                            >
-                                {tech}
-                            </span>
-                        ))}
-                    </div>
-
-                    <div className="flex items-center space-x-4 ml-4">
-                        <div className={`flex items-center space-x-1 text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'
-                            }`}>
-                            <Eye size={14} />
-                            <span>{project.views}</span>
-                        </div>
-                        <button
-                            onClick={() => toggleLike(project.id)}
-                            className={`flex items-center space-x-1 text-sm transition-colors duration-200 ${likedProjects.has(project.id)
-                                    ? 'text-red-500'
-                                    : isDark ? 'text-gray-400 hover:text-red-400' : 'text-gray-600 hover:text-red-600'
+                <div className="flex flex-wrap gap-2">
+                    {project.technologies.slice(0, 4).map((tech) => (
+                        <span
+                            key={tech}
+                            className={`px-2 py-1 rounded text-xs font-medium ${isDark
+                                    ? 'bg-gray-700/50 text-gray-300'
+                                    : 'bg-gray-100 text-gray-700'
                                 }`}
                         >
-                            <Heart size={14} fill={likedProjects.has(project.id) ? 'currentColor' : 'none'} />
-                            <span>{project.likes + (likedProjects.has(project.id) ? 1 : 0)}</span>
-                        </button>
-                    </div>
+                            {tech}
+                        </span>
+                    ))}
                 </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex items-center space-x-2 ml-6">
-                {project.liveUrl && (
-                    <button className="p-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white transition-colors duration-200">
-                        <ExternalLink size={16} />
-                    </button>
-                )}
-                {project.githubUrl && (
-                    <button className={`p-2 rounded-lg transition-colors duration-200 ${isDark
-                            ? 'bg-gray-700/50 text-gray-300 hover:bg-gray-600'
-                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                        }`}>
-                        <Github size={16} />
-                    </button>
-                )}
-                <button
-                    onClick={() => toggleBookmark(project.id)}
-                    className={`p-2 rounded-lg transition-colors duration-200 ${bookmarkedProjects.has(project.id)
-                            ? 'bg-purple-500 text-white'
-                            : isDark
-                                ? 'bg-gray-700/50 text-gray-300 hover:bg-gray-600'
-                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                        }`}
-                >
-                    <Bookmark size={16} />
-                </button>
-            </div>
         </div>
     );
 
@@ -586,8 +570,8 @@ const ProjectExplorer = () => {
             <div className="fixed inset-0 overflow-hidden pointer-events-none">
                 <div
                     className={`absolute w-[300px] h-[300px] rounded-full blur-3xl animate-pulse ${isDark
-                            ? 'bg-gradient-to-r from-indigo-600/5 via-purple-600/5 to-pink-500/5'
-                            : 'bg-gradient-to-r from-indigo-300/10 via-purple-300/10 to-pink-300/10'
+                            ? 'bg-gradient-to-r from-cyan-600/5 via-teal-600/5 to-emerald-500/5'
+                            : 'bg-gradient-to-r from-cyan-300/10 via-teal-300/10 to-emerald-300/10'
                         }`}
                     style={{
                         transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`,
@@ -597,8 +581,8 @@ const ProjectExplorer = () => {
                 />
                 <div
                     className={`absolute w-[200px] h-[200px] rounded-full blur-3xl animate-pulse ${isDark
-                            ? 'bg-gradient-to-r from-cyan-600/5 via-blue-600/5 to-indigo-500/5'
-                            : 'bg-gradient-to-r from-cyan-300/10 via-blue-300/10 to-indigo-300/10'
+                            ? 'bg-gradient-to-r from-emerald-600/5 via-cyan-600/5 to-blue-500/5'
+                            : 'bg-gradient-to-r from-emerald-300/10 via-cyan-300/10 to-blue-300/10'
                         }`}
                     style={{
                         transform: `translate(${-mousePosition.x * 0.01}px, ${mousePosition.y * 0.015}px)`,
@@ -613,31 +597,15 @@ const ProjectExplorer = () => {
                 <div className="max-w-7xl mx-auto px-6">
                     {/* Header */}
                     <div className="flex items-center justify-between mb-8">
-                        <div className="flex items-center space-x-4">
-                            <button
-                                onClick={() => setIsDark(!isDark)}
-                                className={`p-3 rounded-full transition-all duration-300 group ${isDark
-                                        ? 'bg-gray-800 hover:bg-gray-700 text-yellow-400'
-                                        : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-                                    }`}
-                            >
-                                {isDark ? (
-                                    <Sun className="group-hover:rotate-180 transition-transform duration-500" size={20} />
-                                ) : (
-                                    <Moon className="group-hover:-rotate-12 transition-transform duration-300" size={20} />
-                                )}
-                            </button>
-
-                            <div>
-                                <h2 className={`text-2xl font-bold ${isDark ? 'text-gray-100' : 'text-gray-900'
-                                    }`}>
-                                    Project Explorer
-                                </h2>
-                                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'
-                                    }`}>
-                                    Discover and explore my work
-                                </p>
-                            </div>
+                        <div>
+                            <h2 className={`text-2xl font-bold ${isDark ? 'text-gray-100' : 'text-gray-900'
+                                }`}>
+                                Project Explorer
+                            </h2>
+                            <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'
+                                }`}>
+                                Discover and explore my work
+                            </p>
                         </div>
 
                         {/* View Toggle */}
@@ -648,7 +616,7 @@ const ProjectExplorer = () => {
                             <button
                                 onClick={() => setViewMode('grid')}
                                 className={`p-3 rounded-lg transition-all duration-200 ${viewMode === 'grid'
-                                        ? 'bg-purple-600 text-white shadow-lg'
+                                        ? 'bg-cyan-600 text-white shadow-lg'
                                         : isDark
                                             ? 'text-gray-400 hover:text-gray-300 hover:bg-gray-700/50'
                                             : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/50'
@@ -659,7 +627,7 @@ const ProjectExplorer = () => {
                             <button
                                 onClick={() => setViewMode('list')}
                                 className={`p-3 rounded-lg transition-all duration-200 ${viewMode === 'list'
-                                        ? 'bg-purple-600 text-white shadow-lg'
+                                        ? 'bg-cyan-600 text-white shadow-lg'
                                         : isDark
                                             ? 'text-gray-400 hover:text-gray-300 hover:bg-gray-700/50'
                                             : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/50'
@@ -672,9 +640,9 @@ const ProjectExplorer = () => {
 
                     {/* Search Bar */}
                     <div className="relative mb-6">
-                        <div className={`relative flex items-center backdrop-blur-sm border rounded-2xl overflow-hidden ${isDark
-                                ? 'bg-gray-800/40 border-gray-700/50 focus-within:border-purple-500/50'
-                                : 'bg-white/70 border-gray-200/50 focus-within:border-purple-300/50'
+                        <div                             className={`relative flex items-center backdrop-blur-sm border rounded-2xl overflow-hidden ${isDark
+                                ? 'bg-gray-800/40 border-gray-700/50 focus-within:border-cyan-500/50'
+                                : 'bg-white/70 border-gray-200/50 focus-within:border-cyan-300/50'
                             } transition-all duration-300`}>
                             <div className="absolute left-4">
                                 <Search className={`${isDark ? 'text-gray-400' : 'text-gray-500'
@@ -725,9 +693,9 @@ const ProjectExplorer = () => {
                                     key={filter.name}
                                     onClick={() => setActiveFilter(filter.name)}
                                     className={`flex items-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 backdrop-blur-sm border ${activeFilter === filter.name
-                                            ? isDark
-                                                ? 'bg-purple-600/80 text-white border-purple-500/50 shadow-lg'
-                                                : 'bg-purple-600/90 text-white border-purple-400/50 shadow-lg'
+                            ? isDark
+                                ? 'bg-cyan-600/80 text-white border-cyan-500/50 shadow-lg'
+                                : 'bg-cyan-600/90 text-white border-cyan-400/50 shadow-lg'
                                             : isDark
                                                 ? 'bg-gray-800/40 text-gray-300 border-gray-700/50 hover:border-gray-600/50 hover:bg-gray-800/60'
                                                 : 'bg-white/70 text-gray-700 border-gray-200/50 hover:border-gray-300/50 hover:bg-white/80'
@@ -749,64 +717,15 @@ const ProjectExplorer = () => {
                             ))}
                         </div>
 
-                        {/* Sort & Advanced Controls */}
+                        {/* Advanced Controls */}
                         <div className="flex items-center space-x-3">
-                            {/* Sort Dropdown */}
-                            <div className="relative">
-                                <button
-                                    onClick={() => setIsSortOpen(!isSortOpen)}
-                                    className={`flex items-center space-x-2 px-6 py-3 rounded-xl transition-all duration-300 backdrop-blur-sm border ${isDark
-                                            ? 'bg-gray-800/40 text-gray-300 border-gray-700/50 hover:border-gray-600/50'
-                                            : 'bg-white/70 text-gray-700 border-gray-200/50 hover:border-gray-300/50'
-                                        }`}
-                                >
-                                    {getSortIcon()}
-                                    <span className="font-semibold">{getSortLabel()}</span>
-                                    <ChevronDown className={`transition-transform duration-200 ${isSortOpen ? 'rotate-180' : ''
-                                        }`} size={16} />
-                                </button>
-
-                                {/* Sort Dropdown Menu */}
-                                {isSortOpen && (
-                                    <div className={`absolute top-full right-0 mt-2 w-48 rounded-xl backdrop-blur-sm border shadow-xl z-20 ${isDark
-                                            ? 'bg-gray-800/90 border-gray-700/50'
-                                            : 'bg-white/90 border-gray-200/50'
-                                        }`}>
-                                        <div className="p-2">
-                                            {sortOptions.map((option) => (
-                                                <button
-                                                    key={option.value}
-                                                    onClick={() => {
-                                                        setSortBy(option.value);
-                                                        setIsSortOpen(false);
-                                                    }}
-                                                    className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-all duration-200 text-left ${sortBy === option.value
-                                                            ? isDark
-                                                                ? 'bg-purple-600/80 text-white'
-                                                                : 'bg-purple-600/90 text-white'
-                                                            : isDark
-                                                                ? 'text-gray-300 hover:bg-gray-700/50'
-                                                                : 'text-gray-700 hover:bg-gray-100/50'
-                                                        }`}
-                                                >
-                                                    <span className={sortBy === option.value ? 'text-white' : 'text-gray-400'}>
-                                                        {option.icon}
-                                                    </span>
-                                                    <span className="font-medium">{option.label}</span>
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-
                             {/* Advanced Filter Toggle */}
                             <button
                                 onClick={() => setIsFilterOpen(!isFilterOpen)}
                                 className={`flex items-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 backdrop-blur-sm border ${isFilterOpen
-                                        ? isDark
-                                            ? 'bg-purple-600/80 text-white border-purple-500/50'
-                                            : 'bg-purple-600/90 text-white border-purple-400/50'
+                        ? isDark
+                            ? 'bg-cyan-600/80 text-white border-cyan-500/50'
+                            : 'bg-cyan-600/90 text-white border-cyan-400/50'
                                         : isDark
                                             ? 'bg-gray-800/40 text-gray-300 border-gray-700/50 hover:border-gray-600/50'
                                             : 'bg-white/70 text-gray-700 border-gray-200/50 hover:border-gray-300/50'
@@ -817,7 +736,7 @@ const ProjectExplorer = () => {
                             </button>
 
                             {/* Clear All Button */}
-                            {(searchQuery || activeFilter !== 'All' || sortBy !== 'newest' || selectedTechs.length > 0 || selectedStatus.length > 0 || dateRange !== 'all') && (
+                            {(searchQuery || activeFilter !== 'All' || selectedTechs.length > 0 || selectedStatus.length > 0 || dateRange !== 'all') && (
                                 <button
                                     onClick={clearAllFilters}
                                     className={`px-4 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 ${isDark
@@ -857,11 +776,11 @@ const ProjectExplorer = () => {
                                                 }}
                                                 className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 border ${selectedTechs.includes(tech)
                                                         ? isDark
-                                                            ? 'bg-purple-600/20 text-purple-400 border-purple-500/30'
-                                                            : 'bg-purple-100 text-purple-700 border-purple-300'
+                                                            ? 'bg-cyan-600/20 text-cyan-400 border-cyan-500/30'
+                                                            : 'bg-cyan-100 text-cyan-700 border-cyan-300'
                                                         : isDark
-                                                            ? 'bg-gray-700/50 text-gray-300 border-gray-600/50 hover:bg-purple-600/20 hover:border-purple-500/30'
-                                                            : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-purple-100 hover:border-purple-300'
+                                                            ? 'bg-gray-700/50 text-gray-300 border-gray-600/50 hover:bg-cyan-600/20 hover:border-cyan-500/30'
+                                                            : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-cyan-100 hover:border-cyan-300'
                                                     }`}
                                             >
                                                 {tech}
@@ -889,7 +808,7 @@ const ProjectExplorer = () => {
                                                             setSelectedStatus([...selectedStatus, status]);
                                                         }
                                                     }}
-                                                    className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 focus:ring-2"
+                                                    className="w-4 h-4 text-cyan-600 bg-gray-100 border-gray-300 rounded focus:ring-cyan-500 focus:ring-2"
                                                 />
                                                 <span className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'
                                                     }`}>
@@ -926,7 +845,7 @@ const ProjectExplorer = () => {
                     )}
 
                     {/* Active Filters Summary */}
-                    {(searchQuery || activeFilter !== 'All' || sortBy !== 'newest' || selectedTechs.length > 0 || selectedStatus.length > 0 || dateRange !== 'all') && (
+                    {(searchQuery || activeFilter !== 'All' || selectedTechs.length > 0 || selectedStatus.length > 0 || dateRange !== 'all') && (
                         <div className="flex flex-wrap items-center gap-3 mb-6">
                             <span className={`text-sm font-semibold ${isDark ? 'text-gray-400' : 'text-gray-600'
                                 }`}>
@@ -948,8 +867,8 @@ const ProjectExplorer = () => {
 
                             {activeFilter !== 'All' && (
                                 <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs ${isDark
-                                        ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
-                                        : 'bg-purple-100 text-purple-700 border border-purple-200'
+                        ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
+                        : 'bg-cyan-100 text-cyan-700 border border-cyan-200'
                                     }`}>
                                     <Filter size={12} />
                                     <span>Category: {activeFilter}</span>
@@ -985,19 +904,6 @@ const ProjectExplorer = () => {
                                 </div>
                             ))}
 
-                            {sortBy !== 'newest' && (
-                                <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs ${isDark
-                                        ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
-                                        : 'bg-cyan-100 text-cyan-700 border border-cyan-200'
-                                    }`}>
-                                    {getSortIcon()}
-                                    <span>Sort: {getSortLabel()}</span>
-                                    <button onClick={() => setSortBy('newest')}>
-                                        <X size={12} />
-                                    </button>
-                                </div>
-                            )}
-
                             {dateRange !== 'all' && (
                                 <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs ${isDark
                                         ? 'bg-pink-500/20 text-pink-400 border border-pink-500/30'
@@ -1023,7 +929,7 @@ const ProjectExplorer = () => {
                         {filteredProjects.length > 0 && (
                             <div className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'
                                 }`}>
-                                Sorted by {getSortLabel()}
+                                Latest projects first
                             </div>
                         )}
                     </div>
@@ -1054,14 +960,146 @@ const ProjectExplorer = () => {
             </section>
 
             {/* Click outside to close dropdowns */}
-            {(isSortOpen || isFilterOpen) && (
+            {isFilterOpen && (
                 <div
                     className="fixed inset-0 z-10"
                     onClick={() => {
-                        setIsSortOpen(false);
                         setIsFilterOpen(false);
                     }}
                 />
+            )}
+
+            {/* Project Modal */}
+            {isModalOpen && selectedProject && (
+                <div
+                    className="fixed inset-0 bg-black/90 flex items-center justify-center p-4 z-50"
+                    onClick={closeModal}
+                >
+                    <div
+                        className={`rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative border ${isDark
+                            ? 'bg-gray-900 text-white border-gray-700'
+                            : 'bg-white text-gray-900 border-gray-200'
+                            }`}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Close Button */}
+                        <button
+                            onClick={closeModal}
+                            className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center z-10 transition-colors ${isDark
+                                ? 'bg-red-500 hover:bg-red-600 text-white'
+                                : 'bg-red-500 hover:bg-red-600 text-white'
+                                }`}
+                        >
+                            <X size={18} />
+                        </button>
+
+                        {/* Banner */}
+                        <div className="relative">
+                            <div
+                                className={`h-56 md:h-64 bg-gradient-to-br from-cyan-500/20 to-emerald-500/20 relative overflow-hidden rounded-t-2xl`}
+                            >
+                                {/* Project Icon */}
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <div className="text-7xl md:text-9xl opacity-90 filter drop-shadow-2xl">
+                                        {selectedProject.image}
+                                    </div>
+                                </div>
+
+                                {/* Project Title Overlay */}
+                                <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t ${isDark ? 'from-black/90' : 'from-white/95'} to-transparent p-4 md:p-6`}>
+                                    <h1 className={`text-2xl md:text-3xl font-bold mb-1 md:mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                                        {selectedProject.title}
+                                    </h1>
+                                    <p className={`text-sm md:text-base ${isDark ? 'text-white/80' : 'text-gray-600'}`}>
+                                        {selectedProject.date}
+                                    </p>
+                                </div>
+
+                                {/* Category & Status Badges */}
+                                <div className="absolute top-4 left-4 flex gap-2 flex-wrap">
+                                    <span className={`backdrop-blur-sm border px-3 py-1 rounded-full text-xs font-bold ${isDark
+                                        ? 'bg-black/50 border-white/30 text-white'
+                                        : 'bg-white/50 border-gray-700/30 text-gray-900'
+                                        }`}>
+                                        {selectedProject.category.toUpperCase()}
+                                    </span>
+                                    <span className={`backdrop-blur-sm border px-3 py-1 rounded-full text-xs font-bold ${getStatusColor(selectedProject.status)}`}>
+                                        {selectedProject.status.toUpperCase()}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Content */}
+                        <div className={`p-6 md:p-8 ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
+                            {/* Action Buttons */}
+                            <div className="flex flex-wrap gap-3 mb-6">
+                                {selectedProject.liveUrl && (
+                                    <a
+                                        href={selectedProject.liveUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex-1 min-w-[140px] bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2"
+                                    >
+                                        <ExternalLink size={18} />
+                                        <span className="text-sm md:text-base">Live Project</span>
+                                    </a>
+                                )}
+
+                                {selectedProject.githubUrl && (
+                                    <a
+                                        href={selectedProject.githubUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={`flex-1 min-w-[140px] px-4 py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 ${isDark
+                                            ? 'bg-gray-700 hover:bg-gray-600 text-white'
+                                            : 'bg-gray-700 hover:bg-gray-600 text-white'
+                                            }`}
+                                    >
+                                        <Github size={18} />
+                                        <span className="text-sm md:text-base">View Source</span>
+                                    </a>
+                                )}
+                            </div>
+
+                            {/* Description */}
+                            <div className="mb-6">
+                                <h3 className={`font-bold text-lg mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>About</h3>
+                                <p className={`leading-relaxed text-sm md:text-base ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                                    {selectedProject.description}
+                                </p>
+                            </div>
+
+                            {/* Technologies */}
+                            <div className="mb-6">
+                                <h3 className={`font-bold text-lg mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>Technologies</h3>
+                                <div className="flex flex-wrap gap-2">
+                                    {selectedProject.technologies.map((tech, index) => (
+                                        <div key={index} className={`px-3 py-2 rounded-lg text-xs md:text-sm font-semibold border ${isDark
+                                            ? 'bg-gray-800 text-gray-300 border-gray-700'
+                                            : 'bg-gray-100 text-gray-700 border-gray-200'
+                                            }`}>
+                                            {tech}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Features */}
+                            <div>
+                                <h3 className={`font-bold text-lg mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>Key Features</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    {selectedProject.features.map((feature, index) => (
+                                        <div key={index} className={`flex items-start text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                                            <span className="text-cyan-400 mr-2 mt-0.5">✓</span>
+                                            <span>{feature}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             )}
         </div>
     );

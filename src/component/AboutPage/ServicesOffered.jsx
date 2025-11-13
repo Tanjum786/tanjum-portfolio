@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Moon, Sun, Code, Palette, Smartphone, Globe, Settings, ShoppingCart, ArrowRight, CheckCircle, Star, Users, Rocket, Zap } from 'lucide-react';
+import { Code, Palette, Smartphone, Globe, Settings, ShoppingCart, CheckCircle, Star, Users, Rocket } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
 
 const ServicesOffered = () => {
-    const [isDark, setIsDark] = useState(true);
+    const { isDark } = useTheme();
     const [visibleServices, setVisibleServices] = useState(new Set());
 
     // Animate services on load
@@ -38,7 +39,7 @@ const ServicesOffered = () => {
             icon: <Palette size={24} />,
             gradient: 'from-purple-500 to-pink-500',
             description: 'Beautiful, user-centered designs that convert visitors',
-            features: ['User Interface Design', 'Wireframing & Prototyping', 'Mobile-First Design']
+            features: ['User Interface Design', 'Wireframing & Prototyping', 'Responsive Layouts']
         },
         {
             id: 4,
@@ -46,7 +47,7 @@ const ServicesOffered = () => {
             icon: <Smartphone size={24} />,
             gradient: 'from-green-500 to-emerald-500',
             description: 'Perfect websites on every device and screen size',
-            features: ['Mobile-First Approach', 'SEO Optimization', 'Fast Loading']
+            features: ['Cross-Device Compatibility', 'SEO Optimization', 'Fast Loading']
         },
         {
             id: 5,
@@ -68,7 +69,7 @@ const ServicesOffered = () => {
 
     const processSteps = [
         { step: 1, title: 'Discovery', description: 'Understanding your needs', icon: <Users size={20} /> },
-        { step: 2, title: 'Development', description: 'Building your solution', icon: <Code size={20} /> },
+        { step: 2, title: 'Development', description: 'Coding and implementing your solution', icon: <Code size={20} /> },
         { step: 3, title: 'Testing & Launch', description: 'Deploy and go live', icon: <Rocket size={20} /> },
         { step: 4, title: 'Support', description: 'Ongoing maintenance', icon: <Settings size={20} /> }
     ];
@@ -82,37 +83,26 @@ const ServicesOffered = () => {
             {/* Animated Background */}
             <div className="absolute inset-0 overflow-hidden">
                 <div className={`absolute w-96 h-96 rounded-full blur-3xl animate-pulse ${isDark
-                    ? 'bg-gradient-to-r from-indigo-600/10 to-purple-600/10'
-                    : 'bg-gradient-to-r from-indigo-300/20 to-purple-300/20'
+                    ? 'bg-gradient-to-r from-cyan-600/10 to-emerald-600/10'
+                    : 'bg-gradient-to-r from-cyan-300/20 to-emerald-300/20'
                     } top-10 left-10`} />
                 <div className={`absolute w-80 h-80 rounded-full blur-3xl animate-pulse ${isDark
-                    ? 'bg-gradient-to-r from-cyan-500/10 to-blue-500/10'
-                    : 'bg-gradient-to-r from-cyan-300/20 to-blue-300/20'
+                    ? 'bg-gradient-to-r from-emerald-500/10 to-teal-500/10'
+                    : 'bg-gradient-to-r from-emerald-300/20 to-teal-300/20'
                     } bottom-10 right-10`} style={{ animationDelay: '2s' }} />
             </div>
 
             <div className="relative z-10 max-w-6xl mx-auto px-6">
                 {/* Header */}
                 <div className="text-center mb-16">
-                    <div className="flex items-center justify-center mb-6">
-                        <button
-                            onClick={() => setIsDark(!isDark)}
-                            className={`p-3 rounded-full transition-all duration-300 mr-4 ${isDark
-                                ? 'bg-gray-800 hover:bg-gray-700 text-yellow-400'
-                                : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-                                }`}
-                        >
-                            {isDark ? <Sun size={18} /> : <Moon size={18} />}
-                        </button>
-                        <h1 className={`text-4xl md:text-5xl font-black ${isDark
-                            ? 'bg-gradient-to-r from-indigo-400 to-pink-400 bg-clip-text text-transparent'
-                            : 'bg-gradient-to-r from-indigo-600 to-pink-600 bg-clip-text text-transparent'
-                            }`}>
-                            Services Offered
-                        </h1>
-                    </div>
+                    <h1 className={`text-4xl md:text-5xl font-black mb-6 ${isDark
+                        ? 'bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent'
+                        : 'bg-gradient-to-r from-cyan-600 to-emerald-600 bg-clip-text text-transparent'
+                        }`}>
+                        Services Offered
+                    </h1>
                     <p className={`text-lg max-w-2xl mx-auto ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                        Transform your ideas into powerful digital solutions 🚀
+                        Transform your ideas into powerful digital solutions
                     </p>
                 </div>
 
@@ -172,37 +162,6 @@ const ServicesOffered = () => {
                             </div>
                         </div>
                     ))}
-                </div>
-
-
-
-                {/* CTA */}
-                <div className="text-center">
-                    <div className={`inline-block p-8 rounded-2xl border ${isDark
-                        ? 'bg-gradient-to-br from-gray-800/60 to-gray-800/30 border-gray-700/50'
-                        : 'bg-gradient-to-br from-white/80 to-white/40 border-gray-200/50'
-                        } backdrop-blur-lg shadow-lg`}>
-                        <div className="flex justify-center mb-4">
-                            <div className="p-3 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-500">
-                                <Zap size={28} className="text-white" />
-                            </div>
-                        </div>
-                        <h2 className={`text-3xl font-bold mb-4 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
-                            Ready to Start Your Project? 🚀
-                        </h2>
-                        <p className={`text-lg mb-6 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-                            Let's discuss your ideas and turn them into reality!
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <button className={`flex items-center justify-center space-x-2 px-8 py-4 rounded-2xl font-bold transition-all duration-300 ${isDark
-                                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white'
-                                : 'bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white'
-                                } hover:scale-105 shadow-lg`}>
-                                <span>Get Free Consultation</span>
-                                <ArrowRight size={18} />
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Moon, Sun, Code, Database, Palette, Smartphone, Cloud, Zap, Star, TrendingUp, Award, ChevronDown, ChevronUp, Filter } from 'lucide-react';
+import { Code, Database, Palette, Smartphone, Cloud, Zap, Star, TrendingUp, Award, ChevronDown, ChevronUp, Filter } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
 
 const TechStackSection = () => {
-    const [isDark, setIsDark] = useState(true);
+    const { isDark } = useTheme();
     const [hoveredTech, setHoveredTech] = useState(null);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [showAll, setShowAll] = useState(false);
@@ -25,66 +26,68 @@ const TechStackSection = () => {
     const techCategories = [
         {
             id: 'frontend',
-            title: 'Frontend',
+            title: 'Frontend Development',
             icon: <Code size={24} />,
             gradient: isDark ? 'from-blue-500 to-cyan-500' : 'from-blue-600 to-cyan-600',
             technologies: [
-                { name: 'React', icon: '⚛️', level: 95, color: 'from-blue-400 to-cyan-400', type: 'Framework' },
-                { name: 'Next.js', icon: '🚀', level: 90, color: 'from-gray-600 to-gray-400', type: 'Framework' },
-                { name: 'TypeScript', icon: '📘', level: 85, color: 'from-blue-600 to-blue-400', type: 'Language' },
-                { name: 'JavaScript', icon: '💛', level: 98, color: 'from-yellow-400 to-orange-400', type: 'Language' },
-                { name: 'Tailwind CSS', icon: '💨', level: 92, color: 'from-cyan-400 to-blue-500', type: 'Styling' },
-                { name: 'HTML5/CSS3', icon: '🎨', level: 95, color: 'from-orange-400 to-red-400', type: 'Styling' },
+                { name: 'React.js', icon: '⚛️', level: 92, color: 'from-blue-400 to-cyan-400', type: 'Framework' },
+                { name: 'Vue.js', icon: '💚', level: 85, color: 'from-green-400 to-emerald-500', type: 'Framework' },
+                { name: 'Redux Toolkit', icon: '🔄', level: 88, color: 'from-purple-400 to-pink-400', type: 'State Management' },
+                { name: 'JavaScript ES6+', icon: '💛', level: 90, color: 'from-yellow-400 to-orange-400', type: 'Language' },
+                { name: 'HTML5 & CSS3', icon: '🎨', level: 95, color: 'from-orange-400 to-red-400', type: 'Core' },
+                { name: 'Responsive Design', icon: '📱', level: 95, color: 'from-green-400 to-emerald-400', type: 'Design' },
+                { name: 'Tailwind CSS', icon: '💨', level: 85, color: 'from-cyan-400 to-blue-500', type: 'Styling' },
             ]
         },
         {
-            id: 'backend',
-            title: 'Backend',
+            id: 'hubspot',
+            title: 'HubSpot Development',
             icon: <Database size={24} />,
-            gradient: isDark ? 'from-green-500 to-emerald-500' : 'from-green-600 to-emerald-600',
+            gradient: isDark ? 'from-orange-500 to-red-500' : 'from-orange-600 to-red-600',
             technologies: [
-                { name: 'Node.js', icon: '💚', level: 88, color: 'from-green-400 to-emerald-500', type: 'Runtime' },
-                { name: 'Express.js', icon: '🌐', level: 85, color: 'from-gray-500 to-gray-600', type: 'Framework' },
-                { name: 'MongoDB', icon: '🍃', level: 80, color: 'from-green-500 to-green-400', type: 'Database' },
-                { name: 'PostgreSQL', icon: '🐘', level: 75, color: 'from-blue-500 to-indigo-500', type: 'Database' },
-                { name: 'GraphQL', icon: '🔗', level: 70, color: 'from-pink-400 to-purple-400', type: 'API' },
-                { name: 'REST APIs', icon: '🔌', level: 90, color: 'from-orange-400 to-red-400', type: 'API' },
+                { name: 'HubL Language', icon: '📝', level: 92, color: 'from-orange-400 to-red-500', type: 'Language' },
+                { name: 'HubSpot CMS', icon: '🧡', level: 92, color: 'from-orange-500 to-red-500', type: 'Platform' },
+                { name: 'HubL Templates', icon: '📄', level: 90, color: 'from-red-400 to-orange-400', type: 'Templating' },
+                { name: 'Custom Modules', icon: '🧩', level: 88, color: 'from-orange-500 to-yellow-500', type: 'Modules' },
+                { name: 'Custom Workflows', icon: '⚙️', level: 85, color: 'from-purple-400 to-pink-400', type: 'Automation' },
+                { name: 'UI Extensions', icon: '🔌', level: 82, color: 'from-cyan-400 to-blue-500', type: 'Extensions' },
+                { name: 'HubSpot CRM', icon: '📊', level: 85, color: 'from-blue-400 to-cyan-400', type: 'CRM' },
             ]
         },
         {
             id: 'tools',
-            title: 'Tools & Design',
+            title: 'Tools & Platforms',
             icon: <Palette size={24} />,
             gradient: isDark ? 'from-purple-500 to-pink-500' : 'from-purple-600 to-pink-600',
             technologies: [
-                { name: 'Figma', icon: '🎨', level: 90, color: 'from-purple-400 to-pink-400', type: 'Design' },
-                { name: 'Git & GitHub', icon: '🐙', level: 95, color: 'from-gray-600 to-gray-800', type: 'Version Control' },
-                { name: 'VS Code', icon: '💙', level: 98, color: 'from-blue-500 to-blue-600', type: 'Editor' },
-                { name: 'Photoshop', icon: '📸', level: 80, color: 'from-blue-400 to-purple-400', type: 'Design' },
-                { name: 'Webpack', icon: '📦', level: 75, color: 'from-blue-300 to-cyan-400', type: 'Build Tool' },
-                { name: 'Docker', icon: '🐳', level: 70, color: 'from-cyan-400 to-blue-500', type: 'DevOps' },
+                { name: 'Git & GitHub', icon: '🐙', level: 90, color: 'from-gray-600 to-gray-800', type: 'Version Control' },
+                { name: 'VS Code', icon: '💙', level: 95, color: 'from-blue-500 to-blue-600', type: 'Editor' },
+                { name: 'Figma', icon: '🎨', level: 75, color: 'from-purple-400 to-pink-400', type: 'Design' },
+                { name: 'Chrome DevTools', icon: '🔍', level: 90, color: 'from-cyan-400 to-blue-500', type: 'Debug' },
+                { name: 'Postman', icon: '📮', level: 80, color: 'from-orange-400 to-red-400', type: 'API Testing' },
+                { name: 'NPM/Yarn', icon: '📦', level: 85, color: 'from-red-400 to-pink-400', type: 'Package Manager' },
             ]
         },
         {
-            id: 'mobile',
-            title: 'Mobile & Cloud',
+            id: 'softskills',
+            title: 'Professional Skills',
             icon: <Smartphone size={24} />,
-            gradient: isDark ? 'from-orange-500 to-red-500' : 'from-orange-600 to-red-600',
+            gradient: isDark ? 'from-green-500 to-emerald-500' : 'from-green-600 to-emerald-600',
             technologies: [
-                { name: 'React Native', icon: '📱', level: 85, color: 'from-blue-400 to-purple-400', type: 'Mobile' },
-                { name: 'Flutter', icon: '🦋', level: 70, color: 'from-blue-300 to-cyan-400', type: 'Mobile' },
-                { name: 'AWS', icon: '☁️', level: 75, color: 'from-orange-400 to-yellow-400', type: 'Cloud' },
-                { name: 'Firebase', icon: '🔥', level: 80, color: 'from-yellow-400 to-orange-500', type: 'Cloud' },
-                { name: 'Vercel', icon: '▲', level: 90, color: 'from-gray-600 to-black', type: 'Deployment' },
-                { name: 'Netlify', icon: '🌐', level: 85, color: 'from-teal-400 to-cyan-500', type: 'Deployment' },
+                { name: 'Problem Solving', icon: '🧩', level: 95, color: 'from-blue-400 to-cyan-400', type: 'Skill' },
+                { name: 'Team Collaboration', icon: '🤝', level: 90, color: 'from-green-400 to-emerald-500', type: 'Skill' },
+                { name: 'Adaptability', icon: '🔄', level: 92, color: 'from-purple-400 to-pink-400', type: 'Skill' },
+                { name: 'Learning Agility', icon: '🚀', level: 95, color: 'from-orange-400 to-red-400', type: 'Skill' },
+                { name: 'Attention to Detail', icon: '🔍', level: 90, color: 'from-cyan-400 to-teal-500', type: 'Skill' },
+                { name: 'Communication', icon: '💬', level: 88, color: 'from-yellow-400 to-orange-400', type: 'Skill' },
             ]
         }
     ];
 
     const achievements = [
-        { icon: <Star size={20} />, label: '50+ Projects', color: 'text-yellow-400' },
-        { icon: <TrendingUp size={20} />, label: '3+ Years', color: 'text-green-400' },
-        { icon: <Award size={20} />, label: '100% Satisfaction', color: 'text-purple-400' },
+        { icon: <Star size={20} />, label: '15+ HubSpot Sites', color: 'text-orange-400' },
+        { icon: <TrendingUp size={20} />, label: '3+ Years at Niswey', color: 'text-green-400' },
+        { icon: <Award size={20} />, label: '100% Client Satisfaction', color: 'text-cyan-400' },
         { icon: <Zap size={20} />, label: 'Always Learning', color: 'text-blue-400' },
     ];
 
@@ -115,15 +118,15 @@ const TechStackSection = () => {
 
     return (
         <section className={`py-20 transition-all duration-500 relative overflow-hidden ${isDark
-                ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-slate-900 text-white'
-                : 'bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-gray-900'
+                ? 'bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800 text-white'
+                : 'bg-gradient-to-br from-gray-50 via-slate-50 to-cyan-50 text-gray-900'
             }`}>
             {/* Animated Background */}
             <div className="absolute inset-0 overflow-hidden">
                 <div
                     className={`absolute w-[300px] h-[300px] rounded-full blur-3xl animate-pulse ${isDark
-                            ? 'bg-gradient-to-r from-purple-600/10 via-blue-600/10 to-cyan-500/10'
-                            : 'bg-gradient-to-r from-purple-300/20 via-blue-300/20 to-cyan-300/20'
+                            ? 'bg-gradient-to-r from-cyan-600/10 via-teal-600/10 to-emerald-500/10'
+                            : 'bg-gradient-to-r from-cyan-300/20 via-teal-300/20 to-emerald-300/20'
                         }`}
                     style={{
                         transform: `translate(${mousePosition.x * 0.01}px, ${mousePosition.y * 0.01}px)`,
@@ -148,31 +151,16 @@ const TechStackSection = () => {
             <div className="relative z-10 max-w-7xl mx-auto px-6">
                 {/* Header */}
                 <div className="text-center mb-16">
-                    <div className="flex items-center justify-center mb-8">
-                        <button
-                            onClick={() => setIsDark(!isDark)}
-                            className={`p-3 rounded-full transition-all duration-300 group mr-4 ${isDark
-                                    ? 'bg-gray-800 hover:bg-gray-700 text-yellow-400'
-                                    : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-                                }`}
-                        >
-                            {isDark ? (
-                                <Sun className="group-hover:rotate-180 transition-transform duration-500" size={20} />
-                            ) : (
-                                <Moon className="group-hover:-rotate-12 transition-transform duration-300" size={20} />
-                            )}
-                        </button>
-                        <h2 className={`text-4xl md:text-6xl font-black ${isDark
-                                ? 'bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent'
-                                : 'bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent'
-                            }`}>
-                            Tech Stack
-                        </h2>
-                    </div>
+                    <h2 className={`text-4xl md:text-6xl font-black mb-8 ${isDark
+                        ? 'bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent'
+                        : 'bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 bg-clip-text text-transparent'
+                        }`}>
+                        Tech Stack
+                    </h2>
 
                     <p className={`text-xl max-w-3xl mx-auto ${isDark ? 'text-gray-400' : 'text-gray-600'
                         }`}>
-                        The tools and technologies I use to bring ideas to life. Always learning, always evolving! ✨
+                        The tools and technologies I use to bring ideas to life. Always learning, always evolving.
                     </p>
 
                     {/* Achievements */}
@@ -203,8 +191,8 @@ const TechStackSection = () => {
                                 onClick={() => setActiveFilter(type)}
                                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 ${activeFilter === type
                                         ? isDark
-                                            ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'
-                                            : 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'
+                                            ? 'bg-gradient-to-r from-cyan-600 to-emerald-600 text-white shadow-lg'
+                                            : 'bg-gradient-to-r from-cyan-600 to-emerald-600 text-white shadow-lg'
                                         : isDark
                                             ? 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 border border-gray-700'
                                             : 'bg-white/70 text-gray-700 hover:bg-gray-100 border border-gray-200'
@@ -226,7 +214,7 @@ const TechStackSection = () => {
                                     ? 'bg-gray-800/30'
                                     : 'bg-white/60'
                                 } backdrop-blur-xl rounded-3xl p-8 border ${isDark ? 'border-gray-700/50' : 'border-gray-200/50'
-                                } hover:border-purple-500/50 transition-all duration-500 transform hover:scale-[1.02]`}
+                                } hover:border-cyan-500/50 transition-all duration-500 transform hover:scale-[1.02]`}
                             style={{
                                 animationDelay: `${categoryIndex * 0.1}s`,
                             }}
@@ -286,8 +274,8 @@ const TechStackSection = () => {
                                                     Proficiency
                                                 </span>
                                                 <span className={`text-xs font-bold ${isDark
-                                                        ? 'bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent'
-                                                        : 'bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent'
+                                                        ? 'bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent'
+                                                        : 'bg-gradient-to-r from-cyan-600 to-emerald-600 bg-clip-text text-transparent'
                                                     }`}>
                                                     {tech.level}%
                                                 </span>
@@ -320,8 +308,8 @@ const TechStackSection = () => {
                     <button
                         onClick={handleShowMore}
                         className={`group relative px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 ${isDark
-                                ? 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white'
-                                : 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white'
+                                ? 'bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-700 hover:to-emerald-700 text-white'
+                                : 'bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-700 hover:to-emerald-700 text-white'
                             } shadow-lg hover:shadow-2xl overflow-hidden`}
                     >
                         <div className="flex items-center space-x-2">
@@ -341,10 +329,10 @@ const TechStackSection = () => {
                 {/* Bottom CTA */}
                 <div className="text-center mt-16">
                     <div className={`inline-flex items-center space-x-2 px-6 py-3 rounded-full ${isDark
-                            ? 'bg-gradient-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/30'
-                            : 'bg-gradient-to-r from-purple-100 to-blue-100 border border-purple-200'
+                            ? 'bg-gradient-to-r from-cyan-600/20 to-emerald-600/20 border border-cyan-500/30'
+                            : 'bg-gradient-to-r from-cyan-100 to-emerald-100 border border-cyan-200'
                         } backdrop-blur-sm`}>
-                        <Zap className={`${isDark ? 'text-purple-400' : 'text-purple-600'}`} size={20} />
+                        <Zap className={`${isDark ? 'text-cyan-400' : 'text-cyan-600'}`} size={20} />
                         <span className="font-semibold">Always exploring new technologies!</span>
                     </div>
                 </div>

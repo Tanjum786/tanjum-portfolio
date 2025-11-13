@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Moon, Sun, ArrowDown, Code, Coffee, Heart, Sparkles, Play, Zap, Download } from 'lucide-react';
+import { ArrowDown, Code, Heart, Zap, Star } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
 
 const HeroSection = () => {
-    const [isDark, setIsDark] = useState(true);
+    const { isDark } = useTheme();
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [displayText, setDisplayText] = useState('');
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
     const [isDeleting, setIsDeleting] = useState(false);
 
     // Dynamic typing effect
-    const roles = ['Full Stack Developer', 'React.js Expert', 'Problem Solver', 'Creative Coder'];
+    const roles = ['ReactJS Developer', 'Frontend HubSpot Developer', 'Redux Specialist', 'Web Developer'];
     const currentWord = roles[currentWordIndex];
 
     useEffect(() => {
@@ -26,7 +27,7 @@ const HeroSection = () => {
                     setCurrentWordIndex((prev) => (prev + 1) % roles.length);
                 }
             }
-        }, isDeleting ? 50 : 150);
+        }, isDeleting ? 30 : 60);
 
         return () => clearTimeout(timeout);
     }, [displayText, isDeleting, currentWord, currentWordIndex]);
@@ -45,23 +46,18 @@ const HeroSection = () => {
     }, []);
 
     const scrollToProjects = () => {
-        const projectsSection = document.getElementById('projects');
-        if (projectsSection) {
-            projectsSection.scrollIntoView({ behavior: 'smooth' });
-        } else {
-            window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
-        }
+        window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
     };
 
     const stats = [
-        { number: '2+', label: 'Years Experience', icon: <Code size={20} /> },
-        { number: '10+', label: 'Projects Built', icon: <Zap size={20} /> },
-        { number: '50+', label: 'Cups of Coffee', icon: <Coffee size={20} /> },
-        { number: '∞', label: 'Lines of Code', icon: <Heart size={20} /> },
+        { number: '10+', label: 'Projects Built', icon: <Code size={20} /> },
+        { number: '15+', label: 'HubSpot Websites', icon: <Zap size={20} /> },
+        { number: '15+', label: 'React Applications', icon: <Star size={20} /> },
+        { number: '100%', label: 'On-Time Delivery', icon: <Heart size={20} /> },
     ];
 
     return (
-        <section className={`min-h-screen transition-all duration-500 relative overflow-hidden flex items-center ${isDark
+        <section className={`pt-12 pb-6 md:pt-16 md:pb-8 transition-all duration-500 relative overflow-hidden ${isDark
                 ? 'bg-gradient-to-br from-slate-900 via-gray-900 to-gray-800 text-white'
                 : 'bg-gradient-to-br from-gray-50 via-slate-50 to-blue-50 text-gray-900'
             }`}>
@@ -69,8 +65,8 @@ const HeroSection = () => {
             <div className="absolute inset-0 overflow-hidden">
                 <div
                     className={`absolute w-[400px] h-[400px] rounded-full blur-3xl animate-pulse ${isDark
-                            ? 'bg-gradient-to-r from-indigo-600/10 via-purple-600/10 to-pink-500/10'
-                            : 'bg-gradient-to-r from-indigo-300/20 via-purple-300/20 to-pink-300/20'
+                            ? 'bg-gradient-to-r from-cyan-600/10 via-teal-600/10 to-emerald-500/10'
+                            : 'bg-gradient-to-r from-cyan-300/20 via-teal-300/20 to-emerald-300/20'
                         }`}
                     style={{
                         transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`,
@@ -80,8 +76,8 @@ const HeroSection = () => {
                 />
                 <div
                     className={`absolute w-[350px] h-[350px] rounded-full blur-3xl animate-pulse ${isDark
-                            ? 'bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-indigo-600/10'
-                            : 'bg-gradient-to-r from-cyan-300/20 via-blue-300/20 to-indigo-300/20'
+                            ? 'bg-gradient-to-r from-emerald-500/10 via-cyan-500/10 to-blue-600/10'
+                            : 'bg-gradient-to-r from-emerald-300/20 via-cyan-300/20 to-blue-300/20'
                         }`}
                     style={{
                         transform: `translate(-${mousePosition.x * 0.025}px, -${mousePosition.y * 0.025}px)`,
@@ -92,41 +88,23 @@ const HeroSection = () => {
                 />
             </div>
 
-            <div className="relative z-10 max-w-5xl mx-auto px-6 py-16 text-center">
-                {/* Theme Toggle */}
-                <div className="flex items-center justify-center mb-8">
-                    <button
-                        onClick={() => setIsDark(!isDark)}
-                        className={`p-3 rounded-full transition-all duration-300 group ${isDark
-                                ? 'bg-gray-800 hover:bg-gray-700 text-yellow-400'
-                                : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-                            }`}
-                    >
-                        {isDark ? (
-                            <Sun className="group-hover:rotate-180 transition-transform duration-500" size={20} />
-                        ) : (
-                            <Moon className="group-hover:-rotate-12 transition-transform duration-300" size={20} />
-                        )}
-                    </button>
-                </div>
-
+            <div className="relative z-10 max-w-5xl mx-auto px-6 pt-8 pb-4 text-center">
                 {/* Main Content */}
                 <div className="space-y-8">
                     {/* Greeting */}
                     <div className={`inline-flex items-center space-x-2 px-4 py-2 rounded-full backdrop-blur-sm border ${isDark
-                            ? 'bg-gray-800/50 border-gray-700/50 text-purple-400'
-                            : 'bg-white/70 border-purple-200/50 text-purple-600'
+                            ? 'bg-gray-800/50 border-gray-700/50 text-cyan-400'
+                            : 'bg-white/70 border-cyan-200/50 text-cyan-600'
                         }`}>
-                        <Sparkles size={16} className="animate-pulse" />
                         <span className="text-sm font-semibold">Hello, I'm</span>
                     </div>
 
                     {/* Name */}
                     <h1 className={`text-5xl md:text-7xl font-black leading-tight ${isDark
-                            ? 'bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent'
-                            : 'bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent'
+                            ? 'bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent'
+                            : 'bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 bg-clip-text text-transparent'
                         }`}>
-                        Your Name
+                        Tanjum Kadakol
                     </h1>
 
                     {/* Dynamic Role */}
@@ -146,8 +124,9 @@ const HeroSection = () => {
                         {/* Description */}
                         <p className={`text-lg md:text-xl leading-relaxed max-w-3xl mx-auto ${isDark ? 'text-gray-400' : 'text-gray-600'
                             }`}>
-                            Passionate about creating beautiful, functional, and user-centered digital experiences.
-                            I specialize in modern web technologies and love turning ideas into reality through code. ✨
+                            ReactJS Developer at Niswey with 3 years 3 months of experience.
+                            I focus on creating performant, scalable web applications using React.js, Redux Toolkit, and HubSpot CMS, 
+                            delivering solutions that meet both technical and business requirements.
                         </p>
                     </div>
 
@@ -157,11 +136,11 @@ const HeroSection = () => {
                             <div
                                 key={index}
                                 className={`p-4 rounded-2xl backdrop-blur-sm border transition-all duration-300 hover:scale-105 ${isDark
-                                        ? 'bg-gray-800/50 border-gray-700/50 hover:border-purple-500/50'
-                                        : 'bg-white/70 border-gray-200/50 hover:border-purple-300/50'
+                                        ? 'bg-gray-800/50 border-gray-700/50 hover:border-cyan-500/50'
+                                        : 'bg-white/70 border-gray-200/50 hover:border-cyan-300/50'
                                     }`}
                             >
-                                <div className={`flex items-center justify-center mb-2 ${isDark ? 'text-purple-400' : 'text-purple-600'
+                                <div className={`flex items-center justify-center mb-2 ${isDark ? 'text-cyan-400' : 'text-cyan-600'
                                     }`}>
                                     {stat.icon}
                                 </div>
@@ -175,30 +154,6 @@ const HeroSection = () => {
                                 </div>
                             </div>
                         ))}
-                    </div>
-
-                    {/* CTA Buttons */}
-                    <div className="flex flex-wrap gap-4 justify-center">
-                        <button className={`group relative px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 ${isDark
-                                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white'
-                                : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white'
-                            } shadow-lg hover:shadow-2xl overflow-hidden`}>
-                            <div className="flex items-center space-x-2">
-                                <Play size={20} />
-                                <span>View My Work</span>
-                            </div>
-                            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12" />
-                        </button>
-
-                        <button className={`group px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 border-2 ${isDark
-                                ? 'border-gray-600 hover:border-purple-500 text-gray-300 hover:text-white bg-gray-800/50 hover:bg-purple-500/10'
-                                : 'border-gray-300 hover:border-purple-500 text-gray-700 hover:text-purple-600 bg-white/50 hover:bg-purple-50'
-                            } backdrop-blur-sm`}>
-                            <div className="flex items-center space-x-2">
-                                <Download size={20} />
-                                <span>Download Resume</span>
-                            </div>
-                        </button>
                     </div>
                 </div>
 
@@ -217,9 +172,9 @@ const HeroSection = () => {
             </div>
 
             {/* Floating ambient elements */}
-            <div className="absolute top-20 left-20 w-2 h-2 bg-purple-400 rounded-full animate-pulse opacity-60" />
-            <div className="absolute top-40 right-32 w-3 h-3 bg-blue-400 rounded-full animate-ping opacity-40" />
-            <div className="absolute bottom-32 left-16 w-1 h-1 bg-pink-400 rounded-full animate-pulse opacity-70" />
+            <div className="absolute top-20 left-20 w-2 h-2 bg-cyan-400 rounded-full animate-pulse opacity-60" />
+            <div className="absolute top-40 right-32 w-3 h-3 bg-teal-400 rounded-full animate-ping opacity-40" />
+            <div className="absolute bottom-32 left-16 w-1 h-1 bg-emerald-400 rounded-full animate-pulse opacity-70" />
             <div className="absolute bottom-20 right-20 w-2 h-2 bg-green-400 rounded-full animate-bounce opacity-50" />
         </section>
     );

@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Moon, Sun, Code, Coffee, Users, Award, Clock, Target, TrendingUp, Zap } from 'lucide-react';
+import { Code, Users, Award, Clock, Target, TrendingUp, Zap, ExternalLink } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
 
 const AboutStats = () => {
-    const [isDark, setIsDark] = useState(true);
+    const { isDark } = useTheme();
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [counters, setCounters] = useState({
         experience: 0,
         projects: 0,
-        clients: 0,
         satisfaction: 0,
         technologies: 0,
-        coffees: 0
+        commits: 0
     });
 
     // Mouse tracking for parallax
@@ -30,11 +30,10 @@ const AboutStats = () => {
     useEffect(() => {
         const targets = {
             experience: 3,
-            projects: 50,
-            clients: 25,
+            projects: 15,
             satisfaction: 100,
-            technologies: 15,
-            coffees: 500
+            technologies: 12,
+            commits: 1000
         };
 
         const duration = 2000; // 2 seconds
@@ -80,21 +79,11 @@ const AboutStats = () => {
             icon: <Code size={32} />,
             value: counters.projects,
             suffix: '+',
-            label: 'Projects Completed',
+            label: 'HubSpot Websites',
             description: 'Successful deliveries',
-            color: 'from-purple-500 to-pink-500',
-            bgColor: 'bg-purple-500/10',
-            borderColor: 'border-purple-500/20'
-        },
-        {
-            icon: <Users size={32} />,
-            value: counters.clients,
-            suffix: '+',
-            label: 'Happy Clients',
-            description: 'Satisfied customers',
-            color: 'from-green-500 to-emerald-500',
-            bgColor: 'bg-green-500/10',
-            borderColor: 'border-green-500/20'
+            color: 'from-orange-500 to-red-500',
+            bgColor: 'bg-orange-500/10',
+            borderColor: 'border-orange-500/20'
         },
         {
             icon: <Award size={32} />,
@@ -111,47 +100,49 @@ const AboutStats = () => {
             value: counters.technologies,
             suffix: '+',
             label: 'Technologies',
-            description: 'Modern tech stack',
-            color: 'from-indigo-500 to-blue-500',
-            bgColor: 'bg-indigo-500/10',
-            borderColor: 'border-indigo-500/20'
+            description: 'Frontend & HubSpot',
+            color: 'from-cyan-500 to-teal-500',
+            bgColor: 'bg-cyan-500/10',
+            borderColor: 'border-cyan-500/20'
         },
         {
-            icon: <span className="text-3xl">🍵</span>,
-            value: counters.coffees,
+            icon: <Code size={32} />,
+            value: counters.commits,
             suffix: '+',
-            label: 'Cups of Tea',
-            description: 'Fuel for coding',
-            color: 'from-amber-500 to-yellow-500',
-            bgColor: 'bg-amber-500/10',
-            borderColor: 'border-amber-500/20'
+            label: 'Code Commits',
+            description: 'Active development',
+            color: 'from-purple-500 to-pink-500',
+            bgColor: 'bg-purple-500/10',
+            borderColor: 'border-purple-500/20'
         }
     ];
 
     const achievements = [
         {
-            icon: <TrendingUp size={24} />,
-            title: 'Performance Optimization',
-            description: 'Improved website load times by 40% on average',
-            color: 'text-blue-400'
-        },
-        {
-            icon: <Zap size={24} />,
-            title: 'Rapid Development',
-            description: 'Delivered projects 25% faster than industry average',
-            color: 'text-purple-400'
-        },
-        {
             icon: <Award size={24} />,
-            title: 'Quality Assurance',
-            description: 'Zero critical bugs in production deployments',
-            color: 'text-green-400'
+            title: 'Top Performer Award',
+            description: 'Recognized as Top Performer at Niswey for outstanding contributions and dedication',
+            color: 'text-yellow-400',
+            link: 'https://www.linkedin.com/posts/tanjum-kadakol-665a69225_gratitude-topperformer-workanniversary-activity-7378079096293031936-xYmk'
         },
         {
             icon: <Users size={24} />,
-            title: 'Team Collaboration',
-            description: 'Led cross-functional teams of 5+ developers',
-            color: 'text-yellow-400'
+            title: 'Customer Recognition',
+            description: 'Appreciated by CEO for exceptional customer service and team collaboration',
+            color: 'text-blue-400',
+            link: 'https://www.linkedin.com/posts/sumaep_i-am-so-proud-of-this-team-that-makes-a-customer-activity-7292753317284261890-sSna'
+        },
+        {
+            icon: <TrendingUp size={24} />,
+            title: '3+ Years at Niswey',
+            description: 'Completed 3 wonderful years of growth, learning, and contributing to team success',
+            color: 'text-green-400'
+        },
+        {
+            icon: <Zap size={24} />,
+            title: '15+ HubSpot Websites',
+            description: 'Successfully delivered 15+ HubSpot CMS websites for clients worldwide',
+            color: 'text-purple-400'
         }
     ];
 
@@ -165,8 +156,8 @@ const AboutStats = () => {
             <div className="absolute inset-0 overflow-hidden">
                 <div
                     className={`absolute w-[350px] h-[350px] rounded-full blur-3xl animate-pulse ${isDark
-                        ? 'bg-gradient-to-r from-indigo-600/10 via-purple-600/10 to-pink-500/10'
-                        : 'bg-gradient-to-r from-indigo-300/20 via-purple-300/20 to-pink-300/20'
+                        ? 'bg-gradient-to-r from-cyan-600/10 via-teal-600/10 to-emerald-500/10'
+                        : 'bg-gradient-to-r from-cyan-300/20 via-teal-300/20 to-emerald-300/20'
                         }`}
                     style={{
                         transform: `translate(${mousePosition.x * 0.015}px, ${mousePosition.y * 0.015}px)`,
@@ -176,8 +167,8 @@ const AboutStats = () => {
                 />
                 <div
                     className={`absolute w-[300px] h-[300px] rounded-full blur-3xl animate-pulse ${isDark
-                        ? 'bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-indigo-600/10'
-                        : 'bg-gradient-to-r from-cyan-300/20 via-blue-300/20 to-indigo-300/20'
+                        ? 'bg-gradient-to-r from-emerald-500/10 via-cyan-500/10 to-blue-600/10'
+                        : 'bg-gradient-to-r from-emerald-300/20 via-cyan-300/20 to-blue-300/20'
                         }`}
                     style={{
                         transform: `translate(-${mousePosition.x * 0.02}px, -${mousePosition.y * 0.02}px)`,
@@ -191,31 +182,16 @@ const AboutStats = () => {
             <div className="relative z-10 max-w-7xl mx-auto px-6">
                 {/* Header */}
                 <div className="text-center mb-16">
-                    <div className="flex items-center justify-center mb-8">
-                        <button
-                            onClick={() => setIsDark(!isDark)}
-                            className={`p-3 rounded-full transition-all duration-300 group mr-4 ${isDark
-                                ? 'bg-gray-800 hover:bg-gray-700 text-yellow-400'
-                                : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-                                }`}
-                        >
-                            {isDark ? (
-                                <Sun className="group-hover:rotate-180 transition-transform duration-500" size={20} />
-                            ) : (
-                                <Moon className="group-hover:-rotate-12 transition-transform duration-300" size={20} />
-                            )}
-                        </button>
-                        <h2 className={`text-4xl md:text-6xl font-black ${isDark
-                            ? 'bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent'
-                            : 'bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent'
-                            }`}>
-                            By The Numbers
-                        </h2>
-                    </div>
+                    <h2 className={`text-4xl md:text-6xl font-black mb-8 ${isDark
+                        ? 'bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent'
+                        : 'bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 bg-clip-text text-transparent'
+                        }`}>
+                        By The Numbers
+                    </h2>
 
                     <p className={`text-xl max-w-3xl mx-auto ${isDark ? 'text-gray-400' : 'text-gray-600'
                         }`}>
-                        My journey in development, measured in achievements, satisfied clients, and countless cups of tea! 📊
+                        3+ years at Niswey, 15+ HubSpot websites, delivering quality solutions and driving digital success!
                     </p>
                 </div>
 
@@ -267,39 +243,65 @@ const AboutStats = () => {
                     </h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {achievements.map((achievement, index) => (
-                            <div
-                                key={index}
-                                className={`relative p-6 rounded-2xl border transition-all duration-500 transform hover:scale-105 ${isDark
+                        {achievements.map((achievement, index) => {
+                            const AchievementContent = (
+                                <div className={`relative p-6 rounded-2xl border transition-all duration-500 transform hover:scale-105 ${isDark
                                     ? 'bg-gray-800/40 border-gray-700/50 hover:border-gray-600'
                                     : 'bg-white/80 border-gray-200/50 hover:border-gray-300'
-                                    } backdrop-blur-xl shadow-lg hover:shadow-2xl`}
-                            >
-                                <div className="flex items-start space-x-4">
-                                    <div className={`p-3 rounded-xl ${isDark ? 'bg-gray-700/50' : 'bg-gray-100'} ${achievement.color}`}>
-                                        {achievement.icon}
-                                    </div>
-                                    <div>
-                                        <h4 className={`text-lg font-semibold mb-2 ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>
-                                            {achievement.title}
-                                        </h4>
-                                        <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                                            {achievement.description}
-                                        </p>
+                                    } backdrop-blur-xl shadow-lg hover:shadow-2xl`}>
+                                    <div className="flex items-start space-x-4">
+                                        <div className={`p-3 rounded-xl ${isDark ? 'bg-gray-700/50' : 'bg-gray-100'} ${achievement.color}`}>
+                                            {achievement.icon}
+                                        </div>
+                                        <div className="flex-1">
+                                            <h4 className={`text-lg font-semibold mb-2 ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>
+                                                {achievement.title}
+                                            </h4>
+                                            <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                                                {achievement.description}
+                                            </p>
+                                            {achievement.link && (
+                                                <a 
+                                                    href={achievement.link}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className={`inline-flex items-center space-x-1 mt-3 text-xs font-medium ${isDark ? 'text-cyan-400 hover:text-cyan-300' : 'text-cyan-600 hover:text-cyan-700'}`}
+                                                >
+                                                    <span>View on LinkedIn</span>
+                                                    <ExternalLink size={12} />
+                                                </a>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+
+                            return achievement.link ? (
+                                <a
+                                    key={index}
+                                    href={achievement.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="block"
+                                >
+                                    {AchievementContent}
+                                </a>
+                            ) : (
+                                <div key={index}>
+                                    {AchievementContent}
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
 
                 {/* Call to Action */}
                 <div className="text-center">
                     <div className={`inline-flex items-center space-x-2 px-6 py-3 rounded-full ${isDark
-                        ? 'bg-gradient-to-r from-indigo-600/20 to-purple-600/20 border border-indigo-500/30'
-                        : 'bg-gradient-to-r from-indigo-100 to-purple-100 border border-indigo-200'
+                        ? 'bg-gradient-to-r from-cyan-600/20 to-emerald-600/20 border border-cyan-500/30'
+                        : 'bg-gradient-to-r from-cyan-100 to-emerald-100 border border-cyan-200'
                         } backdrop-blur-sm`}>
-                        <TrendingUp className={`${isDark ? 'text-indigo-400' : 'text-indigo-600'}`} size={20} />
+                        <TrendingUp className={`${isDark ? 'text-cyan-400' : 'text-cyan-600'}`} size={20} />
                         <span className="font-semibold">Growing every day with new challenges and opportunities!</span>
                     </div>
                 </div>

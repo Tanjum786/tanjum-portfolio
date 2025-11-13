@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Moon, Sun, Briefcase, GraduationCap, Code, Award, Calendar, MapPin, ExternalLink } from 'lucide-react';
+import { Briefcase, GraduationCap, Code, Award, Calendar, MapPin, ExternalLink } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
 
 const ExperienceTimeline = () => {
-    const [isDark, setIsDark] = useState(true);
+    const { isDark } = useTheme();
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [activeTab, setActiveTab] = useState('experience');
     const [visibleItems, setVisibleItems] = useState(new Set());
@@ -42,109 +43,116 @@ const ExperienceTimeline = () => {
     const experiences = [
         {
             id: 1,
-            title: 'Frontend Developer',
-            company: 'Tech Solutions Inc.',
-            location: 'Remote',
-            period: '2022 - Present',
+            title: 'Frontend HubSpot Developer (S1)',
+            company: 'Niswey',
+            location: 'Remote (Delhi-based)',
+            period: '2021 - Present (3+ years)',
             type: 'Full-time',
-            description: 'Developing modern web applications using React.js and implementing responsive designs. Leading frontend development for multiple client projects.',
-            technologies: ['React.js', 'JavaScript', 'Tailwind CSS', 'HubSpot', 'Git'],
+            description: 'Developing web applications with React.js and Vue.js. Building HubSpot CMS websites using HubL templating. Creating custom HubSpot workflows, UI extensions, and integrating marketing automation modules to enhance client business processes.',
+            technologies: ['React.js', 'Vue.js', 'HubL', 'Redux Toolkit', 'HubSpot CMS', 'Custom Workflows', 'UI Extensions', 'JavaScript', 'HTML5', 'CSS3'],
             achievements: [
-                'Improved application performance by 40%',
-                'Led a team of 3 junior developers',
-                'Delivered 15+ successful projects'
+                '🏆 Received Top Performer Award for outstanding contributions',
+                'Developed web applications using React.js and Vue.js',
+                'Built 15+ websites using HubL templating language',
+                'Created custom HubSpot workflows and UI extensions',
+                '🌟 Recognized by CEO for exceptional customer service',
+                'Optimized website performance and SEO'
             ],
             icon: <Briefcase size={20} />,
-            color: 'from-blue-500 to-cyan-500'
+            color: 'from-orange-500 to-red-500'
         },
         {
             id: 2,
-            title: 'Junior Frontend Developer',
-            company: 'Digital Agency Pro',
-            location: 'Hybrid',
-            period: '2021 - 2022',
-            type: 'Full-time',
-            description: 'Worked on client websites and web applications. Focused on creating pixel-perfect designs and implementing interactive user interfaces.',
-            technologies: ['HTML5', 'CSS3', 'JavaScript', 'Bootstrap', 'jQuery'],
+            title: 'Trainee',
+            company: 'neoG Camp',
+            location: 'Bangalore, India',
+            period: 'January 2022 - June 2022 (6 months)',
+            type: 'Training',
+            description: 'Intensive bootcamp training focused on advanced React.js, Redux, and modern JavaScript frameworks. Built real-world projects and learned industry best practices.',
+            technologies: ['React.js', 'Redux', 'JavaScript', 'Git', 'Project Building'],
             achievements: [
-                'Completed 25+ client projects',
-                'Learned React.js and modern frameworks',
-                'Improved code quality and best practices'
+                'Completed 6-month intensive bootcamp',
+                'Mastered React.js and Redux',
+                'Built multiple full-stack projects',
+                'Industry-ready development skills'
             ],
             icon: <Code size={20} />,
             color: 'from-purple-500 to-pink-500'
         },
         {
             id: 3,
-            title: 'Web Development Intern',
-            company: 'StartupHub',
-            location: 'On-site',
-            period: '2021 (6 months)',
-            type: 'Internship',
-            description: 'First professional experience in web development. Learned industry standards and worked on real-world projects under senior developer guidance.',
-            technologies: ['HTML', 'CSS', 'JavaScript', 'WordPress', 'Figma'],
+            title: 'Web Development Training',
+            company: 'NavGurukul',
+            location: 'Bangalore, India',
+            period: 'November 2020 - July 2022',
+            type: 'Training',
+            description: 'Comprehensive web development training covering HTML, CSS, JavaScript, React, and modern web technologies. Built strong foundation in frontend development.',
+            technologies: ['HTML5', 'CSS3', 'JavaScript', 'React.js', 'Git', 'Web Development'],
             achievements: [
-                'Successfully completed internship program',
-                'Built 5+ landing pages',
-                'Learned version control with Git'
+                'Mastered core web technologies',
+                'Built multiple real-world projects',
+                'Learned modern development practices',
+                'Strong foundation in React.js and JavaScript'
             ],
-            icon: <Award size={20} />,
-            color: 'from-green-500 to-emerald-500'
+            icon: <Code size={20} />,
+            color: 'from-blue-500 to-cyan-500'
         }
     ];
 
     const education = [
         {
             id: 1,
-            title: 'Bachelor of Technology (B.Tech)',
-            company: 'XYZ University',
-            location: 'India',
-            period: '2020 - 2024',
-            type: 'Degree',
-            description: 'Computer Science Engineering with specialization in Web Development and Frontend Technologies. Graduated with distinction.',
-            technologies: ['Data Structures', 'Algorithms', 'Database Management', 'Software Engineering'],
+            title: 'neoG Bootcamp',
+            company: 'neoG Camp',
+            location: 'Bangalore, India',
+            period: 'January 2022 - July 2022',
+            type: 'Bootcamp',
+            description: 'Intensive bootcamp program focused on advanced React.js, Redux, and modern JavaScript development. Learned industry best practices and built production-ready applications.',
+            technologies: ['React.js', 'Redux', 'JavaScript ES6+', 'Git', 'Full-stack Development'],
             achievements: [
-                'Graduated with 8.5+ CGPA',
-                'Won 3 coding competitions',
-                'Led college tech fest development team'
+                'Completed intensive 6-month bootcamp',
+                'Mastered React.js and Redux',
+                'Built real-world applications',
+                'Industry-ready development skills'
+            ],
+            icon: <Award size={20} />,
+            color: 'from-purple-500 to-pink-500'
+        },
+        {
+            id: 2,
+            title: 'Web Development Program',
+            company: 'NavGurukul',
+            location: 'Bangalore, India',
+            period: 'November 2020 - July 2022',
+            type: 'Professional Training',
+            description: 'Comprehensive web development training covering HTML, CSS, JavaScript, React, and modern web technologies. Built strong foundation in frontend development.',
+            technologies: ['HTML5', 'CSS3', 'JavaScript', 'React.js', 'Git', 'Web Development'],
+            achievements: [
+                'Mastered frontend web technologies',
+                'Built multiple real-world projects',
+                'Learned modern development practices',
+                'Strong foundation in React.js and JavaScript'
+            ],
+            icon: <Code size={20} />,
+            color: 'from-green-500 to-emerald-500'
+        },
+        {
+            id: 3,
+            title: 'Bachelor of Commerce (BCom)',
+            company: 'Rani Channamma University',
+            location: 'Belagavi, Karnataka',
+            period: '2018 - 2020',
+            type: 'Degree',
+            description: 'Bachelor of Commerce degree with focus on commerce fundamentals. Built strong analytical and business understanding.',
+            technologies: ['Commerce', 'Accounting', 'Business Management', 'Economics'],
+            achievements: [
+                'Graduated with BCom degree',
+                'Strong analytical skills',
+                'Business fundamentals knowledge'
             ],
             icon: <GraduationCap size={20} />,
             color: 'from-indigo-500 to-blue-500'
         },
-        {
-            id: 2,
-            title: 'React.js Certification',
-            company: 'Online Learning Platform',
-            location: 'Online',
-            period: '2022',
-            type: 'Certification',
-            description: 'Comprehensive React.js course covering hooks, state management, and modern React patterns. Built multiple projects during the course.',
-            technologies: ['React.js', 'Hooks', 'Context API', 'Redux', 'Jest'],
-            achievements: [
-                'Completed 50+ hours of coursework',
-                'Built 5 real-world projects',
-                'Achieved 95% course completion score'
-            ],
-            icon: <Award size={20} />,
-            color: 'from-cyan-500 to-blue-500'
-        },
-        {
-            id: 3,
-            title: 'JavaScript Fundamentals',
-            company: 'Coding Bootcamp',
-            location: 'Online',
-            period: '2021',
-            type: 'Course',
-            description: 'Intensive JavaScript course covering ES6+, DOM manipulation, async programming, and modern JavaScript development practices.',
-            technologies: ['JavaScript ES6+', 'DOM APIs', 'Fetch API', 'Async/Await', 'NPM'],
-            achievements: [
-                'Mastered core JavaScript concepts',
-                'Built interactive web applications',
-                'Learned modern development workflow'
-            ],
-            icon: <Code size={20} />,
-            color: 'from-yellow-500 to-orange-500'
-        }
     ];
 
     const currentData = activeTab === 'experience' ? experiences : education;
@@ -159,8 +167,8 @@ const ExperienceTimeline = () => {
             <div className="absolute inset-0 overflow-hidden">
                 <div
                     className={`absolute w-[350px] h-[350px] rounded-full blur-3xl animate-pulse ${isDark
-                        ? 'bg-gradient-to-r from-indigo-600/10 via-purple-600/10 to-pink-500/10'
-                        : 'bg-gradient-to-r from-indigo-300/20 via-purple-300/20 to-pink-300/20'
+                        ? 'bg-gradient-to-r from-cyan-600/10 via-teal-600/10 to-emerald-500/10'
+                        : 'bg-gradient-to-r from-cyan-300/20 via-teal-300/20 to-emerald-300/20'
                         }`}
                     style={{
                         transform: `translate(${mousePosition.x * 0.015}px, ${mousePosition.y * 0.015}px)`,
@@ -170,8 +178,8 @@ const ExperienceTimeline = () => {
                 />
                 <div
                     className={`absolute w-[300px] h-[300px] rounded-full blur-3xl animate-pulse ${isDark
-                        ? 'bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-indigo-600/10'
-                        : 'bg-gradient-to-r from-cyan-300/20 via-blue-300/20 to-indigo-300/20'
+                        ? 'bg-gradient-to-r from-emerald-500/10 via-cyan-500/10 to-blue-600/10'
+                        : 'bg-gradient-to-r from-emerald-300/20 via-cyan-300/20 to-blue-300/20'
                         }`}
                     style={{
                         transform: `translate(-${mousePosition.x * 0.02}px, -${mousePosition.y * 0.02}px)`,
@@ -185,27 +193,12 @@ const ExperienceTimeline = () => {
             <div className="relative z-10 max-w-7xl mx-auto px-6">
                 {/* Header */}
                 <div className="text-center mb-16">
-                    <div className="flex items-center justify-center mb-8">
-                        <button
-                            onClick={() => setIsDark(!isDark)}
-                            className={`p-3 rounded-full transition-all duration-300 group mr-4 ${isDark
-                                ? 'bg-gray-800 hover:bg-gray-700 text-yellow-400'
-                                : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-                                }`}
-                        >
-                            {isDark ? (
-                                <Sun className="group-hover:rotate-180 transition-transform duration-500" size={20} />
-                            ) : (
-                                <Moon className="group-hover:-rotate-12 transition-transform duration-300" size={20} />
-                            )}
-                        </button>
-                        <h2 className={`text-4xl md:text-6xl font-black ${isDark
-                            ? 'bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent'
-                            : 'bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent'
-                            }`}>
-                            My Journey
-                        </h2>
-                    </div>
+                    <h2 className={`text-4xl md:text-6xl font-black mb-8 ${isDark
+                        ? 'bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent'
+                        : 'bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 bg-clip-text text-transparent'
+                        }`}>
+                        My Journey
+                    </h2>
 
                     <p className={`text-xl max-w-3xl mx-auto ${isDark ? 'text-gray-400' : 'text-gray-600'
                         }`}>
@@ -219,7 +212,7 @@ const ExperienceTimeline = () => {
                         <button
                             onClick={() => setActiveTab('experience')}
                             className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${activeTab === 'experience'
-                                    ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
+                                    ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-white shadow-lg'
                                     : isDark
                                         ? 'text-gray-300 hover:text-white'
                                         : 'text-gray-600 hover:text-gray-900'
@@ -231,7 +224,7 @@ const ExperienceTimeline = () => {
                         <button
                             onClick={() => setActiveTab('education')}
                             className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${activeTab === 'education'
-                                    ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
+                                    ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-white shadow-lg'
                                     : isDark
                                         ? 'text-gray-300 hover:text-white'
                                         : 'text-gray-600 hover:text-gray-900'
@@ -278,7 +271,7 @@ const ExperienceTimeline = () => {
                                                         {item.title}
                                                     </h3>
                                                     <div className="flex items-center space-x-4 text-sm">
-                                                        <span className={`font-semibold ${isDark ? 'text-purple-400' : 'text-purple-600'}`}>
+                                                        <span className={`font-semibold ${isDark ? 'text-cyan-400' : 'text-cyan-600'}`}>
                                                             {item.company}
                                                         </span>
                                                         <div className="flex items-center space-x-1">
@@ -290,7 +283,7 @@ const ExperienceTimeline = () => {
                                                     </div>
                                                 </div>
                                                 <div className="text-right">
-                                                    <div className={`px-3 py-1 rounded-full text-sm font-semibold ${isDark
+                                                    <div className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${isDark
                                                         ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
                                                         : 'bg-blue-100 text-blue-700 border border-blue-200'
                                                         }`}>
@@ -356,10 +349,10 @@ const ExperienceTimeline = () => {
                 {/* Call to Action */}
                 <div className="text-center mt-16">
                     <div className={`inline-flex items-center space-x-2 px-6 py-3 rounded-full ${isDark
-                        ? 'bg-gradient-to-r from-indigo-600/20 to-purple-600/20 border border-indigo-500/30'
-                        : 'bg-gradient-to-r from-indigo-100 to-purple-100 border border-indigo-200'
+                        ? 'bg-gradient-to-r from-cyan-600/20 to-emerald-600/20 border border-cyan-500/30'
+                        : 'bg-gradient-to-r from-cyan-100 to-emerald-100 border border-cyan-200'
                         } backdrop-blur-sm`}>
-                        <ExternalLink className={`${isDark ? 'text-indigo-400' : 'text-indigo-600'}`} size={20} />
+                        <ExternalLink className={`${isDark ? 'text-cyan-400' : 'text-cyan-600'}`} size={20} />
                         <span className="font-semibold">Ready to add your project to my journey!</span>
                     </div>
                 </div>

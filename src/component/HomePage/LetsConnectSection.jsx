@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Moon, Sun, Mail, Clock, ArrowRight, MessageCircle } from 'lucide-react';
+import { Mail, Clock, ArrowRight, MessageCircle } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
+import { useNavigate } from 'react-router-dom';
 
 const LetsConnectSection = () => {
-    const [isDark, setIsDark] = useState(true);
+    const { isDark } = useTheme();
+    const navigate = useNavigate();
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
     // Mouse tracking for parallax
@@ -28,8 +31,8 @@ const LetsConnectSection = () => {
             <div className="absolute inset-0 overflow-hidden">
                 <div
                     className={`absolute w-[350px] h-[350px] rounded-full blur-3xl animate-pulse ${isDark
-                        ? 'bg-gradient-to-r from-indigo-600/10 via-purple-600/10 to-pink-500/10'
-                        : 'bg-gradient-to-r from-indigo-300/20 via-purple-300/20 to-pink-300/20'
+                        ? 'bg-gradient-to-r from-cyan-600/10 via-teal-600/10 to-emerald-500/10'
+                        : 'bg-gradient-to-r from-cyan-300/20 via-teal-300/20 to-emerald-300/20'
                         }`}
                     style={{
                         transform: `translate(${mousePosition.x * 0.015}px, ${mousePosition.y * 0.015}px)`,
@@ -39,8 +42,8 @@ const LetsConnectSection = () => {
                 />
                 <div
                     className={`absolute w-[300px] h-[300px] rounded-full blur-3xl animate-pulse ${isDark
-                        ? 'bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-indigo-600/10'
-                        : 'bg-gradient-to-r from-cyan-300/20 via-blue-300/20 to-indigo-300/20'
+                        ? 'bg-gradient-to-r from-emerald-500/10 via-cyan-500/10 to-blue-600/10'
+                        : 'bg-gradient-to-r from-emerald-300/20 via-cyan-300/20 to-blue-300/20'
                         }`}
                     style={{
                         transform: `translate(-${mousePosition.x * 0.02}px, -${mousePosition.y * 0.02}px)`,
@@ -52,44 +55,29 @@ const LetsConnectSection = () => {
             </div>
 
             <div className="relative z-10 max-w-7xl mx-auto px-6">
-                {/* Header - same style as blog section */}
+                {/* Header */}
                 <div className="text-center mb-16">
-                    <div className="flex items-center justify-center mb-8">
-                        <button
-                            onClick={() => setIsDark(!isDark)}
-                            className={`p-3 rounded-full transition-all duration-300 group mr-4 ${isDark
-                                ? 'bg-gray-800 hover:bg-gray-700 text-yellow-400'
-                                : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-                                }`}
-                        >
-                            {isDark ? (
-                                <Sun className="group-hover:rotate-180 transition-transform duration-500" size={20} />
-                            ) : (
-                                <Moon className="group-hover:-rotate-12 transition-transform duration-300" size={20} />
-                            )}
-                        </button>
-                        <h2 className={`text-4xl md:text-6xl font-black ${isDark
-                            ? 'bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent'
-                            : 'bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent'
-                            }`}>
-                            Let's Connect
-                        </h2>
-                    </div>
+                    <h2 className={`text-4xl md:text-6xl font-black mb-8 ${isDark
+                        ? 'bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent'
+                        : 'bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 bg-clip-text text-transparent'
+                        }`}>
+                        Let's Connect
+                    </h2>
 
                     {/* Description */}
                     <p className={`text-lg md:text-xl max-w-3xl mx-auto mt-8 leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-600'
                         }`}>
-                        I'm currently available for freelance projects and full-time opportunities. If you're
-                        interested in working together or have an exciting project in mind, let's have a
-                        conversation.
+                        I'm currently available for freelance projects and full-time opportunities. Whether you need a React.js developer 
+                        or HubSpot CMS solutions, I'm here to help bring your vision to life.
                     </p>
 
                     {/* CTA Buttons - matching your theme */}
                     <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
                         <button
+                            onClick={() => navigate('/contact')}
                             className={`group relative px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 ${isDark
-                                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white'
-                                : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white'
+                                ? 'bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-700 hover:to-emerald-700 text-white'
+                                : 'bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-700 hover:to-emerald-700 text-white'
                                 } shadow-lg hover:shadow-2xl overflow-hidden`}
                         >
                             <div className="flex items-center justify-center space-x-2">
@@ -101,6 +89,7 @@ const LetsConnectSection = () => {
                         </button>
 
                         <button
+                            onClick={() => navigate('/projects')}
                             className={`px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 border-2 ${isDark
                                 ? 'border-gray-600 text-gray-300 hover:border-gray-400 hover:text-white'
                                 : 'border-gray-300 text-gray-700 hover:border-gray-500 hover:text-gray-900'
@@ -123,7 +112,7 @@ const LetsConnectSection = () => {
                             EMAIL
                         </div>
                         <div className={`text-lg font-medium ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>
-                            nabinkhair12@gmail.com
+                            tanjunkadakol147@gmail.com
                         </div>
                     </div>
 
@@ -145,10 +134,10 @@ const LetsConnectSection = () => {
                 {/* Bottom CTA */}
                 <div className="text-center mt-16">
                     <div className={`inline-flex items-center space-x-2 px-6 py-3 rounded-full ${isDark
-                        ? 'bg-gradient-to-r from-indigo-600/20 to-purple-600/20 border border-indigo-500/30'
-                        : 'bg-gradient-to-r from-indigo-100 to-purple-100 border border-indigo-200'
+                        ? 'bg-gradient-to-r from-cyan-600/20 to-emerald-600/20 border border-cyan-500/30'
+                        : 'bg-gradient-to-r from-cyan-100 to-emerald-100 border border-cyan-200'
                         } backdrop-blur-sm`}>
-                        <MessageCircle className={`${isDark ? 'text-indigo-400' : 'text-indigo-600'}`} size={20} />
+                        <MessageCircle className={`${isDark ? 'text-cyan-400' : 'text-cyan-600'}`} size={20} />
                         <span className="font-semibold">Have a project idea? Let's collaborate!</span>
                     </div>
                 </div>

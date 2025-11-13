@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Moon, Sun, ExternalLink, Calendar, Clock, User, Tag, ChevronDown, ChevronUp, Filter, Star, Eye, Heart, BookOpen, MessageCircle, Share2 } from 'lucide-react';
+import { ExternalLink, Calendar, Clock, User, Tag, ChevronDown, ChevronUp, Filter, Star, Eye, Heart, BookOpen, MessageCircle, Share2, ArrowRight } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
+import { useNavigate } from 'react-router-dom';
 
 const BlogSection = () => {
-    const [isDark, setIsDark] = useState(true);
+    const { isDark } = useTheme();
+    const navigate = useNavigate();
     const [hoveredBlog, setHoveredBlog] = useState(null);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-    const [showAll, setShowAll] = useState(false);
-    const [activeFilter, setActiveFilter] = useState('All');
-    const [animating, setAnimating] = useState(false);
     const [selectedBlog, setSelectedBlog] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -92,7 +92,7 @@ Remember, the goal is to create applications that are not just functional, but m
             tags: ['React', 'JavaScript', 'Architecture', 'Best Practices'],
             date: 'Dec 15, 2024',
             readTime: '8 min read',
-            author: 'Your Name',
+            author: 'Tanjum Kadakol',
             featured: true,
             likes: 245,
             views: 3420,
@@ -158,7 +158,7 @@ The future is exciting, and these trends will shape how we build the web of tomo
             tags: ['Web Development', 'Trends', 'Future', 'Technology'],
             date: 'Dec 12, 2024',
             readTime: '6 min read',
-            author: 'Your Name',
+            author: 'Tanjum Kadakol',
             featured: true,
             likes: 189,
             views: 2890,
@@ -281,7 +281,7 @@ Remember: There's no "wrong" choice - use what works best for your specific use 
             tags: ['CSS', 'Grid', 'Flexbox', 'Layout'],
             date: 'Dec 10, 2024',
             readTime: '5 min read',
-            author: 'Your Name',
+            author: 'Tanjum Kadakol',
             featured: false,
             likes: 156,
             views: 2140,
@@ -468,7 +468,7 @@ Remember: Premature optimization is the root of all evil. Profile first, then op
             tags: ['JavaScript', 'Performance', 'Optimization', 'Speed'],
             date: 'Dec 8, 2024',
             readTime: '12 min read',
-            author: 'Your Name',
+            author: 'Tanjum Kadakol',
             featured: false,
             likes: 203,
             views: 2756,
@@ -484,29 +484,8 @@ Remember: Premature optimization is the root of all evil. Profile first, then op
         { icon: <Heart size={20} />, label: '793+ Likes', color: 'text-red-400' },
     ];
 
-    const allFilters = ['All', 'Featured', 'React', 'JavaScript', 'CSS', 'Tutorial', 'Insights', 'Advanced'];
-
-    const getFilteredBlogs = () => {
-        if (activeFilter === 'All') return blogs;
-        if (activeFilter === 'Featured') return blogs.filter(blog => blog.featured);
-
-        return blogs.filter(blog =>
-            blog.category === activeFilter ||
-            blog.type === activeFilter ||
-            blog.tags.includes(activeFilter)
-        );
-    };
-
-    const handleShowMore = () => {
-        setAnimating(true);
-        setTimeout(() => {
-            setShowAll(!showAll);
-            setAnimating(false);
-        }, 200);
-    };
-
-    const filteredBlogs = getFilteredBlogs();
-    const displayedBlogs = showAll ? filteredBlogs : filteredBlogs.slice(0, 2);
+    // Only show first 2 blogs on home page
+    const displayedBlogs = blogs.slice(0, 2);
 
     return (
         <section className={`py-20 transition-all duration-500 relative overflow-hidden ${isDark
@@ -517,8 +496,8 @@ Remember: Premature optimization is the root of all evil. Profile first, then op
             <div className="absolute inset-0 overflow-hidden">
                 <div
                     className={`absolute w-[350px] h-[350px] rounded-full blur-3xl animate-pulse ${isDark
-                        ? 'bg-gradient-to-r from-indigo-600/10 via-purple-600/10 to-pink-500/10'
-                        : 'bg-gradient-to-r from-indigo-300/20 via-purple-300/20 to-pink-300/20'
+                        ? 'bg-gradient-to-r from-cyan-600/10 via-teal-600/10 to-emerald-500/10'
+                        : 'bg-gradient-to-r from-cyan-300/20 via-teal-300/20 to-emerald-300/20'
                         }`}
                     style={{
                         transform: `translate(${mousePosition.x * 0.015}px, ${mousePosition.y * 0.015}px)`,
@@ -528,8 +507,8 @@ Remember: Premature optimization is the root of all evil. Profile first, then op
                 />
                 <div
                     className={`absolute w-[300px] h-[300px] rounded-full blur-3xl animate-pulse ${isDark
-                        ? 'bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-indigo-600/10'
-                        : 'bg-gradient-to-r from-cyan-300/20 via-blue-300/20 to-indigo-300/20'
+                        ? 'bg-gradient-to-r from-emerald-500/10 via-cyan-500/10 to-blue-600/10'
+                        : 'bg-gradient-to-r from-emerald-300/20 via-cyan-300/20 to-blue-300/20'
                         }`}
                     style={{
                         transform: `translate(-${mousePosition.x * 0.02}px, -${mousePosition.y * 0.02}px)`,
@@ -543,27 +522,12 @@ Remember: Premature optimization is the root of all evil. Profile first, then op
             <div className="relative z-10 max-w-7xl mx-auto px-6">
                 {/* Header */}
                 <div className="text-center mb-16">
-                    <div className="flex items-center justify-center mb-8">
-                        <button
-                            onClick={() => setIsDark(!isDark)}
-                            className={`p-3 rounded-full transition-all duration-300 group mr-4 ${isDark
-                                ? 'bg-gray-800 hover:bg-gray-700 text-yellow-400'
-                                : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-                                }`}
-                        >
-                            {isDark ? (
-                                <Sun className="group-hover:rotate-180 transition-transform duration-500" size={20} />
-                            ) : (
-                                <Moon className="group-hover:-rotate-12 transition-transform duration-300" size={20} />
-                            )}
-                        </button>
-                        <h2 className={`text-4xl md:text-6xl font-black ${isDark
-                            ? 'bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent'
-                            : 'bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent'
-                            }`}>
-                            My Blog
-                        </h2>
-                    </div>
+                    <h2 className={`text-4xl md:text-6xl font-black mb-8 ${isDark
+                        ? 'bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent'
+                        : 'bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 bg-clip-text text-transparent'
+                        }`}>
+                        My Blog
+                    </h2>
 
                     <p className={`text-xl max-w-3xl mx-auto ${isDark ? 'text-gray-400' : 'text-gray-600'
                         }`}>
@@ -584,34 +548,8 @@ Remember: Premature optimization is the root of all evil. Profile first, then op
                     </div>
                 </div>
 
-                {/* Filters */}
-                {showAll && (
-                    <div className="flex flex-wrap justify-center gap-3 mb-12">
-                        <div className={`flex items-center space-x-2 px-4 py-2 rounded-full ${isDark ? 'bg-gray-800/50 text-gray-400' : 'bg-white/70 text-gray-600'
-                            }`}>
-                            <Filter size={16} />
-                            <span className="text-sm font-medium">Filter by:</span>
-                        </div>
-                        {allFilters.map((filter) => (
-                            <button
-                                key={filter}
-                                onClick={() => setActiveFilter(filter)}
-                                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 ${activeFilter === filter
-                                    ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
-                                    : isDark
-                                        ? 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 border border-gray-700'
-                                        : 'bg-white/70 text-gray-700 hover:bg-gray-100 border border-gray-200'
-                                    }`}
-                            >
-                                {filter}
-                            </button>
-                        ))}
-                    </div>
-                )}
-
                 {/* Blogs Grid */}
-                <div className={`grid ${showAll ? 'md:grid-cols-2 lg:grid-cols-3' : 'md:grid-cols-2 max-w-5xl mx-auto'} gap-8 transition-all duration-500 ${animating ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
-                    }`}>
+                <div className="grid md:grid-cols-2 max-w-5xl mx-auto gap-8">
                     {displayedBlogs.map((blog, index) => (
                         <article
                             key={blog.id}
@@ -619,7 +557,7 @@ Remember: Premature optimization is the root of all evil. Profile first, then op
                                 ? 'bg-gray-800/40'
                                 : 'bg-white/80'
                                 } backdrop-blur-xl rounded-3xl border ${isDark ? 'border-gray-700/50' : 'border-gray-200/50'
-                                } hover:border-purple-500/50 transition-all duration-500 transform hover:scale-[1.02] overflow-hidden shadow-lg hover:shadow-2xl`}
+                                } hover:border-cyan-500/50 transition-all duration-500 transform hover:scale-[1.02] overflow-hidden shadow-lg hover:shadow-2xl`}
                             onMouseEnter={() => setHoveredBlog(blog.id)}
                             onMouseLeave={() => setHoveredBlog(null)}
                         >
@@ -668,7 +606,7 @@ Remember: Premature optimization is the root of all evil. Profile first, then op
                             {/* Blog Info */}
                             <div className="p-6 space-y-4">
                                 <div className="space-y-2">
-                                    <h3 className={`text-xl font-bold group-hover:text-purple-400 transition-colors duration-300 line-clamp-2 ${isDark ? 'text-gray-100' : 'text-gray-900'
+                                    <h3 className={`text-xl font-bold group-hover:text-cyan-400 transition-colors duration-300 line-clamp-2 ${isDark ? 'text-gray-100' : 'text-gray-900'
                                         }`}>
                                         {blog.title}
                                     </h3>
@@ -685,8 +623,8 @@ Remember: Premature optimization is the root of all evil. Profile first, then op
                                             </div>
                                         </div>
                                         <div className={`px-3 py-1 rounded-full text-xs font-semibold ${isDark
-                                            ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
-                                            : 'bg-purple-100 text-purple-700 border border-purple-200'
+                                            ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
+                                            : 'bg-cyan-100 text-cyan-700 border border-cyan-200'
                                             }`}>
                                             {blog.type}
                                         </div>
@@ -712,8 +650,8 @@ Remember: Premature optimization is the root of all evil. Profile first, then op
                                     ))}
                                     {blog.tags.length > 3 && (
                                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${isDark
-                                            ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
-                                            : 'bg-purple-100 text-purple-700 border border-purple-200'
+                                            ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
+                                            : 'bg-cyan-100 text-cyan-700 border border-cyan-200'
                                             }`}>
                                             +{blog.tags.length - 3}
                                         </span>
@@ -745,22 +683,18 @@ Remember: Premature optimization is the root of all evil. Profile first, then op
                     ))}
                 </div>
 
-                {/* Show More/Less Button */}
+                {/* View All Articles Button */}
                 <div className="text-center mt-12">
                     <button
-                        onClick={handleShowMore}
+                        onClick={() => navigate('/blogs')}
                         className={`group relative px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 ${isDark
-                            ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white'
-                            : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white'
+                            ? 'bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-700 hover:to-emerald-700 text-white'
+                            : 'bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-700 hover:to-emerald-700 text-white'
                             } shadow-lg hover:shadow-2xl overflow-hidden`}
                     >
                         <div className="flex items-center space-x-2">
-                            <span>{showAll ? 'Show Less Articles' : 'Show All Articles'}</span>
-                            {showAll ? (
-                                <ChevronUp className="group-hover:-translate-y-1 transition-transform duration-200" size={20} />
-                            ) : (
-                                <ChevronDown className="group-hover:translate-y-1 transition-transform duration-200" size={20} />
-                            )}
+                            <span>View All Articles</span>
+                            <ArrowRight className="group-hover:translate-x-1 transition-transform duration-200" size={20} />
                         </div>
 
                         <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12" />
@@ -769,10 +703,10 @@ Remember: Premature optimization is the root of all evil. Profile first, then op
 
                 <div className="text-center mt-16">
                     <div className={`inline-flex items-center space-x-2 px-6 py-3 rounded-full ${isDark
-                        ? 'bg-gradient-to-r from-indigo-600/20 to-purple-600/20 border border-indigo-500/30'
-                        : 'bg-gradient-to-r from-indigo-100 to-purple-100 border border-indigo-200'
+                        ? 'bg-gradient-to-r from-cyan-600/20 to-emerald-600/20 border border-cyan-500/30'
+                        : 'bg-gradient-to-r from-cyan-100 to-emerald-100 border border-cyan-200'
                         } backdrop-blur-sm`}>
-                        <BookOpen className={`${isDark ? 'text-indigo-400' : 'text-indigo-600'}`} size={20} />
+                        <BookOpen className={`${isDark ? 'text-cyan-400' : 'text-cyan-600'}`} size={20} />
                         <span className="font-semibold">Have a topic suggestion? Let's discuss!</span>
                     </div>
                 </div>

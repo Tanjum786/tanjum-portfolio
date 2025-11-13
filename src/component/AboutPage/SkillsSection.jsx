@@ -1,11 +1,69 @@
 import React, { useState, useEffect } from 'react';
-import { Moon, Sun, Code, Palette, Database, Settings, Zap, Star } from 'lucide-react';
+import { Code, Palette, Database, Settings, Zap, Star } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
 
 const SkillsSection = () => {
-    const [isDark, setIsDark] = useState(true);
+    const { isDark } = useTheme();
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-    const [activeCategory, setActiveCategory] = useState('Frontend');
+    const [activeCategory, setActiveCategory] = useState('Frontend Development');
     const [skillProgress, setSkillProgress] = useState({});
+
+    const skillCategories = [
+        {
+            name: 'Frontend Development',
+            icon: <Code size={24} />,
+            color: 'from-blue-500 to-cyan-500',
+            skills: [
+                { name: 'React.js', level: 92, icon: '⚛️' },
+                { name: 'Vue.js', level: 85, icon: '💚' },
+                { name: 'Redux Toolkit', level: 88, icon: '🔄' },
+                { name: 'JavaScript ES6+', level: 90, icon: '🟨' },
+                { name: 'HTML5 & CSS3', level: 95, icon: '🎨' },
+                { name: 'Responsive Design', level: 95, icon: '📱' },
+                { name: 'Tailwind CSS', level: 85, icon: '💨' }
+            ]
+        },
+        {
+            name: 'HubSpot Development',
+            icon: <Settings size={24} />,
+            color: 'from-orange-500 to-red-500',
+            skills: [
+                { name: 'HubL Language', level: 92, icon: '📝' },
+                { name: 'HubSpot CMS', level: 92, icon: '🧡' },
+                { name: 'HubL Templates', level: 90, icon: '📄' },
+                { name: 'Custom Modules', level: 88, icon: '🧩' },
+                { name: 'Custom Workflows', level: 85, icon: '⚙️' },
+                { name: 'UI Extensions', level: 82, icon: '🔌' },
+                { name: 'HubSpot CRM', level: 85, icon: '📊' }
+            ]
+        },
+        {
+            name: 'Tools & Design',
+            icon: <Palette size={24} />,
+            color: 'from-purple-500 to-pink-500',
+            skills: [
+                { name: 'Git & GitHub', level: 90, icon: '🐙' },
+                { name: 'VS Code', level: 95, icon: '💙' },
+                { name: 'Figma', level: 75, icon: '🎨' },
+                { name: 'Chrome DevTools', level: 90, icon: '🔍' },
+                { name: 'Postman', level: 80, icon: '📮' },
+                { name: 'NPM/Yarn', level: 85, icon: '📦' }
+            ]
+        },
+        {
+            name: 'Soft Skills',
+            icon: <Zap size={24} />,
+            color: 'from-green-500 to-emerald-500',
+            skills: [
+                { name: 'Problem Solving', level: 95, icon: '🧩' },
+                { name: 'Team Collaboration', level: 90, icon: '🤝' },
+                { name: 'Adaptability', level: 92, icon: '🔄' },
+                { name: 'Learning Agility', level: 95, icon: '🚀' },
+                { name: 'Attention to Detail', level: 90, icon: '🔍' },
+                { name: 'Communication', level: 88, icon: '💬' }
+            ]
+        }
+    ];
 
     // Mouse tracking for parallax
     useEffect(() => {
@@ -33,62 +91,7 @@ const SkillsSection = () => {
         }, 500);
 
         return () => clearTimeout(timer);
-    }, []);
-
-    const skillCategories = [
-        {
-            name: 'Frontend',
-            icon: <Code size={24} />,
-            color: 'from-blue-500 to-cyan-500',
-            skills: [
-                { name: 'React.js', level: 90, icon: '⚛️' },
-                { name: 'JavaScript', level: 85, icon: '🟨' },
-                { name: 'HTML5 & CSS3', level: 95, icon: '🎨' },
-                { name: 'Tailwind CSS', level: 88, icon: '💨' },
-                { name: 'Next.js', level: 75, icon: '▲' },
-                { name: 'TypeScript', level: 70, icon: '🔷' }
-            ]
-        },
-        {
-            name: 'Backend',
-            icon: <Database size={24} />,
-            color: 'from-green-500 to-emerald-500',
-            skills: [
-                { name: 'Node.js', level: 65, icon: '🟢' },
-                { name: 'Express.js', level: 60, icon: '🚂' },
-                { name: 'MongoDB', level: 55, icon: '🍃' },
-                { name: 'REST APIs', level: 70, icon: '🔗' },
-                { name: 'Firebase', level: 75, icon: '🔥' },
-                { name: 'SQL', level: 50, icon: '🗃️' }
-            ]
-        },
-        {
-            name: 'Tools & Others',
-            icon: <Settings size={24} />,
-            color: 'from-purple-500 to-pink-500',
-            skills: [
-                { name: 'Git & GitHub', level: 90, icon: '🐙' },
-                { name: 'HubSpot', level: 80, icon: '🧡' },
-                { name: 'Figma', level: 70, icon: '🎨' },
-                { name: 'VS Code', level: 95, icon: '💙' },
-                { name: 'Chrome DevTools', level: 85, icon: '🔍' },
-                { name: 'Responsive Design', level: 92, icon: '📱' }
-            ]
-        },
-        {
-            name: 'Soft Skills',
-            icon: <Zap size={24} />,
-            color: 'from-yellow-500 to-orange-500',
-            skills: [
-                { name: 'Problem Solving', level: 90, icon: '🧩' },
-                { name: 'Team Collaboration', level: 85, icon: '🤝' },
-                { name: 'Communication', level: 80, icon: '💬' },
-                { name: 'Project Management', level: 75, icon: '📊' },
-                { name: 'Learning Agility', level: 95, icon: '🚀' },
-                { name: 'Attention to Detail', level: 88, icon: '🔍' }
-            ]
-        }
-    ];
+    }, [skillCategories]);
 
     const getSkillLevel = (level) => {
         if (level >= 90) return { text: 'Expert', color: 'text-green-400' };
@@ -109,8 +112,8 @@ const SkillsSection = () => {
             <div className="absolute inset-0 overflow-hidden">
                 <div
                     className={`absolute w-[350px] h-[350px] rounded-full blur-3xl animate-pulse ${isDark
-                        ? 'bg-gradient-to-r from-indigo-600/10 via-purple-600/10 to-pink-500/10'
-                        : 'bg-gradient-to-r from-indigo-300/20 via-purple-300/20 to-pink-300/20'
+                        ? 'bg-gradient-to-r from-cyan-600/10 via-teal-600/10 to-emerald-500/10'
+                        : 'bg-gradient-to-r from-cyan-300/20 via-teal-300/20 to-emerald-300/20'
                         }`}
                     style={{
                         transform: `translate(${mousePosition.x * 0.015}px, ${mousePosition.y * 0.015}px)`,
@@ -120,8 +123,8 @@ const SkillsSection = () => {
                 />
                 <div
                     className={`absolute w-[300px] h-[300px] rounded-full blur-3xl animate-pulse ${isDark
-                        ? 'bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-indigo-600/10'
-                        : 'bg-gradient-to-r from-cyan-300/20 via-blue-300/20 to-indigo-300/20'
+                        ? 'bg-gradient-to-r from-emerald-500/10 via-cyan-500/10 to-blue-600/10'
+                        : 'bg-gradient-to-r from-emerald-300/20 via-cyan-300/20 to-blue-300/20'
                         }`}
                     style={{
                         transform: `translate(-${mousePosition.x * 0.02}px, -${mousePosition.y * 0.02}px)`,
@@ -135,31 +138,16 @@ const SkillsSection = () => {
             <div className="relative z-10 max-w-7xl mx-auto px-6">
                 {/* Header */}
                 <div className="text-center mb-16">
-                    <div className="flex items-center justify-center mb-8">
-                        <button
-                            onClick={() => setIsDark(!isDark)}
-                            className={`p-3 rounded-full transition-all duration-300 group mr-4 ${isDark
-                                ? 'bg-gray-800 hover:bg-gray-700 text-yellow-400'
-                                : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-                                }`}
-                        >
-                            {isDark ? (
-                                <Sun className="group-hover:rotate-180 transition-transform duration-500" size={20} />
-                            ) : (
-                                <Moon className="group-hover:-rotate-12 transition-transform duration-300" size={20} />
-                            )}
-                        </button>
-                        <h2 className={`text-4xl md:text-6xl font-black ${isDark
-                            ? 'bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent'
-                            : 'bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent'
-                            }`}>
-                            My Skills
-                        </h2>
-                    </div>
+                    <h2 className={`text-4xl md:text-6xl font-black mb-8 ${isDark
+                        ? 'bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent'
+                        : 'bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 bg-clip-text text-transparent'
+                        }`}>
+                        My Skills
+                    </h2>
 
                     <p className={`text-xl max-w-3xl mx-auto ${isDark ? 'text-gray-400' : 'text-gray-600'
                         }`}>
-                        Technologies and tools I use to bring ideas to life. Always learning, always growing! 🚀
+                        Technologies and tools I use to bring ideas to life. Always learning, always growing.
                     </p>
                 </div>
 
@@ -287,10 +275,10 @@ const SkillsSection = () => {
                 {/* Call to Action */}
                 <div className="text-center mt-16">
                     <div className={`inline-flex items-center space-x-2 px-6 py-3 rounded-full ${isDark
-                        ? 'bg-gradient-to-r from-indigo-600/20 to-purple-600/20 border border-indigo-500/30'
-                        : 'bg-gradient-to-r from-indigo-100 to-purple-100 border border-indigo-200'
+                        ? 'bg-gradient-to-r from-cyan-600/20 to-emerald-600/20 border border-cyan-500/30'
+                        : 'bg-gradient-to-r from-cyan-100 to-emerald-100 border border-cyan-200'
                         } backdrop-blur-sm`}>
-                        <Star className={`${isDark ? 'text-indigo-400' : 'text-indigo-600'}`} size={20} />
+                        <Star className={`${isDark ? 'text-cyan-400' : 'text-cyan-600'}`} size={20} />
                         <span className="font-semibold">Continuously upgrading my toolkit to deliver the best solutions!</span>
                     </div>
                 </div>

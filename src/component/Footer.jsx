@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Moon, Sun, Github, Linkedin, Twitter, Instagram, Heart, Code, Mail } from 'lucide-react';
+import { Github, Linkedin, Heart, Code, Mail } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 
 const Footer = () => {
-    const [isDark, setIsDark] = useState(true);
+    const { isDark } = useTheme();
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
     // Mouse tracking for parallax
@@ -21,32 +23,27 @@ const Footer = () => {
     const socialLinks = [
         {
             icon: <Github size={20} />,
-            url: 'https://github.com/yourusername',
+            url: 'https://github.com/Tanjum786',
             label: 'GitHub'
         },
         {
             icon: <Linkedin size={20} />,
-            url: 'https://linkedin.com/in/yourusername',
+            url: 'https://www.linkedin.com/in/tanjum-kadakol-665a69225/',
             label: 'LinkedIn'
         },
         {
-            icon: <Twitter size={20} />,
-            url: 'https://twitter.com/yourusername',
-            label: 'Twitter'
-        },
-        {
             icon: <Mail size={20} />,
-            url: 'mailto:nabinkhair12@gmail.com',
+            url: 'mailto:tanjunkadakol147@gmail.com',
             label: 'Email'
         }
     ];
 
     const navLinks = [
-        { name: 'Home', href: '#home' },
-        { name: 'About', href: '#about' },
-        { name: 'Projects', href: '#projects' },
-        { name: 'Blog', href: '#blog' },
-        { name: 'Contact', href: '#contact' }
+        { name: 'Home', href: '/' },
+        { name: 'About', href: '/about' },
+        { name: 'Projects', href: '/projects' },
+        // { name: 'Blog', href: '/blogs' },
+        { name: 'Contact', href: '/contact' }
     ];
 
     return (
@@ -59,8 +56,8 @@ const Footer = () => {
             <div className="absolute inset-0 overflow-hidden">
                 <div
                     className={`absolute w-[300px] h-[300px] rounded-full blur-3xl animate-pulse ${isDark
-                        ? 'bg-gradient-to-r from-indigo-600/5 via-purple-600/5 to-pink-500/5'
-                        : 'bg-gradient-to-r from-indigo-300/10 via-purple-300/10 to-pink-300/10'
+                        ? 'bg-gradient-to-r from-cyan-600/5 via-teal-600/5 to-emerald-500/5'
+                        : 'bg-gradient-to-r from-cyan-300/10 via-teal-300/10 to-emerald-300/10'
                         }`}
                     style={{
                         transform: `translate(${mousePosition.x * 0.01}px, ${mousePosition.y * 0.01}px)`,
@@ -71,29 +68,14 @@ const Footer = () => {
             </div>
 
             <div className="relative z-10 max-w-7xl mx-auto px-6">
-                {/* Header with theme toggle */}
+                {/* Header */}
                 <div className="flex items-center justify-between mb-12">
-                    <div className="flex items-center space-x-4">
-                        <button
-                            onClick={() => setIsDark(!isDark)}
-                            className={`p-3 rounded-full transition-all duration-300 group ${isDark
-                                ? 'bg-gray-800 hover:bg-gray-700 text-yellow-400'
-                                : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-                                }`}
-                        >
-                            {isDark ? (
-                                <Sun className="group-hover:rotate-180 transition-transform duration-500" size={20} />
-                            ) : (
-                                <Moon className="group-hover:-rotate-12 transition-transform duration-300" size={20} />
-                            )}
-                        </button>
-                        <h3 className={`text-2xl font-black ${isDark
-                            ? 'bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent'
-                            : 'bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent'
-                            }`}>
-                            CyberDev
-                        </h3>
-                    </div>
+                    <h3 className={`text-2xl font-black ${isDark
+                        ? 'bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent'
+                        : 'bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 bg-clip-text text-transparent'
+                        }`}>
+                        Tanjum Kadakol
+                    </h3>
 
                     {/* Social Links */}
                     <div className="flex space-x-4">
@@ -103,6 +85,7 @@ const Footer = () => {
                                 href={social.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                aria-label={social.label}
                                 className={`group p-3 rounded-full transition-all duration-300 transform hover:scale-110 ${isDark
                                     ? 'bg-gray-800/50 text-gray-400 hover:bg-gray-700/50 hover:text-white'
                                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900'
@@ -118,16 +101,16 @@ const Footer = () => {
                 {/* Navigation Links */}
                 <div className="flex flex-wrap justify-center gap-8 mb-12">
                     {navLinks.map((link, index) => (
-                        <a
+                        <Link
                             key={index}
-                            href={link.href}
+                            to={link.href}
                             className={`text-lg font-medium transition-all duration-300 hover:scale-105 ${isDark
-                                ? 'text-gray-300 hover:text-purple-400'
-                                : 'text-gray-600 hover:text-purple-600'
+                                ? 'text-gray-300 hover:text-cyan-400'
+                                : 'text-gray-600 hover:text-cyan-600'
                                 }`}
                         >
                             {link.name}
-                        </a>
+                        </Link>
                     ))}
                 </div>
 
@@ -137,10 +120,10 @@ const Footer = () => {
                 {/* Bottom Section */}
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                     <div className={`flex items-center space-x-2 text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                        <span>© 2025 CyberDev. Made with</span>
+                        <span>© 2025 Tanjum Kadakol. Made with</span>
                         <Heart className="text-red-500 animate-pulse" size={16} />
                         <span>using</span>
-                        <Code className={isDark ? 'text-purple-400' : 'text-purple-600'} size={16} />
+                        <Code className={isDark ? 'text-cyan-400' : 'text-cyan-600'} size={16} />
                         <span>React & Tailwind CSS</span>
                     </div>
 
@@ -153,9 +136,10 @@ const Footer = () => {
                 <div className="text-center mt-8">
                     <button
                         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                        aria-label="Scroll to top"
                         className={`group inline-flex items-center space-x-2 px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 ${isDark
-                            ? 'bg-gradient-to-r from-indigo-600/20 to-purple-600/20 border border-indigo-500/30 text-gray-300 hover:text-white'
-                            : 'bg-gradient-to-r from-indigo-100 to-purple-100 border border-indigo-200 text-gray-700 hover:text-gray-900'
+                            ? 'bg-gradient-to-r from-cyan-600/20 to-emerald-600/20 border border-cyan-500/30 text-gray-300 hover:text-white'
+                            : 'bg-gradient-to-r from-cyan-100 to-emerald-100 border border-cyan-200 text-gray-700 hover:text-gray-900'
                             } backdrop-blur-sm shadow-lg hover:shadow-xl`}
                     >
                         <span className="text-sm font-semibold">Back to Top</span>
