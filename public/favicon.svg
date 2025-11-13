@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="50" cy="50" r="48" fill="url(#grad1)"/>
+  
+  <!-- Inner Circle -->
+  <circle cx="50" cy="50" r="42" fill="#1e293b" opacity="0.95"/>
+  
+  <!-- TK Text -->
+  <text x="50" y="65" font-family="Arial, sans-serif" font-size="38" font-weight="bold" fill="url(#grad1)" text-anchor="middle">TK</text>
+  
+  <!-- Small code brackets -->
+  <text x="18" y="35" font-family="monospace" font-size="16" fill="#06b6d4" opacity="0.7">&lt;/&gt;</text>
+</svg>
+

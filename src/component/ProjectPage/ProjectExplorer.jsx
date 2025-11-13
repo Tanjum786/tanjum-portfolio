@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Search, Filter, Grid, List,
-    X, Code, Globe, Star,
-    Calendar, Eye, Heart, ExternalLink,
-    Github, Clock, Bookmark, MoreHorizontal,
+    Search, Grid, List,
+    X, ExternalLink,
+    Github,
     Sparkles, Info
 } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
@@ -109,15 +108,8 @@ const ProjectExplorer = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [activeFilter, setActiveFilter] = useState('All');
     const [viewMode, setViewMode] = useState('grid');
-    const [isFilterOpen, setIsFilterOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [selectedTechs, setSelectedTechs] = useState([]);
-    const [selectedStatus, setSelectedStatus] = useState([]);
-    const [dateRange, setDateRange] = useState('all');
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [filteredProjects, setFilteredProjects] = useState(mockProjects);
-    const [likedProjects, setLikedProjects] = useState(new Set());
-    const [bookmarkedProjects, setBookmarkedProjects] = useState(new Set());
     const [selectedProject, setSelectedProject] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -166,110 +158,24 @@ const ProjectExplorer = () => {
             }
         }
 
-        // Apply technology filter
-        if (selectedTechs.length > 0) {
-            filtered = filtered.filter(project =>
-                selectedTechs.some(tech => project.technologies.includes(tech))
-            );
-        }
-
-        // Apply status filter
-        if (selectedStatus.length > 0) {
-            filtered = filtered.filter(project => selectedStatus.includes(project.status));
-        }
-
-        // Apply date range filter
-        if (dateRange !== 'all') {
-            const now = new Date();
-            const cutoffDate = new Date();
-
-            switch (dateRange) {
-                case '6months':
-                    cutoffDate.setMonth(now.getMonth() - 6);
-                    break;
-                case '1year':
-                    cutoffDate.setFullYear(now.getFullYear() - 1);
-                    break;
-                case '2023':
-                    cutoffDate.setFullYear(2023, 0, 1);
-                    filtered = filtered.filter(project => {
-                        const projectDate = new Date(project.date);
-                        return projectDate.getFullYear() === 2023;
-                    });
-                    break;
-                case '2022':
-                    cutoffDate.setFullYear(2022, 0, 1);
-                    filtered = filtered.filter(project => {
-                        const projectDate = new Date(project.date);
-                        return projectDate.getFullYear() === 2022;
-                    });
-                    break;
-            }
-
-            if (dateRange === '6months' || dateRange === '1year') {
-                filtered = filtered.filter(project => new Date(project.date) >= cutoffDate);
-            }
-        }
-
         // Sort by newest (default)
         filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         setFilteredProjects(filtered);
-    }, [searchQuery, activeFilter, selectedTechs, selectedStatus, dateRange]);
+    }, [searchQuery, activeFilter]);
 
-    // Filter categories with dynamic counts
+    // Filter tabs
     const filterTabs = [
-        {
-            name: 'All',
-            icon: <Globe size={16} />,
-            count: mockProjects.length,
-            color: 'text-cyan-400'
-        },
-        {
-            name: 'Web App',
-            icon: <Code size={16} />,
-            count: mockProjects.filter(p => p.category === 'Web App').length,
-            color: 'text-blue-400'
-        },
-        {
-            name: 'Featured',
-            icon: <Star size={16} />,
-            count: mockProjects.filter(p => p.featured).length,
-            color: 'text-yellow-400'
-        },
+        { name: 'All', icon: '🌐', count: mockProjects.length },
+        { name: 'Web App', icon: '💻', count: mockProjects.filter(p => p.category === 'Web App').length },
+        { name: 'Featured', icon: '⭐', count: mockProjects.filter(p => p.featured).length },
     ];
 
-    // All available technologies
-    const allTechnologies = [...new Set(mockProjects.flatMap(p => p.technologies))];
-    const allStatuses = [...new Set(mockProjects.map(p => p.status))];
-
     const clearSearch = () => setSearchQuery('');
+    
     const clearAllFilters = () => {
         setSearchQuery('');
         setActiveFilter('All');
-        setSelectedTechs([]);
-        setSelectedStatus([]);
-        setDateRange('all');
-    };
-
-    const toggleLike = (projectId) => {
-        const newLikedProjects = new Set(likedProjects);
-        if (newLikedProjects.has(projectId)) {
-            newLikedProjects.delete(projectId);
-        } else {
-            newLikedProjects.add(projectId);
-        }
-        setLikedProjects(newLikedProjects);
-    };
-
-    const toggleBookmark = (projectId) => {
-        const newBookmarkedProjects = new Set(bookmarkedProjects);
-        if (newBookmarkedProjects.has(projectId)) {
-            newBookmarkedProjects.delete(projectId);
-        } else {
-            newBookmarkedProjects.add(projectId);
-        }
-        setBookmarkedProjects(newBookmarkedProjects);
     };
 
     const getStatusColor = (status) => {
@@ -285,28 +191,6 @@ const ProjectExplorer = () => {
         }
     };
 
-    const LoadingState = () => (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, i) => (
-                <div key={i} className={`rounded-2xl p-6 animate-pulse ${isDark ? 'bg-gray-800/40' : 'bg-gray-100'
-                    }`}>
-                    <div className={`h-40 rounded-xl mb-4 ${isDark ? 'bg-gray-700/50' : 'bg-gray-200'
-                        }`} />
-                    <div className={`h-4 rounded mb-3 ${isDark ? 'bg-gray-700/50' : 'bg-gray-200'
-                        }`} />
-                    <div className={`h-3 rounded mb-2 w-3/4 ${isDark ? 'bg-gray-700/50' : 'bg-gray-200'
-                        }`} />
-                    <div className="flex space-x-2 mt-4">
-                        {[...Array(3)].map((_, j) => (
-                            <div key={j} className={`h-6 w-16 rounded ${isDark ? 'bg-gray-700/50' : 'bg-gray-200'
-                                }`} />
-                        ))}
-                    </div>
-                </div>
-            ))}
-        </div>
-    );
-
     const EmptyState = () => (
         <div className="text-center py-16">
             <div className={`inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 ${isDark ? 'bg-gray-800/50' : 'bg-gray-100'
@@ -321,15 +205,17 @@ const ProjectExplorer = () => {
                 }`}>
                 Try adjusting your filters or search query to find what you're looking for.
             </p>
-            <button
-                onClick={clearAllFilters}
-                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${isDark
-                        ? 'bg-cyan-600 hover:bg-cyan-700 text-white'
-                        : 'bg-cyan-600 hover:bg-cyan-700 text-white'
-                    }`}
-            >
-                Clear All Filters
-            </button>
+            {(searchQuery || activeFilter !== 'All') && (
+                <button
+                    onClick={clearAllFilters}
+                    className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${isDark
+                            ? 'bg-cyan-600 hover:bg-cyan-700 text-white'
+                            : 'bg-cyan-600 hover:bg-cyan-700 text-white'
+                        }`}
+                >
+                    Clear All Filters
+                </button>
+            )}
         </div>
     );
 
@@ -395,26 +281,14 @@ const ProjectExplorer = () => {
                     </button>
                 </div>
 
-                {/* Top Right Buttons */}
-                <div className="absolute top-4 right-4 flex space-x-2 z-10">
-                    {project.featured && (
+                {/* Featured Badge */}
+                {project.featured && (
+                    <div className="absolute top-4 right-4 z-10">
                         <div className={`p-2 rounded-full pointer-events-none ${isDark ? 'bg-yellow-500/20 text-yellow-400' : 'bg-yellow-100 text-yellow-600'}`}>
                             <Sparkles size={16} />
                         </div>
-                    )}
-                    <button
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            toggleBookmark(project.id);
-                        }}
-                        className={`p-2 rounded-full transition-all duration-200 opacity-0 group-hover:opacity-100 ${bookmarkedProjects.has(project.id)
-                                ? 'bg-cyan-500 text-white'
-                                : isDark ? 'bg-gray-800/80 text-gray-300 hover:text-purple-400' : 'bg-white/80 text-gray-600 hover:text-purple-600'
-                            }`}
-                    >
-                        <Bookmark size={16} />
-                    </button>
-                </div>
+                    </div>
+                )}
             </div>
 
             {/* Project Content */}
@@ -543,18 +417,18 @@ const ProjectExplorer = () => {
                     {project.description}
                 </p>
 
-                <div className="flex flex-wrap gap-2">
-                    {project.technologies.slice(0, 4).map((tech) => (
-                        <span
-                            key={tech}
-                            className={`px-2 py-1 rounded text-xs font-medium ${isDark
-                                    ? 'bg-gray-700/50 text-gray-300'
-                                    : 'bg-gray-100 text-gray-700'
-                                }`}
-                        >
-                            {tech}
-                        </span>
-                    ))}
+                    <div className="flex flex-wrap gap-2">
+                        {project.technologies.slice(0, 4).map((tech) => (
+                            <span
+                                key={tech}
+                                className={`px-2 py-1 rounded text-xs font-medium ${isDark
+                                        ? 'bg-gray-700/50 text-gray-300'
+                                        : 'bg-gray-100 text-gray-700'
+                                    }`}
+                            >
+                                {tech}
+                            </span>
+                        ))}
                 </div>
             </div>
 
@@ -684,264 +558,89 @@ const ProjectExplorer = () => {
                         )}
                     </div>
 
-                    {/* Filter Tabs & Controls Row */}
-                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
-                        {/* Filter Tabs */}
-                        <div className="flex flex-wrap gap-2">
-                            {filterTabs.map((filter) => (
-                                <button
-                                    key={filter.name}
-                                    onClick={() => setActiveFilter(filter.name)}
-                                    className={`flex items-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 backdrop-blur-sm border ${activeFilter === filter.name
-                            ? isDark
-                                ? 'bg-cyan-600/80 text-white border-cyan-500/50 shadow-lg'
-                                : 'bg-cyan-600/90 text-white border-cyan-400/50 shadow-lg'
-                                            : isDark
-                                                ? 'bg-gray-800/40 text-gray-300 border-gray-700/50 hover:border-gray-600/50 hover:bg-gray-800/60'
-                                                : 'bg-white/70 text-gray-700 border-gray-200/50 hover:border-gray-300/50 hover:bg-white/80'
-                                        }`}
-                                >
-                                    <span className={activeFilter === filter.name ? 'text-white' : filter.color}>
-                                        {filter.icon}
-                                    </span>
-                                    <span className="font-semibold">{filter.name}</span>
-                                    <span className={`text-xs px-2 py-1 rounded-full ${activeFilter === filter.name
-                                            ? 'bg-white/20 text-white'
-                                            : isDark
-                                                ? 'bg-gray-700/50 text-gray-400'
-                                                : 'bg-gray-100 text-gray-600'
-                                        }`}>
-                                        {filter.count}
-                                    </span>
-                                </button>
-                            ))}
-                        </div>
-
-                        {/* Advanced Controls */}
-                        <div className="flex items-center space-x-3">
-                            {/* Advanced Filter Toggle */}
+                    {/* Filter Tabs */}
+                    <div className="flex flex-wrap gap-3 mb-6">
+                        {filterTabs.map((filter) => (
                             <button
-                                onClick={() => setIsFilterOpen(!isFilterOpen)}
-                                className={`flex items-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 backdrop-blur-sm border ${isFilterOpen
-                        ? isDark
-                            ? 'bg-cyan-600/80 text-white border-cyan-500/50'
-                            : 'bg-cyan-600/90 text-white border-cyan-400/50'
+                                key={filter.name}
+                                onClick={() => setActiveFilter(filter.name)}
+                                className={`flex items-center gap-2 px-5 py-3 rounded-xl font-semibold transition-all duration-300 backdrop-blur-sm border ${
+                                    activeFilter === filter.name
+                                        ? isDark
+                                            ? 'bg-cyan-600 text-white border-cyan-500 shadow-lg'
+                                            : 'bg-cyan-600 text-white border-cyan-500 shadow-lg'
                                         : isDark
-                                            ? 'bg-gray-800/40 text-gray-300 border-gray-700/50 hover:border-gray-600/50'
-                                            : 'bg-white/70 text-gray-700 border-gray-200/50 hover:border-gray-300/50'
-                                    }`}
+                                            ? 'bg-gray-800/40 text-gray-300 border-gray-700/50 hover:border-cyan-500/50'
+                                            : 'bg-white/70 text-gray-700 border-gray-200/50 hover:border-cyan-400/50'
+                                }`}
                             >
-                                <Filter size={16} />
-                                <span className="font-semibold lg:inline hidden">Filters</span>
+                                <span className="text-lg">{filter.icon}</span>
+                                <span>{filter.name}</span>
+                                <span className={`px-2 py-0.5 rounded-full text-xs ${
+                                    activeFilter === filter.name
+                                        ? 'bg-white/20 text-white'
+                                        : isDark
+                                            ? 'bg-gray-700/50 text-gray-400'
+                                            : 'bg-gray-100 text-gray-600'
+                                }`}>
+                                    {filter.count}
+                                </span>
                             </button>
+                        ))}
 
-                            {/* Clear All Button */}
-                            {(searchQuery || activeFilter !== 'All' || selectedTechs.length > 0 || selectedStatus.length > 0 || dateRange !== 'all') && (
-                                <button
-                                    onClick={clearAllFilters}
-                                    className={`px-4 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 ${isDark
-                                            ? 'bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/30'
-                                            : 'bg-red-100 text-red-600 border border-red-200 hover:bg-red-200'
-                                        } backdrop-blur-sm font-semibold`}
-                                >
-                                    Clear All
-                                </button>
-                            )}
-                        </div>
+                        {/* Clear All Button */}
+                        {(searchQuery || activeFilter !== 'All') && (
+                            <button
+                                onClick={clearAllFilters}
+                                className={`px-5 py-3 rounded-xl font-semibold transition-all duration-300 backdrop-blur-sm border ${
+                                    isDark
+                                        ? 'bg-red-500/20 text-red-400 border-red-500/30 hover:bg-red-500/30'
+                                        : 'bg-red-100 text-red-600 border-red-200 hover:bg-red-200'
+                                }`}
+                            >
+                                Clear All
+                            </button>
+                        )}
                     </div>
 
-                    {/* Advanced Filters Panel */}
-                    {isFilterOpen && (
-                        <div className={`p-6 rounded-2xl backdrop-blur-sm border transition-all duration-300 mb-6 ${isDark
-                                ? 'bg-gray-800/40 border-gray-700/50'
-                                : 'bg-white/70 border-gray-200/50'
-                            }`}>
-                            <div className="grid md:grid-cols-3 gap-6">
-                                {/* Technology Filter */}
-                                <div>
-                                    <h4 className={`font-semibold mb-3 ${isDark ? 'text-gray-200' : 'text-gray-800'
-                                        }`}>
-                                        Technologies
-                                    </h4>
-                                    <div className="flex flex-wrap gap-2">
-                                        {allTechnologies.map((tech) => (
-                                            <button
-                                                key={tech}
-                                                onClick={() => {
-                                                    if (selectedTechs.includes(tech)) {
-                                                        setSelectedTechs(selectedTechs.filter(t => t !== tech));
-                                                    } else {
-                                                        setSelectedTechs([...selectedTechs, tech]);
-                                                    }
-                                                }}
-                                                className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 border ${selectedTechs.includes(tech)
-                                                        ? isDark
-                                                            ? 'bg-cyan-600/20 text-cyan-400 border-cyan-500/30'
-                                                            : 'bg-cyan-100 text-cyan-700 border-cyan-300'
-                                                        : isDark
-                                                            ? 'bg-gray-700/50 text-gray-300 border-gray-600/50 hover:bg-cyan-600/20 hover:border-cyan-500/30'
-                                                            : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-cyan-100 hover:border-cyan-300'
-                                                    }`}
-                                            >
-                                                {tech}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Status Filter */}
-                                <div>
-                                    <h4 className={`font-semibold mb-3 ${isDark ? 'text-gray-200' : 'text-gray-800'
-                                        }`}>
-                                        Status
-                                    </h4>
-                                    <div className="space-y-2">
-                                        {allStatuses.map((status) => (
-                                            <label key={status} className="flex items-center space-x-3 cursor-pointer">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={selectedStatus.includes(status)}
-                                                    onChange={() => {
-                                                        if (selectedStatus.includes(status)) {
-                                                            setSelectedStatus(selectedStatus.filter(s => s !== status));
-                                                        } else {
-                                                            setSelectedStatus([...selectedStatus, status]);
-                                                        }
-                                                    }}
-                                                    className="w-4 h-4 text-cyan-600 bg-gray-100 border-gray-300 rounded focus:ring-cyan-500 focus:ring-2"
-                                                />
-                                                <span className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'
-                                                    }`}>
-                                                    {status}
-                                                </span>
-                                            </label>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Date Range */}
-                                <div>
-                                    <h4 className={`font-semibold mb-3 ${isDark ? 'text-gray-200' : 'text-gray-800'
-                                        }`}>
-                                        Date Range
-                                    </h4>
-                                    <select
-                                        value={dateRange}
-                                        onChange={(e) => setDateRange(e.target.value)}
-                                        className={`w-full p-2 rounded-lg border ${isDark
-                                                ? 'bg-gray-700 border-gray-600 text-gray-200'
-                                                : 'bg-white border-gray-300 text-gray-700'
-                                            }`}
-                                    >
-                                        <option value="all">All Time</option>
-                                        <option value="6months">Last 6 Months</option>
-                                        <option value="1year">Last Year</option>
-                                        <option value="2023">2023</option>
-                                        <option value="2022">2022</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Active Filters Summary */}
-                    {(searchQuery || activeFilter !== 'All' || selectedTechs.length > 0 || selectedStatus.length > 0 || dateRange !== 'all') && (
-                        <div className="flex flex-wrap items-center gap-3 mb-6">
-                            <span className={`text-sm font-semibold ${isDark ? 'text-gray-400' : 'text-gray-600'
-                                }`}>
+                    {/* Active Filters */}
+                    {(searchQuery || activeFilter !== 'All') && (
+                        <div className="flex flex-wrap items-center gap-2 mb-6">
+                            <span className={`text-sm font-semibold ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                                 Active filters:
                             </span>
-
+                            {activeFilter !== 'All' && (
+                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                                    isDark
+                                        ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
+                                        : 'bg-cyan-100 text-cyan-700 border border-cyan-200'
+                                }`}>
+                                    Category: {activeFilter}
+                                </span>
+                            )}
                             {searchQuery && (
-                                <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs ${isDark
+                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                                    isDark
                                         ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
                                         : 'bg-blue-100 text-blue-700 border border-blue-200'
-                                    }`}>
-                                    <Search size={12} />
-                                    <span>Search: "{searchQuery}"</span>
-                                    <button onClick={clearSearch}>
-                                        <X size={12} />
-                                    </button>
-                                </div>
-                            )}
-
-                            {activeFilter !== 'All' && (
-                                <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs ${isDark
-                        ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
-                        : 'bg-cyan-100 text-cyan-700 border border-cyan-200'
-                                    }`}>
-                                    <Filter size={12} />
-                                    <span>Category: {activeFilter}</span>
-                                    <button onClick={() => setActiveFilter('All')}>
-                                        <X size={12} />
-                                    </button>
-                                </div>
-                            )}
-
-                            {selectedTechs.map((tech) => (
-                                <div key={tech} className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs ${isDark
-                                        ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                                        : 'bg-green-100 text-green-700 border border-green-200'
-                                    }`}>
-                                    <Code size={12} />
-                                    <span>{tech}</span>
-                                    <button onClick={() => setSelectedTechs(selectedTechs.filter(t => t !== tech))}>
-                                        <X size={12} />
-                                    </button>
-                                </div>
-                            ))}
-
-                            {selectedStatus.map((status) => (
-                                <div key={status} className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs ${isDark
-                                        ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
-                                        : 'bg-orange-100 text-orange-700 border border-orange-200'
-                                    }`}>
-                                    <Clock size={12} />
-                                    <span>{status}</span>
-                                    <button onClick={() => setSelectedStatus(selectedStatus.filter(s => s !== status))}>
-                                        <X size={12} />
-                                    </button>
-                                </div>
-                            ))}
-
-                            {dateRange !== 'all' && (
-                                <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs ${isDark
-                                        ? 'bg-pink-500/20 text-pink-400 border border-pink-500/30'
-                                        : 'bg-pink-100 text-pink-700 border border-pink-200'
-                                    }`}>
-                                    <Calendar size={12} />
-                                    <span>Date: {dateRange === '6months' ? 'Last 6 Months' : dateRange === '1year' ? 'Last Year' : dateRange === 'all' ? 'All Time' : dateRange}</span>
-                                    <button onClick={() => setDateRange('all')}>
-                                        <X size={12} />
-                                    </button>
-                                </div>
+                                }`}>
+                                    Search: "{searchQuery}"
+                                </span>
                             )}
                         </div>
                     )}
 
-                    {/* Results Summary */}
-                    <div className="flex items-center justify-between mb-6">
-                        <div className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'
-                            }`}>
-                            Showing {filteredProjects.length} of {mockProjects.length} projects
-                        </div>
-
-                        {filteredProjects.length > 0 && (
-                            <div className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'
-                                }`}>
-                                Latest projects first
-                            </div>
-                        )}
+                    {/* Results Counter */}
+                    <div className={`text-sm font-semibold mb-6 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                        Showing {filteredProjects.length} of {mockProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'}
                     </div>
                 </div>
             </section>
 
-            {/* Projects Section */}
+            {/* Projects Grid/List */}
             <section className="relative z-10 pb-16">
                 <div className="max-w-7xl mx-auto px-6">
-                    {isLoading ? (
-                        <LoadingState />
-                    ) : filteredProjects.length === 0 ? (
+                    {filteredProjects.length === 0 ? (
                         <EmptyState />
                     ) : viewMode === 'grid' ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -958,16 +657,6 @@ const ProjectExplorer = () => {
                     )}
                 </div>
             </section>
-
-            {/* Click outside to close dropdowns */}
-            {isFilterOpen && (
-                <div
-                    className="fixed inset-0 z-10"
-                    onClick={() => {
-                        setIsFilterOpen(false);
-                    }}
-                />
-            )}
 
             {/* Project Modal */}
             {isModalOpen && selectedProject && (
