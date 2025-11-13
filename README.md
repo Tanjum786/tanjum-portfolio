@@ -136,8 +136,8 @@ tanjum-portfolio/
 
 ## 🚀 Deployment
 
-This project can be deployed on:
-- **Vercel** (Recommended)
+This project deployed on:
+- **Vercel**
 
 ### Deploy to Vercel
 ```bash
