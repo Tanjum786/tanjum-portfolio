@@ -21,6 +21,7 @@ const mockProjects = [
         views: 1200,
         date: "2023-03-15",
         featured: true,
+        gradient: "from-purple-600 via-pink-600 to-rose-700",
         liveUrl: "https://friendly-galaxy.vercel.app/",
         githubUrl: "https://github.com/Tanjum786/FriendlyGalaxy",
         features: [
@@ -44,6 +45,7 @@ const mockProjects = [
         views: 1800,
         date: "2023-01-10",
         featured: true,
+        gradient: "from-blue-600 via-cyan-600 to-teal-700",
         liveUrl: "https://e-galaxy-store.vercel.app/",
         githubUrl: "https://github.com/Tanjum786/E-Galaxy-store",
         features: [
@@ -67,6 +69,7 @@ const mockProjects = [
         views: 1100,
         date: "2023-02-20",
         featured: true,
+        gradient: "from-indigo-600 via-purple-600 to-pink-700",
         liveUrl: "https://galaxy-play-it.vercel.app/",
         githubUrl: "https://github.com/Tanjum786/GalaxyPlay",
         features: [
@@ -90,6 +93,7 @@ const mockProjects = [
         views: 950,
         date: "2023-04-15",
         featured: true,
+        gradient: "from-green-600 via-emerald-600 to-teal-700",
         liveUrl: "https://galaxy-notes-app.vercel.app/",
         githubUrl: "https://github.com/Tanjum786/Galaxy-Notes",
         features: [
@@ -199,31 +203,33 @@ const ProjectExplorer = () => {
     );
 
     const ProjectCard = ({ project }) => (
-        <div className={`group rounded-2xl overflow-hidden backdrop-blur-sm border transition-all duration-500 hover:scale-105 hover:shadow-2xl ${isDark
-                ? 'bg-gray-800/40 border-gray-700/50 hover:border-cyan-500/50'
-                : 'bg-white/70 border-gray-200/50 hover:border-cyan-300/50'
-            }`}>
+        <div className={`relative group ${isDark ? 'bg-gray-800/40' : 'bg-white/80'} backdrop-blur-xl rounded-3xl border ${isDark ? 'border-gray-700/50' : 'border-gray-200/50'} hover:border-cyan-500/50 transition-all duration-500 transform hover:scale-[1.02] overflow-hidden shadow-lg hover:shadow-2xl`}>
+            {/* Featured Badge */}
+            {project.featured && (
+                <div className="absolute top-4 right-4 z-10">
+                    <div className={`px-3 py-1 rounded-full text-xs font-semibold flex items-center space-x-1 ${isDark
+                        ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                        : 'bg-yellow-100 text-yellow-700 border border-yellow-200'
+                    }`}>
+                        <Star size={12} />
+                        <span>Featured</span>
+                    </div>
+                        </div>
+                    )}
+            
             {/* Project Image/Icon */}
-            <div className="relative overflow-hidden bg-gradient-to-br from-cyan-500/20 to-emerald-500/20">
-                {/* Icon - Always Visible */}
-                <div className="w-full h-48 flex items-center justify-center pointer-events-none">
-                    <span className="text-7xl">
-                        {project.image}
-                    </span>
-                </div>
+            <div className={`relative w-full h-52 rounded-t-3xl bg-gradient-to-br ${project.gradient} flex items-center justify-center overflow-hidden group`}>
+                <span className="text-7xl">{project.image}</span>
                 
-                {/* Hover Overlay - Smooth Transition */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300"></div>
-                
-                {/* Buttons Container */}
-                <div className="absolute inset-0 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center gap-4">
                     {/* Info Button */}
                     <button
                         onClick={(e) => {
                             e.stopPropagation();
                             openModal(project);
                         }}
-                        className="p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 cursor-pointer"
+                        className="p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 cursor-pointer opacity-0 group-hover:opacity-100"
                         title="View Details"
                     >
                         <Info className="text-white" size={20} />
@@ -237,7 +243,7 @@ const ProjectExplorer = () => {
                                 window.open(project.githubUrl, '_blank', 'noopener,noreferrer');
                             }
                         }}
-                        className={`p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 ${
+                        className={`p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 opacity-0 group-hover:opacity-100 ${
                             project.githubUrl ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
                         }`}
                         title={project.githubUrl ? "View on GitHub" : "No GitHub link"}
@@ -254,24 +260,15 @@ const ProjectExplorer = () => {
                                 window.open(project.liveUrl, '_blank', 'noopener,noreferrer');
                             }
                         }}
-                        className={`p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 ${
+                        className={`p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 opacity-0 group-hover:opacity-100 ${
                             project.liveUrl ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
                         }`}
                         title={project.liveUrl ? "View Live Demo" : "No live demo"}
                         disabled={!project.liveUrl}
                     >
                         <ExternalLink className="text-white" size={20} />
-                    </button>
+                        </button>
                 </div>
-
-                {/* Featured Badge */}
-                {project.featured && (
-                    <div className="absolute top-4 right-4 z-10">
-                        <div className={`p-2 rounded-full pointer-events-none ${isDark ? 'bg-yellow-500/20 text-yellow-400' : 'bg-yellow-100 text-yellow-600'}`}>
-                            <Sparkles size={16} />
-                        </div>
-                    </div>
-                )}
             </div>
 
             {/* Project Content */}
@@ -317,31 +314,23 @@ const ProjectExplorer = () => {
     );
 
     const ProjectListItem = ({ project }) => (
-        <div className={`group flex items-center p-6 rounded-2xl backdrop-blur-sm border transition-all duration-300 hover:shadow-lg ${isDark
+        <div className={`relative group flex items-center p-6 rounded-2xl backdrop-blur-sm border transition-all duration-300 hover:shadow-lg ${isDark
                 ? 'bg-gray-800/40 border-gray-700/50 hover:border-cyan-500/50'
                 : 'bg-white/70 border-gray-200/50 hover:border-cyan-300/50'
             }`}>
             {/* Project Image/Icon */}
-            <div className="relative w-24 h-24 rounded-xl overflow-hidden mr-6 flex-shrink-0 bg-gradient-to-br from-cyan-500/20 to-emerald-500/20">
-                {/* Icon - Always Visible */}
-                <div className="w-full h-full flex items-center justify-center pointer-events-none">
-                    <span className="text-4xl">
-                        {project.image}
-                    </span>
-                </div>
+            <div className={`relative w-24 h-24 rounded-xl bg-gradient-to-br ${project.gradient} flex items-center justify-center overflow-hidden mr-6 flex-shrink-0 group`}>
+                <span className="text-4xl">{project.image}</span>
                 
-                {/* Hover Overlay - Smooth Transition */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300"></div>
-                
-                {/* Buttons Container */}
-                <div className="absolute inset-0 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center gap-2">
                     {/* Info Button */}
                     <button
                         onClick={(e) => {
                             e.stopPropagation();
                             openModal(project);
                         }}
-                        className="p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 cursor-pointer"
+                        className="p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 cursor-pointer opacity-0 group-hover:opacity-100"
                         title="View Details"
                     >
                         <Info className="text-white" size={16} />
@@ -355,7 +344,7 @@ const ProjectExplorer = () => {
                                 window.open(project.githubUrl, '_blank', 'noopener,noreferrer');
                             }
                         }}
-                        className={`p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 ${
+                        className={`p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 opacity-0 group-hover:opacity-100 ${
                             project.githubUrl ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
                         }`}
                         title={project.githubUrl ? "View on GitHub" : "No GitHub link"}
@@ -372,7 +361,7 @@ const ProjectExplorer = () => {
                                 window.open(project.liveUrl, '_blank', 'noopener,noreferrer');
                             }
                         }}
-                        className={`p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 ${
+                        className={`p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-all duration-200 transform hover:scale-110 opacity-0 group-hover:opacity-100 ${
                             project.liveUrl ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
                         }`}
                         title={project.liveUrl ? "View Live Demo" : "No live demo"}

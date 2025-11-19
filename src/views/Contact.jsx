@@ -27,9 +27,9 @@ const ContactPage = () => {
 
         try {
             // EmailJS configuration
-            const serviceID = 'service_urrbhxp'; // Replace with your EmailJS Service ID
-            const templateID = 'template_otm2qm7'; // Replace with your EmailJS Template ID
-            const publicKey = 'SeMNnmqymmgrpiLP0'; // Replace with your EmailJS Public Key
+            const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+            const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+            const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
             // Send email using EmailJS
             await emailjs.send(
@@ -195,7 +195,7 @@ const ContactPage = () => {
                         {/* Social Links */}
                         <div>
                             <h3 className={`font-bold mb-6 text-xl ${isDark ? 'text-white' : 'text-gray-900'}`}>Social Links</h3>
-                            <div className="grid grid-cols-3 gap-4">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     <a href="https://github.com/Tanjum786" target="_blank" rel="noopener noreferrer" className={`group p-4 rounded-xl border transition-all duration-300 hover:scale-105 ${isDark 
                                     ? 'bg-gray-800/30 border-gray-700/50 hover:border-cyan-500/30'
                                     : 'bg-white border-gray-200 hover:border-cyan-300'
@@ -216,6 +216,13 @@ const ContactPage = () => {
                                     }`}>
                                     <Mail className={`transition-colors duration-300 mb-2 ${isDark ? 'text-gray-400 group-hover:text-cyan-400' : 'text-gray-600 group-hover:text-cyan-600'}`} size={24} />
                                     <span className={`block transition-colors duration-300 text-sm ${isDark ? 'text-gray-400 group-hover:text-white' : 'text-gray-600 group-hover:text-gray-900'}`}>Email</span>
+                                </a>
+                                <a href={`https://wa.me/918904937408?text=${encodeURIComponent("Hello, I visited your portfolio and would like to discuss an opportunity with you.")}`} target="_blank" rel="noopener noreferrer" className={`group p-4 rounded-xl border transition-all duration-300 hover:scale-105 ${isDark 
+                                    ? 'bg-gray-800/30 border-gray-700/50 hover:border-cyan-500/30'
+                                    : 'bg-white border-gray-200 hover:border-cyan-300'
+                                    }`}>
+                                    <Phone className={`transition-colors duration-300 mb-2 ${isDark ? 'text-gray-400 group-hover:text-cyan-400' : 'text-gray-600 group-hover:text-cyan-600'}`} size={24} />
+                                    <span className={`block transition-colors duration-300 text-sm ${isDark ? 'text-gray-400 group-hover:text-white' : 'text-gray-600 group-hover:text-gray-900'}`}>WhatsApp</span>
                                 </a>
                             </div>
                         </div>
